@@ -7,6 +7,12 @@
 #include <QThread>
 #include <QTimer>
 #include <QDateTime>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
+#include <QMutex>
+#include <QApplication>
+#include <algorithm>
+#include <QMessageBox>
 
 // 添加外部的库
 #include "./inc/VK70xNMC_DAQ2.h"
@@ -35,34 +41,73 @@ public:
     explicit vk701page(QWidget *parent = nullptr);
     ~vk701page();
 
-    int currentRoundID = 0;                         // 读取的轮次，即按了几次停止采样
-    bool startTimeflag = false;
+    int currentRoundID = 0;                 // 当前采样轮次
+    bool startTimeflag = false;             // 开始时间标志
+    bool AllRecordStart = false;            // 全局数据记录标志
+
+public slots:
+    // 数据库初始化与操作
+    void InitDB(const QString &fileName);           // 初始化数据库
+    void saveDataToDatabase(const QVector<double> &data, int channels, int pointsPerChannel); // 异步保存数据
+    void cleanupOldData(int keepLastNRounds);      // 清理旧数据，保留最近N轮
+    
+    // 新增: 处理数据采集卡状态变化
+    void handleStateChanged(DAQState newState);
 
 private slots:
-    void handleResultValue(QList<double> *list);
+    // 处理数据采集卡获取的数据
+    void handleResultValue(QVector<double> *list);
+    
+    // UI按钮事件处理
+    void on_btn_start_2_clicked();          // 开始按钮
+    void on_btn_stop_2_clicked();           // 停止按钮
+    void on_btn_showDB_clicked();           // 显示数据库内容
+    void on_btn_deleteData_clicked();       // 按轮次删除数据
+    void on_btn_nuke_clicked();             // 删除所有数据
+    
+    // 新增: 退出按钮处理 (示例方法，您需要添加相应的按钮)
+    void on_btn_exit_clicked();
+    
+    // 新增: 处理消息结果
+    void handleResultMsg(QString msg);
 
-    void on_btn_start_2_clicked();
+    // 定时更新UI
+    void updatePlots();                      // 更新图表
+    
+    // 新增: 关闭事件处理 (优雅退出)
+    void closeEvent(QCloseEvent *event) override;
 
-    void on_btn_stop_2_clicked();
-
-    void InitDB(const QString &fileName);       // 初始化数据库
-
-    void on_btn_showDB_clicked();               // 把数据库的内容显示到Table上
-
-    void on_btn_deleteData_clicked();           // 根据RoundID来删除数据
-
-    void on_btn_nuke_clicked();                 // 删除所有的数据
 
 private:
-    QSqlDatabase db;                // 存储数据的数据库
-    QDateTime startTime;            // 开始时间
-    QDateTime stopTime;             // 结束时间
-
-private:
+    // 数据库相关
+    QSqlDatabase db;                        // 数据库连接
+    QDateTime startTime;                    // 开始时间
+    QDateTime stopTime;                     // 结束时间
+    
+    // 批量插入相关
+    QList<QVariantList> batchData;          // 批量插入缓冲
+    int batchSize = 1000;                   // 批量插入大小
+    QTimer *dbCommitTimer;                  // 定时提交数据库
+    
+    // UI相关
     Ui::vk701page *ui;
-    QCustomPlot *qcustomplot[4];
-    QThread *workerThread;          // Loop to read DAQ data
-    vk701nsd *worker;
+    QCustomPlot *qcustomplot[4];            // 四个通道的绘图对象
+    
+    // 线程相关
+    QThread *workerThread;                  // 数据采集线程
+    vk701nsd *worker;                       // 数据采集对象
+    QTimer *plotUpdateTimer;                // 图表更新定时器
+    
+    // 数据缓冲
+    QVector<double> currentData;            // 当前显示的数据
+    QMutex dataMutex;                       // 数据互斥锁
+    
+    // 绘图性能优化
+    int plotUpdateInterval = 100;           // 绘图更新间隔(ms)
+    bool needPlotUpdate = false;            // 是否需要更新绘图
+    
+    // 新增: 安全关闭工作线程
+    void safelyShutdownWorker();
 };
 
 #endif // VK701PAGE_H

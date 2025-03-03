@@ -1,46 +1,46 @@
 
-/********************************** ZMCÏµÁĞ¿ØÖÆÆ÷  ************************************************
-**--------------ÎÄ¼şĞÅÏ¢--------------------------------------------------------------------------------
-**ÎÄ¼şÃû: zmcaux.c
-**´´½¨ÈË: zxy
-**Ê±¼ä: 20130621
-**ÃèÊö: ZMCDLL ¸¨Öúº¯Êı
+/********************************** ZMCç³»åˆ—æ§åˆ¶å™¨  ************************************************
+**--------------æ–‡ä»¶ä¿¡æ¯--------------------------------------------------------------------------------
+**æ–‡ä»¶å: zmcaux.c
+**åˆ›å»ºäºº: zxy
+**æ—¶é—´: 20130621
+**æè¿°: ZMCDLL è¾…åŠ©å‡½æ•°
 
-±¾¿âÌá¹©¶ÔEXCUTEµÈÔÚÏßÃüÁîÖ´ĞĞº¯ÊıµÄ·â×°£¬²»¶Ô¿ØÖÆÆ÷±¾ÉíµÄÖ´ĞĞ³ÌĞò½øĞĞĞŞ¸Ä²Ù×÷.
+æœ¬åº“æä¾›å¯¹EXCUTEç­‰åœ¨çº¿å‘½ä»¤æ‰§è¡Œå‡½æ•°çš„å°è£…ï¼Œä¸å¯¹æ§åˆ¶å™¨æœ¬èº«çš„æ‰§è¡Œç¨‹åºè¿›è¡Œä¿®æ”¹æ“ä½œ.
   
 	
 	  
-**------------ĞŞ¶©ÀúÊ·¼ÇÂ¼----------------------------------------------------------------------------
+**------------ä¿®è®¢å†å²è®°å½•----------------------------------------------------------------------------
 		
-** ĞŞ¸ÄÈË: zxy
-** °æ  ±¾: 1.1
-** ÈÕ¡¡ÆÚ: 2014.5.11
-** Ãè¡¡Êö: ZMC_ExecuteNoAck Ìæ»»Îª ZMC_Execute
+** ä¿®æ”¹äºº: zxy
+** ç‰ˆ  æœ¬: 1.1
+** æ—¥ã€€æœŸ: 2014.5.11
+** æã€€è¿°: ZMC_ExecuteNoAck æ›¿æ¢ä¸º ZMC_Execute
 		  
 			
-** ĞŞ¸ÄÈË: zxy
-** °æ  ±¾: 1.3
-** ÈÕ¡¡ÆÚ: 2014.7.21
-** Ãè¡¡Êö: ZMC_Execute ZMC_DirectCommand Ìæ»»ÎªZAux_Execute ZAux_DirectCommand
+** ä¿®æ”¹äºº: zxy
+** ç‰ˆ  æœ¬: 1.3
+** æ—¥ã€€æœŸ: 2014.7.21
+** æã€€è¿°: ZMC_Execute ZMC_DirectCommand æ›¿æ¢ä¸ºZAux_Execute ZAux_DirectCommand
 			  
-Ôö¼Ó ZAux_SetParam  ZAux_GetParam  ZAux_Direct_SetParam  ZAux_Direct_GetParam
+å¢åŠ  ZAux_SetParam  ZAux_GetParam  ZAux_Direct_SetParam  ZAux_Direct_GetParam
 				
-Ôö¼Ó ZAux_WriteUFile  ZAux_ReadUFile
+å¢åŠ  ZAux_WriteUFile  ZAux_ReadUFile
 				  
-** ĞŞ¸ÄÈË: wy
-** °æ  ±¾: 1.5
-** ÈÕ¡¡ÆÚ: 2016.6.6
-** Ãè¡¡Êö: ¶ÔËùÓĞBASICÖ¸Áî½øĞĞ·â×°£¬ÕûºÏZMC¿âµ½AUX¿â
+** ä¿®æ”¹äºº: wy
+** ç‰ˆ  æœ¬: 1.5
+** æ—¥ã€€æœŸ: 2016.6.6
+** æã€€è¿°: å¯¹æ‰€æœ‰BASICæŒ‡ä»¤è¿›è¡Œå°è£…ï¼Œæ•´åˆZMCåº“åˆ°AUXåº“
 
 
-  ** ĞŞ¸ÄÈË: wy
-** °æ  ±¾: 2.1
-** ÈÕ¡¡ÆÚ: 2018.8.24
-** Ãè  Êö£ºÌí¼ÓPCIÁ´½Óº¯Êı
-**		   ¶ÔËùÓĞBASICÖ¸ÁîÔË¶¯Ö¸Áî½øĞĞ·â×°£¬·â×°ÖáÁĞ±íµ½º¯Êı
-**		   Ôö¼Ó²¿·Ö×ÜÏßÖ¸Áî
-**		   Ôö¼Ó²¿·ÖMOVE_PARAÖ¸Áî
-		   Ôö¼ÓÎ»ÖÃ±È½ÏÊä³öÖ¸Áî
+  ** ä¿®æ”¹äºº: wy
+** ç‰ˆ  æœ¬: 2.1
+** æ—¥ã€€æœŸ: 2018.8.24
+** æ  è¿°ï¼šæ·»åŠ PCIé“¾æ¥å‡½æ•°
+**		   å¯¹æ‰€æœ‰BASICæŒ‡ä»¤è¿åŠ¨æŒ‡ä»¤è¿›è¡Œå°è£…ï¼Œå°è£…è½´åˆ—è¡¨åˆ°å‡½æ•°
+**		   å¢åŠ éƒ¨åˆ†æ€»çº¿æŒ‡ä»¤
+**		   å¢åŠ éƒ¨åˆ†MOVE_PARAæŒ‡ä»¤
+		   å¢åŠ ä½ç½®æ¯”è¾ƒè¾“å‡ºæŒ‡ä»¤
 **------------------------------------------------------------------------------------------------------
 ********************************************************************************************************/
 
@@ -68,7 +68,7 @@ int g_ZMC_bIfDebugtoFile = false;
 char g_ZMC_aDebugFileName[2048] = "zauxcmd.txt";
 
 #if 0
-//´íÎóÊä³ö²¿·Ö
+//é”™è¯¯è¾“å‡ºéƒ¨åˆ†
 #endif
 
 void  ZAux_TraceOut(const char * cText, ...)
@@ -105,10 +105,10 @@ void  ZAux_TraceOut(const char * cText, ...)
 }
 
 /*************************************************************
-Description:    //Óë¿ØÖÆÆ÷½¨Á¢Á´½Ó£¬ ´®¿Ú·½Ê½.
-Input:          //´®¿ÚºÅCOMId 
-Output:         //¿¨Á´½Óphandle
-Return:         //´íÎóÂë
+Description:    //ä¸æ§åˆ¶å™¨å»ºç«‹é“¾æ¥ï¼Œ ä¸²å£æ–¹å¼.
+Input:          //ä¸²å£å·COMId 
+Output:         //å¡é“¾æ¥phandle
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_OpenCom(uint32 comid, ZMC_HANDLE * phandle)
 {
@@ -119,13 +119,13 @@ int32  ZAux_OpenCom(uint32 comid, ZMC_HANDLE * phandle)
 }
 
 /*************************************************************
-Description:    //¿ìËÙ¿ØÖÆÆ÷½¨Á¢Á´½Ó
-Input:          //×îĞ¡´®¿ÚºÅuimincomidfind
-Input:          //×î´ó´®¿ÚºÅuimaxcomidfind
-Input:          //Á´½ÓÊ±¼äuims
-Output:         //ÓĞĞ§COM pcomid
-Output:         //¿¨Á´½Óhandle
-Return:         //´íÎóÂë
+Description:    //å¿«é€Ÿæ§åˆ¶å™¨å»ºç«‹é“¾æ¥
+Input:          //æœ€å°ä¸²å£å·uimincomidfind
+Input:          //æœ€å¤§ä¸²å£å·uimaxcomidfind
+Input:          //é“¾æ¥æ—¶é—´uims
+Output:         //æœ‰æ•ˆCOM pcomid
+Output:         //å¡é“¾æ¥handle
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_SearchAndOpenCom(uint32 uimincomidfind, uint32 uimaxcomidfind,uint* pcomid, uint32 uims, ZMC_HANDLE * phandle)
 {
@@ -136,13 +136,13 @@ int32  ZAux_SearchAndOpenCom(uint32 uimincomidfind, uint32 uimaxcomidfind,uint* 
 }
 
 /*************************************************************
-Description:    //¿ÉÒÔĞŞ¸ÄÈ±Ê¡µÄ²¨ÌØÂÊµÈÉèÖÃ
-Input:          //dwBaudRate ²¨ÌØÂÊ
-				dwByteSize   Êı¾İÎ» 
-				dwParity = NOPARITY,Ğ£ÑéÎ» 
-				dwStopBits = ONESTOPBITÍ£Ö¹Î»
+Description:    //å¯ä»¥ä¿®æ”¹ç¼ºçœçš„æ³¢ç‰¹ç‡ç­‰è®¾ç½®
+Input:          //dwBaudRate æ³¢ç‰¹ç‡
+				dwByteSize   æ•°æ®ä½ 
+				dwParity = NOPARITY,æ ¡éªŒä½ 
+				dwStopBits = ONESTOPBITåœæ­¢ä½
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_SetComDefaultBaud(uint32 dwBaudRate, uint32 dwByteSize, uint32 dwParity, uint32 dwStopBits)
 {
@@ -154,11 +154,11 @@ int32  ZAux_SetComDefaultBaud(uint32 dwBaudRate, uint32 dwByteSize, uint32 dwPar
 
 
 /*************************************************************
-Description:    //ĞŞ¸Ä¿ØÖÆÆ÷IPµØÖ·
-Input:          //¿¨Á´½Óhandle 
-Input:          //ipaddress IPµØÖ·  
+Description:    //ä¿®æ”¹æ§åˆ¶å™¨IPåœ°å€
+Input:          //å¡é“¾æ¥handle 
+Input:          //ipaddress IPåœ°å€  
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_SetIp(ZMC_HANDLE handle, char * ipaddress)
 {
@@ -166,19 +166,19 @@ int32  ZAux_SetIp(ZMC_HANDLE handle, char * ipaddress)
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "IP_ADDRESS=%s", ipaddress);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	return  ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 }
 
 /*************************************************************
-Description:    //Óë¿ØÖÆÆ÷½¨Á¢Á´½Ó
-Input:          //IPµØÖ·£¬×Ö·û´®µÄ·½Ê½ÊäÈë
-Output:         //¿¨Á´½Óhandle
-Return:         //´íÎóÂë
+Description:    //ä¸æ§åˆ¶å™¨å»ºç«‹é“¾æ¥
+Input:          //IPåœ°å€ï¼Œå­—ç¬¦ä¸²çš„æ–¹å¼è¾“å…¥
+Output:         //å¡é“¾æ¥handle
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_OpenEth(char *ipaddr, ZMC_HANDLE * phandle)
 {
@@ -189,30 +189,30 @@ int32  ZAux_OpenEth(char *ipaddr, ZMC_HANDLE * phandle)
 }
 
 /*************************************************************
-Description:    //¿ìËÙ¼ìË÷IPÁĞ±í
-Input:          //uims ÏìÓ¦Ê±¼ä
-Input:          //addrbufflength		×î´ó³¤¶È
-output:			//ipaddrlist		µ±Ç°ÍíµãIPÁĞ±í
-Return:         //´íÎóÂë, ERR_OK±íÊ¾ÓĞËÑË÷µ½.
+Description:    //å¿«é€Ÿæ£€ç´¢IPåˆ—è¡¨
+Input:          //uims å“åº”æ—¶é—´
+Input:          //addrbufflength		æœ€å¤§é•¿åº¦
+output:			//ipaddrlist		å½“å‰æ™šç‚¹IPåˆ—è¡¨
+Return:         //é”™è¯¯ç , ERR_OKè¡¨ç¤ºæœ‰æœç´¢åˆ°.
 *************************************************************/
 int32  ZAux_SearchEthlist(char *ipaddrlist, uint32 addrbufflength, uint32 uims)
 {
-    //×Ô¶¯ËÑË÷IPµØÖ·
+    //è‡ªåŠ¨æœç´¢IPåœ°å€
 	int32 iresult;
     iresult = ZMC_SearchEth(ipaddrlist, addrbufflength, uims);
 	return iresult;
 }
 
 /*************************************************************
-Description:    //¿ìËÙ¼ìË÷¿ØÖÆÆ÷
-Input:          //ipaddress ¿ØÖÆÆ÷IPµØÖ·
-Input:          //uims ÏìÓ¦Ê±¼ä
+Description:    //å¿«é€Ÿæ£€ç´¢æ§åˆ¶å™¨
+Input:          //ipaddress æ§åˆ¶å™¨IPåœ°å€
+Input:          //uims å“åº”æ—¶é—´
 Output:         //
-Return:         //´íÎóÂë, ERR_OK±íÊ¾ÓĞËÑË÷µ½.
+Return:         //é”™è¯¯ç , ERR_OKè¡¨ç¤ºæœ‰æœç´¢åˆ°.
 *************************************************************/
 int32  ZAux_SearchEth(const char *ipaddress,  uint32 uims)
 {
-    //×Ô¶¯ËÑË÷IPµØÖ·
+    //è‡ªåŠ¨æœç´¢IPåœ°å€
     char buffer[10240];
 	int32 iresult;
     
@@ -220,20 +220,20 @@ int32  ZAux_SearchEth(const char *ipaddress,  uint32 uims)
     iresult = ZMC_SearchEth(buffer, 10230, uims);
     if(ERR_OK != iresult)
     {
-		return 20010; //´íÎó
+		return 20010; //é”™è¯¯
     }
 	
-    //´Ó×Ö·û´®×ª»»¹ıÀ´
+    //ä»å­—ç¬¦ä¸²è½¬æ¢è¿‡æ¥
     int ipos =0;
     const char * pstring;
     pstring = buffer;
 	
-    for(int j= 0; j< 100;j++) //×î¶à100¸öIPÁĞ±í
+    for(int j= 0; j< 100;j++) //æœ€å¤š100ä¸ªIPåˆ—è¡¨
     {
         char buffer2[256];
         buffer2[0] = '\0';
 		
-        //Ìø¹ı¿Õ¸ñ
+        //è·³è¿‡ç©ºæ ¼
         while(' ' == pstring[0])
         {
             pstring++;
@@ -245,7 +245,7 @@ int32  ZAux_SearchEth(const char *ipaddress,  uint32 uims)
             break;
         }
 		
-        //Ìø¹ı×Ö·û
+        //è·³è¿‡å­—ç¬¦
         while((' ' != pstring[0]) && ('\t' != pstring[0]) && ('\0' != pstring[0]))
         {
             pstring++;
@@ -258,15 +258,15 @@ int32  ZAux_SearchEth(const char *ipaddress,  uint32 uims)
 		
     }
     
-	return 20010; //´íÎó
+	return 20010; //é”™è¯¯
 }
 
 
 /*************************************************************
-Description:    //¹Ø±Õ¿ØÖÆÆ÷Á´½Ó
-Input:          //¿¨Á´½Óhandle
+Description:    //å…³é—­æ§åˆ¶å™¨é“¾æ¥
+Input:          //å¡é“¾æ¥handle
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Close(ZMC_HANDLE  handle)
 {
@@ -277,10 +277,10 @@ int32  ZAux_Close(ZMC_HANDLE  handle)
 }
 
 /*************************************************************
-Description:    //ÔİÍ£¼ÌĞøÔËĞĞBASÏîÄ¿
-Input:          //¿¨Á´½Óhandle
+Description:    //æš‚åœç»§ç»­è¿è¡ŒBASé¡¹ç›®
+Input:          //å¡é“¾æ¥handle
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Resume(ZMC_HANDLE handle)
 {
@@ -291,10 +291,10 @@ int32  ZAux_Resume(ZMC_HANDLE handle)
 }
 
 /*************************************************************
-Description:    //ÔİÍ£¿ØÖÆÆ÷ÖĞBAS³ÌĞò
-Input:          //¿¨Á´½Óhandle
+Description:    //æš‚åœæ§åˆ¶å™¨ä¸­BASç¨‹åº
+Input:          //å¡é“¾æ¥handle
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Pause(ZMC_HANDLE handle)
 {
@@ -306,12 +306,12 @@ int32  ZAux_Pause(ZMC_HANDLE handle)
 
 
 /*************************************************************
-Description:    //µ¥¸öBASÎÄ¼şÉú³ÉZAR²¢ÇÒÏÂÔØµ½¿ØÖÆÆ÷ÔËĞĞ
-Input:          //¿¨Á´½Óhandle
-Input:          //Filename BASÎÄ¼şÂ·¾¶
-Input:          //ÏÂÔØµ½RAM-ROM  0-RAM  1-ROM
+Description:    //å•ä¸ªBASæ–‡ä»¶ç”ŸæˆZARå¹¶ä¸”ä¸‹è½½åˆ°æ§åˆ¶å™¨è¿è¡Œ
+Input:          //å¡é“¾æ¥handle
+Input:          //Filename BASæ–‡ä»¶è·¯å¾„
+Input:          //ä¸‹è½½åˆ°RAM-ROM  0-RAM  1-ROM
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BasDown(ZMC_HANDLE handle,const char *Filename,uint32 run_mode )
 {
@@ -352,12 +352,12 @@ int32  ZAux_BasDown(ZMC_HANDLE handle,const char *Filename,uint32 run_mode )
 
 
 /*************************************************************
-Description:    //·â×° Excute º¯Êı, ÒÔ±ã½ÓÊÕ´íÎó
-Input:          //¿¨Á´½Ó			handle
-Input:          //×Ö·û´®ÃüÁî		pszCommand
-Input:			//·µ»ØµÄ×Ö·û³¤¶È	uiResponseLength 
-Output:         //·µ»ØµÄ×Ö·û´®		psResponse
-Return:         //´íÎóÂë
+Description:    //å°è£… Excute å‡½æ•°, ä»¥ä¾¿æ¥æ”¶é”™è¯¯
+Input:          //å¡é“¾æ¥			handle
+Input:          //å­—ç¬¦ä¸²å‘½ä»¤		pszCommand
+Input:			//è¿”å›çš„å­—ç¬¦é•¿åº¦	uiResponseLength 
+Output:         //è¿”å›çš„å­—ç¬¦ä¸²		psResponse
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Execute(ZMC_HANDLE handle, const char* pszCommand, char* psResponse, uint32 uiResponseLength)
 {
@@ -368,7 +368,7 @@ int32  ZAux_Execute(ZMC_HANDLE handle, const char* pszCommand, char* psResponse,
 		ZAUX_ERROR2("ZMC_Execute:%s error:%d.",  pszCommand, iresult);
 	}
 
-	//°ÑÃüÁîĞ´ÈëÎÄ¼ş
+	//æŠŠå‘½ä»¤å†™å…¥æ–‡ä»¶
 	if(g_ZMC_bIfDebugtoFile)
 	{
 		FILE * DebugFileId;
@@ -383,7 +383,7 @@ int32  ZAux_Execute(ZMC_HANDLE handle, const char* pszCommand, char* psResponse,
 		else
 		{
 
-			if(g_ZMC_bIfDebugtoFile == 1)		//´íÎóÊä³ö
+			if(g_ZMC_bIfDebugtoFile == 1)		//é”™è¯¯è¾“å‡º
 			{
 				if(ERR_OK != iresult) 
 				{
@@ -393,7 +393,7 @@ int32  ZAux_Execute(ZMC_HANDLE handle, const char* pszCommand, char* psResponse,
 				}
 
 			}
-			else if( g_ZMC_bIfDebugtoFile == 2)  //·Ç¶ÁÈ¡·µ»Ø
+			else if( g_ZMC_bIfDebugtoFile == 2)  //éè¯»å–è¿”å›
 			{
 				//
 				if(0 == uiResponseLength) 
@@ -440,12 +440,12 @@ int32  ZAux_Execute(ZMC_HANDLE handle, const char* pszCommand, char* psResponse,
 
 
 /*************************************************************
-Description:    //·â×° DirectCommand º¯Êı, ÒÔ±ã½ÓÊÕ´íÎó
-Input:          //¿¨Á´½Ó			handle
-Input:          //×Ö·û´®ÃüÁî		pszCommand
-Input:			//·µ»ØµÄ×Ö·û³¤¶È	uiResponseLength 
-Output:         //·µ»ØµÄ×Ö·û´®		psResponse
-Return:         //´íÎóÂë
+Description:    //å°è£… DirectCommand å‡½æ•°, ä»¥ä¾¿æ¥æ”¶é”™è¯¯
+Input:          //å¡é“¾æ¥			handle
+Input:          //å­—ç¬¦ä¸²å‘½ä»¤		pszCommand
+Input:			//è¿”å›çš„å­—ç¬¦é•¿åº¦	uiResponseLength 
+Output:         //è¿”å›çš„å­—ç¬¦ä¸²		psResponse
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_DirectCommand(ZMC_HANDLE handle, const char* pszCommand, char* psResponse, uint32 uiResponseLength)
 {
@@ -456,7 +456,7 @@ int32  ZAux_DirectCommand(ZMC_HANDLE handle, const char* pszCommand, char* psRes
 		ZAUX_ERROR2("ZMC_DirectCommand:%s error:%d.", pszCommand, iresult);
 	}
 
-	//°ÑÃüÁîĞ´ÈëÎÄ¼ş
+	//æŠŠå‘½ä»¤å†™å…¥æ–‡ä»¶
 	if(g_ZMC_bIfDebugtoFile)
 	{
 		FILE * DebugFileId;
@@ -471,7 +471,7 @@ int32  ZAux_DirectCommand(ZMC_HANDLE handle, const char* pszCommand, char* psRes
 		else
 		{
 
-			if(g_ZMC_bIfDebugtoFile == 1)		//´íÎóÊä³ö
+			if(g_ZMC_bIfDebugtoFile == 1)		//é”™è¯¯è¾“å‡º
 			{
 				if(ERR_OK != iresult) 
 				{
@@ -481,7 +481,7 @@ int32  ZAux_DirectCommand(ZMC_HANDLE handle, const char* pszCommand, char* psRes
 				}
 
 			}
-			else if( g_ZMC_bIfDebugtoFile == 2)  //·Ç¶ÁÈ¡·µ»Ø
+			else if( g_ZMC_bIfDebugtoFile == 2)  //éè¯»å–è¿”å›
 			{
 				//
 				if(0 == uiResponseLength) 
@@ -527,11 +527,11 @@ int32  ZAux_DirectCommand(ZMC_HANDLE handle, const char* pszCommand, char* psRes
 
 
 /*************************************************************
-Description:    //ÃüÁî¸ú×ÙÉèÖÃ.
-Input:          //¿¨Á´½Óhandle 
-bifTofile		0 ¹Ø±Õ  1-Ö»Êä³ö´íÎóÃüÁî  2-Ö»Êä³öÔË¶¯ÓëÉèÖÃÃüÁî  3Êä³öÈ«²¿ÃüÁî
+Description:    //å‘½ä»¤è·Ÿè¸ªè®¾ç½®.
+Input:          //å¡é“¾æ¥handle 
+bifTofile		0 å…³é—­  1-åªè¾“å‡ºé”™è¯¯å‘½ä»¤  2-åªè¾“å‡ºè¿åŠ¨ä¸è®¾ç½®å‘½ä»¤  3è¾“å‡ºå…¨éƒ¨å‘½ä»¤
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_SetTraceFile(int bifTofile, const char *pFilePathName)
 {
@@ -543,16 +543,16 @@ int32  ZAux_SetTraceFile(int bifTofile, const char *pFilePathName)
 
 
 #if 0
-//****************************************************IOÖ¸Áî**************************
-// ¿ÉÒÔÊ¹ÓÃ ZMC_GetIn ZMC_GetOutput µÈ
+//****************************************************IOæŒ‡ä»¤**************************
+// å¯ä»¥ä½¿ç”¨ ZMC_GetIn ZMC_GetOutput ç­‰
 #endif
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÊäÈëĞÅºÅ
-Input:          //¿¨Á´½Óhandle
-				ionum IN±àºÅ
-Output:         //piValue ÊäÈë¿Ú×´Ì¬
-Return:         //´íÎóÂë
+Description:    //è¯»å–è¾“å…¥ä¿¡å·
+Input:          //å¡é“¾æ¥handle
+				ionum INç¼–å·
+Output:         //piValue è¾“å…¥å£çŠ¶æ€
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetIn(ZMC_HANDLE handle, int ionum , uint32 *piValue)
 {
@@ -567,10 +567,10 @@ int32  ZAux_Direct_GetIn(ZMC_HANDLE handle, int ionum , uint32 *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?IN(%d)", ionum);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -591,12 +591,12 @@ int32  ZAux_Direct_GetIn(ZMC_HANDLE handle, int ionum , uint32 *piValue)
 }
 
 /*************************************************************
-Description:    //´ò¿ªÊä³öĞÅºÅ
-Input:          //¿¨Á´½Óhandle 
-				ionum Êä³ö¿Ú±àºÅ
-				iValue	Êä³ö¿Ú×´Ì¬
+Description:    //æ‰“å¼€è¾“å‡ºä¿¡å·
+Input:          //å¡é“¾æ¥handle 
+				ionum è¾“å‡ºå£ç¼–å·
+				iValue	è¾“å‡ºå£çŠ¶æ€
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetOp(ZMC_HANDLE handle, int ionum, uint32 iValue)
 {
@@ -604,19 +604,19 @@ int32  ZAux_Direct_SetOp(ZMC_HANDLE handle, int ionum, uint32 iValue)
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "op(%d,%d)", ionum, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Êä³ö¿Ú×´Ì¬
-Input:          //¿¨Á´½Óhandle  
-				ionum Êä³ö¿Ú±àºÅ
-Output:         //piValue Êä³ö¿Ú×´Ì¬
-Return:         //´íÎóÂë
+Description:    //è¯»å–è¾“å‡ºå£çŠ¶æ€
+Input:          //å¡é“¾æ¥handle  
+				ionum è¾“å‡ºå£ç¼–å·
+Output:         //piValue è¾“å‡ºå£çŠ¶æ€
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetOp(ZMC_HANDLE handle, int ionum, uint32 *piValue)
 {
@@ -631,10 +631,10 @@ int32  ZAux_Direct_GetOp(ZMC_HANDLE handle, int ionum, uint32 *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?OP(%d)", ionum);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -655,11 +655,11 @@ int32  ZAux_Direct_GetOp(ZMC_HANDLE handle, int ionum, uint32 *piValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Ä£ÄâÁ¿ÊäÈëĞÅºÅ
-Input:          //¿¨Á´½Óhandle 
-				ionum AIN¿Ú±àºÅ			
-Output:         //pfValue ·µ»ØµÄÄ£ÄâÁ¿Öµ 4ÏµÁĞÒÔÏÂ0-4095
-Return:         //´íÎóÂë
+Description:    //è¯»å–æ¨¡æ‹Ÿé‡è¾“å…¥ä¿¡å·
+Input:          //å¡é“¾æ¥handle 
+				ionum AINå£ç¼–å·			
+Output:         //pfValue è¿”å›çš„æ¨¡æ‹Ÿé‡å€¼ 4ç³»åˆ—ä»¥ä¸‹0-4095
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetAD(ZMC_HANDLE handle, int ionum , float *pfValue)
 {
@@ -674,10 +674,10 @@ int32  ZAux_Direct_GetAD(ZMC_HANDLE handle, int ionum , float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?AIN(%d)", ionum);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -698,12 +698,12 @@ int32  ZAux_Direct_GetAD(ZMC_HANDLE handle, int ionum , float *pfValue)
 }
 
 /*************************************************************
-Description:    //´ò¿ªÄ£ÄâÁ¿Êä³öĞÅºÅ
-Input:          //¿¨Á´½Óhandle  
-				ionum DAÊä³ö¿Ú±àºÅ
-				fValue Éè¶¨µÄÄ£ÄâÁ¿Öµ4ÏµÁĞÒÔÏÂ0-4095
+Description:    //æ‰“å¼€æ¨¡æ‹Ÿé‡è¾“å‡ºä¿¡å·
+Input:          //å¡é“¾æ¥handle  
+				ionum DAè¾“å‡ºå£ç¼–å·
+				fValue è®¾å®šçš„æ¨¡æ‹Ÿé‡å€¼4ç³»åˆ—ä»¥ä¸‹0-4095
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetDA(ZMC_HANDLE handle, int ionum, float fValue)
 {
@@ -711,19 +711,19 @@ int32  ZAux_Direct_SetDA(ZMC_HANDLE handle, int ionum, float fValue)
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "AOUT(%d) = %f", ionum, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Ä£ÄâÊä³ö¿Ú×´Ì¬
-Input:          //¿¨Á´½Óhandle  
-				ionum Ä£ÄâÁ¿Êä³ö¿Ú±àºÅ
-Output:         //pfValue ¶ÁÈ¡µÄµÄÄ£ÄâÁ¿Öµ 4ÏµÁĞÒÔÏÂ0-4095
-Return:         //´íÎóÂë
+Description:    //è¯»å–æ¨¡æ‹Ÿè¾“å‡ºå£çŠ¶æ€
+Input:          //å¡é“¾æ¥handle  
+				ionum æ¨¡æ‹Ÿé‡è¾“å‡ºå£ç¼–å·
+Output:         //pfValue è¯»å–çš„çš„æ¨¡æ‹Ÿé‡å€¼ 4ç³»åˆ—ä»¥ä¸‹0-4095
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetDA(ZMC_HANDLE handle, int ionum, float *pfValue)
 {
@@ -737,10 +737,10 @@ int32  ZAux_Direct_GetDA(ZMC_HANDLE handle, int ionum, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?AOUT(%d)", ionum);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -761,32 +761,32 @@ int32  ZAux_Direct_GetDA(ZMC_HANDLE handle, int ionum, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÊäÈë¿Ú·´×ª
-Input:          //¿¨Á´½Óhandle  
-				 ionum ÊäÈë¿Ú±àºÅ
-				 bifInvert ·´×ª×´Ì¬ 0/1
+Description:    //è®¾ç½®è¾“å…¥å£åè½¬
+Input:          //å¡é“¾æ¥handle  
+				 ionum è¾“å…¥å£ç¼–å·
+				 bifInvert åè½¬çŠ¶æ€ 0/1
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetInvertIn(ZMC_HANDLE handle, int ionum, int bifInvert)
 {
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "INVERT_IN(%d,%d)", ionum, bifInvert);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return  ZAux_Execute(handle, cmdbuff, cmdbuffAck,0);
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÊäÈë¿Ú·´×ª×´Ì¬
-Input:          //¿¨Á´½Óhandle  
-				ionum ÊäÈë¿Ú±àºÅ
-Output:         //piValue ·´×ª×´Ì¬
-Return:         //´íÎóÂë
+Description:    //è¯»å–è¾“å…¥å£åè½¬çŠ¶æ€
+Input:          //å¡é“¾æ¥handle  
+				ionum è¾“å…¥å£ç¼–å·
+Output:         //piValue åè½¬çŠ¶æ€
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetInvertIn(ZMC_HANDLE handle, int ionum, int *piValue)
 {
@@ -800,10 +800,10 @@ int32  ZAux_Direct_GetInvertIn(ZMC_HANDLE handle, int ionum, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?INVERT_IN(%d)", ionum);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -825,12 +825,12 @@ int32  ZAux_Direct_GetInvertIn(ZMC_HANDLE handle, int ionum, int *piValue)
 
 
 /*************************************************************
-Description:    //ÉèÖÃpwmÆµÂÊ
-Input:          //¿¨Á´½Óhandle  
-				ionum PWM±àºÅ¿Ú
-				fValue ÆµÂÊ Ó²¼şPWM1M ÈíPWM 2K
+Description:    //è®¾ç½®pwmé¢‘ç‡
+Input:          //å¡é“¾æ¥handle  
+				ionum PWMç¼–å·å£
+				fValue é¢‘ç‡ ç¡¬ä»¶PWM1M è½¯PWM 2K
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetPwmFreq(ZMC_HANDLE handle, int ionum, float fValue)
 {
@@ -838,20 +838,20 @@ int32  ZAux_Direct_SetPwmFreq(ZMC_HANDLE handle, int ionum, float fValue)
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "PWM_FREQ(%d) = %f", ionum, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck,0);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡pwmÆµÂÊ
-Input:          //¿¨Á´½Óhandle  
-				ionum PWM¿Ú±àºÅ
-Output:         //pfValue ·µ»ØµÄÆµÂÊ
-Return:         //´íÎóÂë
+Description:    //è¯»å–pwmé¢‘ç‡
+Input:          //å¡é“¾æ¥handle  
+				ionum PWMå£ç¼–å·
+Output:         //pfValue è¿”å›çš„é¢‘ç‡
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetPwmFreq(ZMC_HANDLE handle, int ionum, float *pfValue)
 {
@@ -865,10 +865,10 @@ int32  ZAux_Direct_GetPwmFreq(ZMC_HANDLE handle, int ionum, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?PWM_FREQ(%d)", ionum);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -889,12 +889,12 @@ int32  ZAux_Direct_GetPwmFreq(ZMC_HANDLE handle, int ionum, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃpwmÕ¼¿Õ±È
-Input:          //¿¨Á´½Óhandle  
-				ionum PWM¿Ú±àºÅ
-				fValue Õ¼¿Õ±ä	0-1  0±íÊ¾¹Ø±ÕPWM¿Ú
+Description:    //è®¾ç½®pwmå ç©ºæ¯”
+Input:          //å¡é“¾æ¥handle  
+				ionum PWMå£ç¼–å·
+				fValue å ç©ºå˜	0-1  0è¡¨ç¤ºå…³é—­PWMå£
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetPwmDuty(ZMC_HANDLE handle, int ionum, float fValue)
 {
@@ -902,20 +902,20 @@ int32  ZAux_Direct_SetPwmDuty(ZMC_HANDLE handle, int ionum, float fValue)
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "PWM_DUTY(%d) = %f", ionum, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck,0);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡pwmÕ¼¿Õ±È
-Input:          //¿¨Á´½Óhandle  
-				ionum PWM¿Ú±àºÅ
-Output:         //pfValue ¶ÁÈ¡µÄÕ¼¿Õ±È
-Return:         //´íÎóÂë
+Description:    //è¯»å–pwmå ç©ºæ¯”
+Input:          //å¡é“¾æ¥handle  
+				ionum PWMå£ç¼–å·
+Output:         //pfValue è¯»å–çš„å ç©ºæ¯”
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetPwmDuty(ZMC_HANDLE handle, int ionum, float *pfValue)
 {
@@ -929,10 +929,10 @@ int32  ZAux_Direct_GetPwmDuty(ZMC_HANDLE handle, int ionum, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?PWM_DUTY(%d)", ionum);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -955,16 +955,16 @@ int32  ZAux_Direct_GetPwmDuty(ZMC_HANDLE handle, int ionum, float *pfValue)
 
 
 #if 0
-//Í¨¹ımodbus¿ìËÙ¶ÁÈ¡ÌØÊâ¼Ä´æÆ÷
+//é€šè¿‡modbuså¿«é€Ÿè¯»å–ç‰¹æ®Šå¯„å­˜å™¨
 #endif
 
 /*************************************************************
-Description:    //²ÎÊı ¿ìËÙ¶ÁÈ¡¶à¸öÊäÈë
-Input:          //¿¨Á´½Óhandle  
-				ionumfirst INÆğÊ¼±àºÅ
-				ionumend	IN½áÊø±àºÅ
-Output:         //pValueList Î»×´Ì¬ °´Î»´æ´¢
-Return:         //´íÎóÂë
+Description:    //å‚æ•° å¿«é€Ÿè¯»å–å¤šä¸ªè¾“å…¥
+Input:          //å¡é“¾æ¥handle  
+				ionumfirst INèµ·å§‹ç¼–å·
+				ionumend	INç»“æŸç¼–å·
+Output:         //pValueList ä½çŠ¶æ€ æŒ‰ä½å­˜å‚¨
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_GetModbusIn(ZMC_HANDLE handle, int ionumfirst, int ionumend, uint8 *pValueList)
 {
@@ -977,12 +977,12 @@ int32  ZAux_GetModbusIn(ZMC_HANDLE handle, int ionumfirst, int ionumend, uint8 *
 }
 
 /*************************************************************
-Description:    //²ÎÊı ¿ìËÙ¶ÁÈ¡¶à¸öµ±Ç°µÄÊä³ö×´Ì¬
-Input:          //¿¨Á´½Óhandle  
-				ionumfirst INÆğÊ¼±àºÅ
-				ionumend	IN½áÊø±àºÅ
-Output:         //pValueList Î»×´Ì¬ °´Î»´æ´¢
-Return:         //´íÎóÂë
+Description:    //å‚æ•° å¿«é€Ÿè¯»å–å¤šä¸ªå½“å‰çš„è¾“å‡ºçŠ¶æ€
+Input:          //å¡é“¾æ¥handle  
+				ionumfirst INèµ·å§‹ç¼–å·
+				ionumend	INç»“æŸç¼–å·
+Output:         //pValueList ä½çŠ¶æ€ æŒ‰ä½å­˜å‚¨
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_GetModbusOut(ZMC_HANDLE handle, int ionumfirst, int ionumend, uint8 *pValueList)
 {
@@ -995,11 +995,11 @@ int32  ZAux_GetModbusOut(ZMC_HANDLE handle, int ionumfirst, int ionumend, uint8 
 }
 
 /*************************************************************
-Description:    //²ÎÊı ¿ìËÙ¶ÁÈ¡¶à¸öµ±Ç°µÄDPOS
-Input:          //¿¨Á´½Óhandle  
-				imaxaxises ÖáÊıÁ¿
-Output:         //pValueList ¶ÁÈ¡µÄ×ø±êÖµ ´ÓÖá0¿ªÊ¼
-Return:         //´íÎóÂë
+Description:    //å‚æ•° å¿«é€Ÿè¯»å–å¤šä¸ªå½“å‰çš„DPOS
+Input:          //å¡é“¾æ¥handle  
+				imaxaxises è½´æ•°é‡
+Output:         //pValueList è¯»å–çš„åæ ‡å€¼ ä»è½´0å¼€å§‹
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_GetModbusDpos(ZMC_HANDLE handle, int imaxaxises, float *pValueList)
 {
@@ -1007,11 +1007,11 @@ int32  ZAux_GetModbusDpos(ZMC_HANDLE handle, int imaxaxises, float *pValueList)
 }
 
 /*************************************************************
-Description:    //²ÎÊı ¿ìËÙ¶ÁÈ¡¶à¸öµ±Ç°µÄMPOS
-Input:          //¿¨Á´½Óhandle 
-				imaxaxises ÖáÊıÁ¿
-Output:         //pValueList ¶ÁÈ¡µÄ·´À¡×ø±êÖµ ´ÓÖá0¿ªÊ¼
-Return:         //´íÎóÂë
+Description:    //å‚æ•° å¿«é€Ÿè¯»å–å¤šä¸ªå½“å‰çš„MPOS
+Input:          //å¡é“¾æ¥handle 
+				imaxaxises è½´æ•°é‡
+Output:         //pValueList è¯»å–çš„åé¦ˆåæ ‡å€¼ ä»è½´0å¼€å§‹
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_GetModbusMpos(ZMC_HANDLE handle, int imaxaxises, float *pValueList)
 {
@@ -1019,11 +1019,11 @@ int32  ZAux_GetModbusMpos(ZMC_HANDLE handle, int imaxaxises, float *pValueList)
 }
 
 /*************************************************************
-Description:    //²ÎÊı ¿ìËÙ¶ÁÈ¡¶à¸öµ±Ç°µÄËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				imaxaxises ÖáÊıÁ¿
-Output:         //pValueList ¶ÁÈ¡µÄµ±Ç°ËÙ¶È ´ÓÖá0¿ªÊ¼
-Return:         //´íÎóÂë
+Description:    //å‚æ•° å¿«é€Ÿè¯»å–å¤šä¸ªå½“å‰çš„é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				imaxaxises è½´æ•°é‡
+Output:         //pValueList è¯»å–çš„å½“å‰é€Ÿåº¦ ä»è½´0å¼€å§‹
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_GetModbusCurSpeed(ZMC_HANDLE handle, int imaxaxises, float *pValueList)
 {
@@ -1031,25 +1031,25 @@ int32  ZAux_GetModbusCurSpeed(ZMC_HANDLE handle, int imaxaxises, float *pValueLi
 }
 
 #if 0
-//²ÉÓÃZAux_DirectCommand À´¿ìËÙ»ñÈ¡Ò»Ğ©×´Ì¬, ZAux_DirectCommandµÄÖ´ĞĞ±ÈZMC_ExecuteÒª¿ì
-// Ö»ÓĞ²ÎÊı£¬±äÁ¿£¬Êı×éÔªËØµÈÄÜÊ¹ÓÃZAux_DirectCommand
-// 20130901ÒÔºóµÄ°æ±¾£¬Ò»Ğ©ÔË¶¯º¯ÊıÒ²¿ÉÒÔµ÷ÓÃZAux_DirectCommand£¬µ±ÔË¶¯Ìõ¼ş²»Âú×ãµÄÊ±ºò£¬»áÁ¢¿Ì·µ»ØÊ§°Ü¡£
-// ZAux_DirectCommandµ÷ÓÃÔË¶¯º¯ÊıÊ±£¬²ÎÊı±ØĞëÊÇ¾ßÌåµÄÊıÖµ£¬²»ÄÜÊÇ±äÁ¿±í´ïÊ½¡£
+//é‡‡ç”¨ZAux_DirectCommand æ¥å¿«é€Ÿè·å–ä¸€äº›çŠ¶æ€, ZAux_DirectCommandçš„æ‰§è¡Œæ¯”ZMC_Executeè¦å¿«
+// åªæœ‰å‚æ•°ï¼Œå˜é‡ï¼Œæ•°ç»„å…ƒç´ ç­‰èƒ½ä½¿ç”¨ZAux_DirectCommand
+// 20130901ä»¥åçš„ç‰ˆæœ¬ï¼Œä¸€äº›è¿åŠ¨å‡½æ•°ä¹Ÿå¯ä»¥è°ƒç”¨ZAux_DirectCommandï¼Œå½“è¿åŠ¨æ¡ä»¶ä¸æ»¡è¶³çš„æ—¶å€™ï¼Œä¼šç«‹åˆ»è¿”å›å¤±è´¥ã€‚
+// ZAux_DirectCommandè°ƒç”¨è¿åŠ¨å‡½æ•°æ—¶ï¼Œå‚æ•°å¿…é¡»æ˜¯å…·ä½“çš„æ•°å€¼ï¼Œä¸èƒ½æ˜¯å˜é‡è¡¨è¾¾å¼ã€‚
 #endif
 
 #if 0
-//**************************************Öá²ÎÊı²¿·Ö***************************************
+//**************************************è½´å‚æ•°éƒ¨åˆ†***************************************
 #endif
 
 
 /*************************************************************
-Description:    //Í¨ÓÃµÄ²ÎÊıĞŞ¸Äº¯Êı sParam: ÌîĞ´²ÎÊıÃû³Æ
-Input:          //¿¨Á´½Óhandle 
-				sParam Öá²ÎÊıÃû³Æ "DPOS" ...
-				iaxis ÖáºÅ
-				fset Éè¶¨Öµ
+Description:    //é€šç”¨çš„å‚æ•°ä¿®æ”¹å‡½æ•° sParam: å¡«å†™å‚æ•°åç§°
+Input:          //å¡é“¾æ¥handle 
+				sParam è½´å‚æ•°åç§° "DPOS" ...
+				iaxis è½´å·
+				fset è®¾å®šå€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetParam(ZMC_HANDLE handle,const char *sParam,int iaxis, float fset)
 {
@@ -1057,20 +1057,20 @@ int32  ZAux_Direct_SetParam(ZMC_HANDLE handle,const char *sParam,int iaxis, floa
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "%s(%d)=%f", sParam,iaxis, fset);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //²ÎÊı Í¨ÓÃµÄ²ÎÊı¶ÁÈ¡º¯Êı, sParam:ÌîĞ´²ÎÊıÃû³Æ
-Input:          //¿¨Á´½Óhandle  
-				sParam Öá²ÎÊıÃû³Æ "DPOS" ...
-				iaxis ÖáºÅ
-Output:         //pfValue  ¶ÁÈ¡µÄ·µ»ØÖµ
-Return:         //´íÎóÂë
+Description:    //å‚æ•° é€šç”¨çš„å‚æ•°è¯»å–å‡½æ•°, sParam:å¡«å†™å‚æ•°åç§°
+Input:          //å¡é“¾æ¥handle  
+				sParam è½´å‚æ•°åç§° "DPOS" ...
+				iaxis è½´å·
+Output:         //pfValue  è¯»å–çš„è¿”å›å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetParam(ZMC_HANDLE handle,const char *sParam, int iaxis, float *pfValue)
 {
@@ -1085,10 +1085,10 @@ int32  ZAux_Direct_GetParam(ZMC_HANDLE handle,const char *sParam, int iaxis, flo
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?%s(%d)", sParam,iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1109,12 +1109,12 @@ int32  ZAux_Direct_GetParam(ZMC_HANDLE handle,const char *sParam, int iaxis, flo
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ¼ÓËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue  Éè¶¨Öµ
+Description:    //è®¾ç½®åŠ é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue  è®¾å®šå€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetAccel(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -1127,19 +1127,19 @@ int32  ZAux_Direct_SetAccel(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "ACCEL(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¼ÓËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ¼ÓËÙ¶È·µ»ØÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–åŠ é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue åŠ é€Ÿåº¦è¿”å›å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetAccel(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -1154,10 +1154,10 @@ int32  ZAux_Direct_GetAccel(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?ACCEL(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1178,11 +1178,11 @@ int32  ZAux_Direct_GetAccel(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µş¼ÓÖá
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //¶ÁÈ¡µÄÖáµş¼ÓÖáºÅ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å åŠ è½´
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //è¯»å–çš„è½´å åŠ è½´å·
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetAddax(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -1197,10 +1197,10 @@ int32  ZAux_Direct_GetAddax(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?ADDAX_AXIS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1221,12 +1221,12 @@ int32  ZAux_Direct_GetAddax(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÖá¸æ¾¯ĞÅºÅ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue ±¨¾¯ĞÅºÅÊäÈë¿Ú±àºÅ£¬È¡ÏûÊ±Éè¶¨-1
+Description:    //è®¾ç½®è½´å‘Šè­¦ä¿¡å·
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue æŠ¥è­¦ä¿¡å·è¾“å…¥å£ç¼–å·ï¼Œå–æ¶ˆæ—¶è®¾å®š-1
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetAlmIn(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -1240,19 +1240,19 @@ int32  ZAux_Direct_SetAlmIn(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "ALM_IN(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¸æ¾¯ĞÅºÅ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ±¨¾¯ĞÅºÅÊäÈë¿Ú·µ»ØÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å‘Šè­¦ä¿¡å·
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue æŠ¥è­¦ä¿¡å·è¾“å…¥å£è¿”å›å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetAlmIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -1267,10 +1267,10 @@ int32  ZAux_Direct_GetAlmIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?ALM_IN(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1291,12 +1291,12 @@ int32  ZAux_Direct_GetAlmIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÖáÀàĞÍ
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-				iValue ÖáÀàĞÍ
+Description:    //è®¾ç½®è½´ç±»å‹
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+				iValue è½´ç±»å‹
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetAtype(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -1309,19 +1309,19 @@ int32  ZAux_Direct_SetAtype(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "ATYPE(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÖáÀàĞÍ
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-Output:         //iValue ÖáÀàĞÍ·µ»ØÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è½´ç±»å‹
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+Output:         //iValue è½´ç±»å‹è¿”å›å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetAtype(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -1336,10 +1336,10 @@ int32  ZAux_Direct_GetAtype(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?ATYPE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1360,11 +1360,11 @@ int32  ZAux_Direct_GetAtype(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Öá×´Ì¬
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //Öá×´Ì¬·µ»ØÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è½´çŠ¶æ€
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //è½´çŠ¶æ€è¿”å›å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetAxisStatus(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -1379,10 +1379,10 @@ int32  ZAux_Direct_GetAxisStatus(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?AXISSTATUS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1403,12 +1403,12 @@ int32  ZAux_Direct_GetAxisStatus(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÖáµØÖ·
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue ÖáµØÖ·Éè¶¨Öµ
+Description:    //è®¾ç½®è½´åœ°å€
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue è½´åœ°å€è®¾å®šå€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetAxisAddress(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -1422,19 +1422,19 @@ int32  ZAux_Direct_SetAxisAddress(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "AXIS_ADDRESS(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÖáµØÖ·
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ 
-Output:         //piValue ÖáµØÖ··µ»ØÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è½´åœ°å€
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å· 
+Output:         //piValue è½´åœ°å€è¿”å›å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetAxisAddress(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -1448,10 +1448,10 @@ int32  ZAux_Direct_GetAxisAddress(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?AXIS_ADDRESS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1472,12 +1472,12 @@ int32  ZAux_Direct_GetAxisAddress(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÖáÊ¹ÄÜ £¨Ö»Õë¶Ô×ÜÏß¿ØÖÆÆ÷ÖáÊ¹ÓÃÓĞĞ§£©
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue ×´Ì¬ 0-¹Ø±Õ 1- ´ò¿ª
+Description:    //è®¾ç½®è½´ä½¿èƒ½ ï¼ˆåªé’ˆå¯¹æ€»çº¿æ§åˆ¶å™¨è½´ä½¿ç”¨æœ‰æ•ˆï¼‰
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue çŠ¶æ€ 0-å…³é—­ 1- æ‰“å¼€
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetAxisEnable(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -1490,19 +1490,19 @@ int32  ZAux_Direct_SetAxisEnable(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "AXIS_ENABLE(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÖáÊ¹ÄÜ×´Ì¬
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄÊ¹ÄÜ×´Ì¬
-Return:         //´íÎóÂë
+Description:    //è¯»å–è½´ä½¿èƒ½çŠ¶æ€
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„ä½¿èƒ½çŠ¶æ€
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetAxisEnable(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -1517,10 +1517,10 @@ int32  ZAux_Direct_GetAxisEnable(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?AXIS_ENABLE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1541,12 +1541,12 @@ int32  ZAux_Direct_GetAxisEnable(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÁ´½ÓËÙÂÊ
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-				fValue Í¬²½Á¬½ÓËÙÂÊ
+Description:    //è®¾ç½®é“¾æ¥é€Ÿç‡
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+				fValue åŒæ­¥è¿æ¥é€Ÿç‡
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetClutchRate(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -1559,19 +1559,19 @@ int32  ZAux_Direct_SetClutchRate(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "CLUTCH_RATE(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Á´½ÓËÙÂÊ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue Á¬½ÓËÙÂÊ·µ»ØÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–é“¾æ¥é€Ÿç‡
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿æ¥é€Ÿç‡è¿”å›å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetClutchRate(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -1586,10 +1586,10 @@ int32  ZAux_Direct_GetClutchRate(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?CLUTCH_RATE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1610,12 +1610,12 @@ int32  ZAux_Direct_GetClutchRate(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃËø´æ´¥·¢µÄ½áÊø×ø±ê·¶Î§µã
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue Éè¶¨µÄ·¶Î§Öµ
+Description:    //è®¾ç½®é”å­˜è§¦å‘çš„ç»“æŸåæ ‡èŒƒå›´ç‚¹
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾å®šçš„èŒƒå›´å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetCloseWin(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -1628,19 +1628,19 @@ int32  ZAux_Direct_SetCloseWin(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "CLOSE_WIN(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Ëø´æ´¥·¢µÄ½áÊø×ø±ê·¶Î§µã
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄ·¶Î§Öµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–é”å­˜è§¦å‘çš„ç»“æŸåæ ‡èŒƒå›´ç‚¹
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„èŒƒå›´å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetCloseWin(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -1655,10 +1655,10 @@ int32  ZAux_Direct_GetCloseWin(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?CLOSE_WIN(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1679,12 +1679,12 @@ int32  ZAux_Direct_GetCloseWin(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ¹Õ½Ç¼õËÙ
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-				iValue ¹Õ½Ç¼õËÙÄ£Ê½
+Description:    //è®¾ç½®æ‹è§’å‡é€Ÿ
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+				iValue æ‹è§’å‡é€Ÿæ¨¡å¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetCornerMode(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -1697,19 +1697,19 @@ int32  ZAux_Direct_SetCornerMode(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "CORNER_MODE(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¹Õ½Ç¼õËÙ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄ¹Õ½ÇÄ£Ê½
-Return:         //´íÎóÂë
+Description:    //è¯»å–æ‹è§’å‡é€Ÿ
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„æ‹è§’æ¨¡å¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetCornerMode(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -1724,10 +1724,10 @@ int32  ZAux_Direct_GetCornerMode(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?CORNER_MODE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1748,12 +1748,12 @@ int32  ZAux_Direct_GetCornerMode(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ»ØÁãÅÀĞĞËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValueÉèÖÃµÄËÙ¶ÈÖµ
+Description:    //è®¾ç½®å›é›¶çˆ¬è¡Œé€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValueè®¾ç½®çš„é€Ÿåº¦å€¼
 Output:         //	
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetCreep(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -1766,19 +1766,19 @@ int32  ZAux_Direct_SetCreep(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "CREEP(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡»ØÁãÅÀĞĞËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÅÀĞĞËÙ¶ÈÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å›é›¶çˆ¬è¡Œé€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„çˆ¬è¡Œé€Ÿåº¦å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetCreep(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -1793,10 +1793,10 @@ int32  ZAux_Direct_GetCreep(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?CREEP(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1817,12 +1817,12 @@ int32  ZAux_Direct_GetCreep(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÔ­µãĞÅºÅ   Éè¶¨-1ÎªÈ¡ÏûÔ­µãÉèÖÃ
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-				iValue ÉèÖÃµÄÔ­µãĞÅºÅÊäÈë¿Ú±àºÅ
+Description:    //è®¾ç½®åŸç‚¹ä¿¡å·   è®¾å®š-1ä¸ºå–æ¶ˆåŸç‚¹è®¾ç½®
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+				iValue è®¾ç½®çš„åŸç‚¹ä¿¡å·è¾“å…¥å£ç¼–å·
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetDatumIn(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -1834,19 +1834,19 @@ int32  ZAux_Direct_SetDatumIn(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "DATUM_IN(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Ô­µãĞÅºÅ
-Input:          //¿¨Á´½Óhandle  
+Description:    //è¯»å–åŸç‚¹ä¿¡å·
+Input:          //å¡é“¾æ¥handle  
 				iaxis 
-Output:         //piValue ·µ»ØÔ­µãÊäÈë¿Ú±àºÅ
-Return:         //´íÎóÂë
+Output:         //piValue è¿”å›åŸç‚¹è¾“å…¥å£ç¼–å·
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetDatumIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -1861,10 +1861,10 @@ int32  ZAux_Direct_GetDatumIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?DATUM_IN(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1885,12 +1885,12 @@ int32  ZAux_Direct_GetDatumIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ¼õËÙ¶È
-Input:          //¿¨Á´½Óhandle
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄ¼õËÙ¶ÈÖµ
+Description:    //è®¾ç½®å‡é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle
+				iaxis è½´å·
+				fValue è®¾ç½®çš„å‡é€Ÿåº¦å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetDecel(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -1903,19 +1903,19 @@ int32  ZAux_Direct_SetDecel(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "DECEL(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¼õËÙ¶È
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-Output:         //pfValue Éè¶¨µÄ¼õËÙ¶È·µ»ØÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å‡é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+Output:         //pfValue è®¾å®šçš„å‡é€Ÿåº¦è¿”å›å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetDecel(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -1930,10 +1930,10 @@ int32  ZAux_Direct_GetDecel(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?DECEL(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -1954,12 +1954,12 @@ int32  ZAux_Direct_GetDecel(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ¹Õ½Ç¼õËÙ½Ç¶È£¬¿ªÊ¼¼õËÙ½Ç¶È£¬µ¥Î»Îª»¡¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄ¹Õ½Ç¼õËÙ½Ç¶È
+Description:    //è®¾ç½®æ‹è§’å‡é€Ÿè§’åº¦ï¼Œå¼€å§‹å‡é€Ÿè§’åº¦ï¼Œå•ä½ä¸ºå¼§åº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„æ‹è§’å‡é€Ÿè§’åº¦
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetDecelAngle(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -1972,19 +1972,19 @@ int32  ZAux_Direct_SetDecelAngle(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "DECEL_ANGLE(%d)=%.3f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¹Õ½Ç¿ªÊ¼¼õËÙ½Ç¶È£¬µ¥Î»Îª»¡¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄ¹Õ½Ç¼õËÙ½Ç¶È
-Return:         //´íÎóÂë
+Description:    //è¯»å–æ‹è§’å¼€å§‹å‡é€Ÿè§’åº¦ï¼Œå•ä½ä¸ºå¼§åº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„æ‹è§’å‡é€Ÿè§’åº¦
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetDecelAngle(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -1999,10 +1999,10 @@ int32  ZAux_Direct_GetDecelAngle(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?DECEL_ANGLE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2023,12 +2023,12 @@ int32  ZAux_Direct_GetDecelAngle(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÖáÎ»ÖÃ
-Input:          //¿¨Á´½Óhandle
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄ×ø±êÖµ
+Description:    //è®¾ç½®è½´ä½ç½®
+Input:          //å¡é“¾æ¥handle
+				iaxis è½´å·
+				fValue è®¾ç½®çš„åæ ‡å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetDpos(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -2041,19 +2041,19 @@ int32  ZAux_Direct_SetDpos(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "DPOS(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÖáÎ»ÖÃ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÃüÁîÎ»ÖÃ×ø±ê
-Return:         //´íÎóÂë
+Description:    //è¯»å–è½´ä½ç½®
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„å‘½ä»¤ä½ç½®åæ ‡
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetDpos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2068,10 +2068,10 @@ int32  ZAux_Direct_GetDpos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?DPOS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2092,11 +2092,11 @@ int32  ZAux_Direct_GetDpos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÄÚ²¿±àÂëÆ÷Öµ  £¨×ÜÏß¾ø¶ÔÖµËÅ·şÊ±Îª¾ø¶ÔÖµÎ»ÖÃ£©
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ		
-Output:         //pfValue ·µ»ØµÄÄÚ²¿±àÂëÆ÷Öµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å†…éƒ¨ç¼–ç å™¨å€¼  ï¼ˆæ€»çº¿ç»å¯¹å€¼ä¼ºæœæ—¶ä¸ºç»å¯¹å€¼ä½ç½®ï¼‰
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·		
+Output:         //pfValue è¿”å›çš„å†…éƒ¨ç¼–ç å™¨å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetEncoder(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2111,10 +2111,10 @@ int32  ZAux_Direct_GetEncoder(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?ENCODER(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2135,11 +2135,11 @@ int32  ZAux_Direct_GetEncoder(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ±Ç°ÔË¶¯µÄ×îÖÕÎ»ÖÃ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄ×îÖÕÎ»ÖÃ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å½“å‰è¿åŠ¨çš„æœ€ç»ˆä½ç½®
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„æœ€ç»ˆä½ç½®
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetEndMove(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2154,10 +2154,10 @@ int32  ZAux_Direct_GetEndMove(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?ENDMOVE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2178,11 +2178,11 @@ int32  ZAux_Direct_GetEndMove(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ±Ç°ºÍ»º³åÖĞÔË¶¯µÄ×îÖÕÎ»ÖÃ£¬¿ÉÒÔÓÃÓÚÏà¶Ô¾ø¶Ô×ª»»
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄ×îÖÕÎ»ÖÃ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å½“å‰å’Œç¼“å†²ä¸­è¿åŠ¨çš„æœ€ç»ˆä½ç½®ï¼Œå¯ä»¥ç”¨äºç›¸å¯¹ç»å¯¹è½¬æ¢
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„æœ€ç»ˆä½ç½®
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetEndMoveBuffer(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2197,10 +2197,10 @@ int32  ZAux_Direct_GetEndMoveBuffer(ZMC_HANDLE handle, int iaxis, float *pfValue
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?ENDMOVE_BUFFER(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2221,11 +2221,11 @@ int32  ZAux_Direct_GetEndMoveBuffer(ZMC_HANDLE handle, int iaxis, float *pfValue
 }
 
 /*************************************************************
-Description:    //ÉèÖÃSPÔË¶¯µÄ½áÊøËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //fValue Éè¶¨µÄËÙ¶ÈÖµ
-Return:         //´íÎóÂë
+Description:    //è®¾ç½®SPè¿åŠ¨çš„ç»“æŸé€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //fValue è®¾å®šçš„é€Ÿåº¦å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetEndMoveSpeed(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -2238,19 +2238,19 @@ int32  ZAux_Direct_SetEndMoveSpeed(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "ENDMOVE_SPEED(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡SPÔË¶¯µÄ½áÊøËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄËÙ¶ÈÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–SPè¿åŠ¨çš„ç»“æŸé€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„é€Ÿåº¦å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetEndMoveSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2265,10 +2265,10 @@ int32  ZAux_Direct_GetEndMoveSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?ENDMOVE_SPEED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2289,12 +2289,12 @@ int32  ZAux_Direct_GetEndMoveSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ´íÎó±ê¼Ç£¬ºÍAXISSTATUS×öÓëÔËËãÀ´¾ö¶¨ÄÄĞ©´íÎóĞèÒª¹Ø±ÕWDOG¡£
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-				iValue ÉèÖÃÖµ
+Description:    //è®¾ç½®é”™è¯¯æ ‡è®°ï¼Œå’ŒAXISSTATUSåšä¸è¿ç®—æ¥å†³å®šå“ªäº›é”™è¯¯éœ€è¦å…³é—­WDOGã€‚
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+				iValue è®¾ç½®å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetErrormask(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -2306,19 +2306,19 @@ int32  ZAux_Direct_SetErrormask(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "ERRORMASK(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡´íÎó±ê¼Ç£¬ºÍAXISSTATUS×öÓëÔËËãÀ´¾ö¶¨ÄÄĞ©´íÎóĞèÒª¹Ø±ÕWDOG¡£
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄ±ê¼ÇÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–é”™è¯¯æ ‡è®°ï¼Œå’ŒAXISSTATUSåšä¸è¿ç®—æ¥å†³å®šå“ªäº›é”™è¯¯éœ€è¦å…³é—­WDOGã€‚
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„æ ‡è®°å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetErrormask(ZMC_HANDLE handle, int iaxis , int *piValue)
 {
@@ -2333,10 +2333,10 @@ int32  ZAux_Direct_GetErrormask(ZMC_HANDLE handle, int iaxis , int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?ERRORMASK(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2357,12 +2357,12 @@ int32  ZAux_Direct_GetErrormask(ZMC_HANDLE handle, int iaxis , int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ¿ìËÙJOGÊäÈë
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue ¿ìËÙJOGÊäÈë¿Ú±àºÅ
+Description:    //è®¾ç½®å¿«é€ŸJOGè¾“å…¥
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue å¿«é€ŸJOGè¾“å…¥å£ç¼–å·
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetFastJog(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -2375,19 +2375,19 @@ int32  ZAux_Direct_SetFastJog(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "FAST_JOG(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¿ìËÙJOGÊäÈë
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //·µ»ØµÄJOGÊäÈë¿Ú±àºÅ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å¿«é€ŸJOGè¾“å…¥
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //è¿”å›çš„JOGè¾“å…¥å£ç¼–å·
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetFastJog(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -2402,10 +2402,10 @@ int32  ZAux_Direct_GetFastJog(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FAST_JOG(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2426,12 +2426,12 @@ int32  ZAux_Direct_GetFastJog(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ¿ìËÙ¼õËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue Éè¶¨µÄ¿ìËÙ¼õËÙ¶È
+Description:    //è®¾ç½®å¿«é€Ÿå‡é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾å®šçš„å¿«é€Ÿå‡é€Ÿåº¦
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetFastDec(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -2444,19 +2444,19 @@ int32  ZAux_Direct_SetFastDec(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "FASTDEC(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¿ìËÙ¼õËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄ¿ìËÙ¼õËÙ¶È
-Return:         //´íÎóÂë
+Description:    //è¯»å–å¿«é€Ÿå‡é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„å¿«é€Ÿå‡é€Ÿåº¦
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetFastDec(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2471,10 +2471,10 @@ int32  ZAux_Direct_GetFastDec(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FASTDEC(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2495,11 +2495,11 @@ int32  ZAux_Direct_GetFastDec(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Ëæ¶¯Îó²î
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄËæ¶¯Îó²î
-Return:         //´íÎóÂë
+Description:    //è¯»å–éšåŠ¨è¯¯å·®
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„éšåŠ¨è¯¯å·®
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetFe(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2514,10 +2514,10 @@ int32  ZAux_Direct_GetFe(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2538,12 +2538,12 @@ int32  ZAux_Direct_GetFe(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ×î´óÔÊĞíµÄËæ¶¯Îó²îÖµ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄ×î´óÎó²îÖµ
+Description:    //è®¾ç½®æœ€å¤§å…è®¸çš„éšåŠ¨è¯¯å·®å€¼
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„æœ€å¤§è¯¯å·®å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetFeLimit(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -2555,19 +2555,19 @@ int32  ZAux_Direct_SetFeLimit(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "FE_LIMIT(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡×î´óÔÊĞíµÄËæ¶¯Îó²îÖµ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÉèÖÃ×î´óÎó²îÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–æœ€å¤§å…è®¸çš„éšåŠ¨è¯¯å·®å€¼
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„è®¾ç½®æœ€å¤§è¯¯å·®å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetFeLimit(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2582,10 +2582,10 @@ int32  ZAux_Direct_GetFeLimit(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FE_LIMIT(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2606,12 +2606,12 @@ int32  ZAux_Direct_GetFeLimit(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ±¨¾¯Ê±Ëæ¶¯Îó²îÖµ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄÎó²îÖµ
+Description:    //è®¾ç½®æŠ¥è­¦æ—¶éšåŠ¨è¯¯å·®å€¼
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„è¯¯å·®å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetFRange(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -2623,19 +2623,19 @@ int32  ZAux_Direct_SetFRange(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "FE_RANGE(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡±¨¾¯Ê±µÄËæ¶¯Îó²îÖµ
-Input:          //¿¨Á´½Óhandle
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄ±¨¾¯Îó²îÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–æŠ¥è­¦æ—¶çš„éšåŠ¨è¯¯å·®å€¼
+Input:          //å¡é“¾æ¥handle
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„æŠ¥è­¦è¯¯å·®å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetFeRange(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2650,10 +2650,10 @@ int32  ZAux_Direct_GetFeRange(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FE_RANGE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2675,12 +2675,12 @@ int32  ZAux_Direct_GetFeRange(ZMC_HANDLE handle, int iaxis, float *pfValue)
 
 
 /*************************************************************
-Description:    //ÉèÖÃ±£³ÖÊäÈë
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue ÉèÖÃµÄÊäÈë¿Ú±àºÅ
+Description:    //è®¾ç½®ä¿æŒè¾“å…¥
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue è®¾ç½®çš„è¾“å…¥å£ç¼–å·
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetFholdIn(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -2693,19 +2693,19 @@ int32  ZAux_Direct_SetFholdIn(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "FHOLD_IN(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡±£³ÖÊäÈë
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØÊäÈëHOLDINÊäÈë¿Ú±àºÅ
-Return:         //´íÎóÂë
+Description:    //è¯»å–ä¿æŒè¾“å…¥
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+Output:         //piValue è¿”å›è¾“å…¥HOLDINè¾“å…¥å£ç¼–å·
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetFholdIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -2720,10 +2720,10 @@ int32  ZAux_Direct_GetFholdIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FHOLD_IN(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2745,12 +2745,12 @@ int32  ZAux_Direct_GetFholdIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 
 
 /*************************************************************
-Description:    //ÉèÖÃÖá±£³ÖËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄËÙ¶ÈÖµ
+Description:    //è®¾ç½®è½´ä¿æŒé€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„é€Ÿåº¦å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetFhspeed(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -2762,19 +2762,19 @@ int32  ZAux_Direct_SetFhspeed(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "FHSPEED(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Öá±£³ÖËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄ±£³ÖËÙ¶È
-Return:         //´íÎóÂë
+Description:    //è¯»å–è½´ä¿æŒé€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„ä¿æŒé€Ÿåº¦
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetFhspeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2789,10 +2789,10 @@ int32  ZAux_Direct_GetFhspeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FHSPEED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2813,12 +2813,12 @@ int32  ZAux_Direct_GetFhspeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃSPÔË¶¯µÄÔËĞĞËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄËÙ¶ÈÖµ
+Description:    //è®¾ç½®SPè¿åŠ¨çš„è¿è¡Œé€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„é€Ÿåº¦å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetForceSpeed(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -2831,19 +2831,19 @@ int32  ZAux_Direct_SetForceSpeed(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "FORCE_SPEED(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡SPÔË¶¯µÄÔËĞĞËÙ¶È
-Input:          //¿¨Á´½Óhandle
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØSPÔË¶¯ËÙ¶ÈÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–SPè¿åŠ¨çš„è¿è¡Œé€Ÿåº¦
+Input:          //å¡é“¾æ¥handle
+				iaxis è½´å·
+Output:         //pfValue è¿”å›SPè¿åŠ¨é€Ÿåº¦å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetForceSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2858,10 +2858,10 @@ int32  ZAux_Direct_GetForceSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FORCE_SPEED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2882,12 +2882,12 @@ int32  ZAux_Direct_GetForceSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÕıÏòÈíÏŞÎ»		È¡ÏûÊ±ÉèÖÃÒ»¸ö½Ï´óÖµ¼´¿É
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue Éè¶¨µÄÏŞÎ»Öµ
+Description:    //è®¾ç½®æ­£å‘è½¯é™ä½		å–æ¶ˆæ—¶è®¾ç½®ä¸€ä¸ªè¾ƒå¤§å€¼å³å¯
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾å®šçš„é™ä½å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetFsLimit(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -2900,19 +2900,19 @@ int32  ZAux_Direct_SetFsLimit(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "FS_LIMIT(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÕıÏòÈíÏŞÎ»
-Input:          //¿¨Á´½Óhandle
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÕıÏòÏŞÎ»×ø±ê
-Return:         //´íÎóÂë
+Description:    //è¯»å–æ­£å‘è½¯é™ä½
+Input:          //å¡é“¾æ¥handle
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„æ­£å‘é™ä½åæ ‡
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetFsLimit(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2927,10 +2927,10 @@ int32  ZAux_Direct_GetFsLimit(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FS_LIMIT(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -2951,12 +2951,12 @@ int32  ZAux_Direct_GetFsLimit(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃĞ¡Ô²ÏŞËÙ×îĞ¡°ë¾¶
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄ×îĞ¡°ë¾¶
+Description:    //è®¾ç½®å°åœ†é™é€Ÿæœ€å°åŠå¾„
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„æœ€å°åŠå¾„
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetFullSpRadius(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -2969,19 +2969,19 @@ int32  ZAux_Direct_SetFullSpRadius(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "FULL_SP_RADIUS(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Ğ¡Ô²ÏŞËÙ×îĞ¡°ë¾¶
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÏŞËÙ°ë¾¶
-Return:         //´íÎóÂë
+Description:    //è¯»å–å°åœ†é™é€Ÿæœ€å°åŠå¾„
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„é™é€ŸåŠå¾„
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetFullSpRadius(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -2996,10 +2996,10 @@ int32  ZAux_Direct_GetFullSpRadius(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FULL_SP_RADIUS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3020,12 +3020,12 @@ int32  ZAux_Direct_GetFullSpRadius(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÕıÏòÓ²ÏŞÎ»ÊäÈë  ÉèÖÃ³É-1Ê±±íÊ¾²»ÉèÖÃÏŞÎ»
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue ÉèÖÃµÄÏŞÎ»ÊäÈë¿Ú±àºÅ
+Description:    //è®¾ç½®æ­£å‘ç¡¬é™ä½è¾“å…¥  è®¾ç½®æˆ-1æ—¶è¡¨ç¤ºä¸è®¾ç½®é™ä½
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue è®¾ç½®çš„é™ä½è¾“å…¥å£ç¼–å·
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetFwdIn(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -3038,19 +3038,19 @@ int32  ZAux_Direct_SetFwdIn(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "FWD_IN(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÕıÏòÓ²ÏŞÎ»ÊäÈë
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØÕıÏòÏŞÎ»ÊäÈë¿Ú±àºÅ
-Return:         //´íÎóÂë
+Description:    //è¯»å–æ­£å‘ç¡¬é™ä½è¾“å…¥
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›æ­£å‘é™ä½è¾“å…¥å£ç¼–å·
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetFwdIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3065,10 +3065,10 @@ int32  ZAux_Direct_GetFwdIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FWD_IN(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3089,12 +3089,12 @@ int32  ZAux_Direct_GetFwdIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÕıÏòJOGÊäÈë
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue ÉèÖÃµÄJOGÊäÈë¿Ú±àºÅ
+Description:    //è®¾ç½®æ­£å‘JOGè¾“å…¥
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue è®¾ç½®çš„JOGè¾“å…¥å£ç¼–å·
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetFwdJog(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -3107,19 +3107,19 @@ int32  ZAux_Direct_SetFwdJog(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "FWD_JOG(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÕıÏòJOGÊäÈë
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄJOGÊäÈë¿Ú±àºÅ
-Return:         //´íÎóÂë
+Description:    //è¯»å–æ­£å‘JOGè¾“å…¥
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„JOGè¾“å…¥å£ç¼–å·
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetFwdJog(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3134,10 +3134,10 @@ int32  ZAux_Direct_GetFwdJog(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?FWD_JOG(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3158,11 +3158,11 @@ int32  ZAux_Direct_GetFwdJog(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÖáÊÇ·ñÔË¶¯½áÊø
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØÔËĞĞ×´Ì¬ 0-ÔË¶¯ÖĞ -1 Í£Ö¹
-Return:         //´íÎóÂë
+Description:    //è¯»å–è½´æ˜¯å¦è¿åŠ¨ç»“æŸ
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›è¿è¡ŒçŠ¶æ€ 0-è¿åŠ¨ä¸­ -1 åœæ­¢
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetIfIdle(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3177,10 +3177,10 @@ int32  ZAux_Direct_GetIfIdle(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?IDLE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3201,12 +3201,12 @@ int32  ZAux_Direct_GetIfIdle(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÂö³åÊä³öÄ£Ê½
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue Éè¶¨µÄÂö³åÊä³öÄ£Ê½ Âö³å+·½Ïò/Ë«Âö³å
+Description:    //è®¾ç½®è„‰å†²è¾“å‡ºæ¨¡å¼
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue è®¾å®šçš„è„‰å†²è¾“å‡ºæ¨¡å¼ è„‰å†²+æ–¹å‘/åŒè„‰å†²
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetInvertStep(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -3219,19 +3219,19 @@ int32  ZAux_Direct_SetInvertStep(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "INVERT_STEP(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Âö³åÊä³öÄ£Ê½
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄÂö³åÄ£Ê½
-Return:         //´íÎóÂë
+Description:    //è¯»å–è„‰å†²è¾“å‡ºæ¨¡å¼
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„è„‰å†²æ¨¡å¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetInvertStep(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3246,10 +3246,10 @@ int32  ZAux_Direct_GetInvertStep(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?INVERT_STEP(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3270,12 +3270,12 @@ int32  ZAux_Direct_GetInvertStep(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ²å²¹Ê±ÖáÊÇ·ñ²ÎÓëËÙ¶È¼ÆËã£¬È±Ê¡²ÎÓë£¨1£©¡£´Ë²ÎÊıÖ»¶ÔÖ±ÏßºÍÂİĞıµÄµÚÈı¸öÖáÆğ×÷ÓÃ
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-				iValue Ä£Ê½ 0-²»²ÎÊı 1-²ÎÓë
+Description:    //è®¾ç½®æ’è¡¥æ—¶è½´æ˜¯å¦å‚ä¸é€Ÿåº¦è®¡ç®—ï¼Œç¼ºçœå‚ä¸ï¼ˆ1ï¼‰ã€‚æ­¤å‚æ•°åªå¯¹ç›´çº¿å’Œèºæ—‹çš„ç¬¬ä¸‰ä¸ªè½´èµ·ä½œç”¨
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+				iValue æ¨¡å¼ 0-ä¸å‚æ•° 1-å‚ä¸
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetInterpFactor(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -3288,19 +3288,19 @@ int32  ZAux_Direct_SetInterpFactor(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "INTERP_FACTOR(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡²å²¹Ê±ÖáÊÇ·ñ²ÎÓëËÙ¶È¼ÆËã£¬È±Ê¡²ÎÓë£¨1£©¡£´Ë²ÎÊıÖ»¶ÔÖ±ÏßºÍÂİĞıµÄµÚÈı¸öÖáÆğ×÷ÓÃ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄËÙ¶È¼ÆËãÄ£Ê½
-Return:         //´íÎóÂë
+Description:    //è¯»å–æ’è¡¥æ—¶è½´æ˜¯å¦å‚ä¸é€Ÿåº¦è®¡ç®—ï¼Œç¼ºçœå‚ä¸ï¼ˆ1ï¼‰ã€‚æ­¤å‚æ•°åªå¯¹ç›´çº¿å’Œèºæ—‹çš„ç¬¬ä¸‰ä¸ªè½´èµ·ä½œç”¨
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„é€Ÿåº¦è®¡ç®—æ¨¡å¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetInterpFactor(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3314,10 +3314,10 @@ int32  ZAux_Direct_GetInterpFactor(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?INTERP_FACTOR(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3338,11 +3338,11 @@ int32  ZAux_Direct_GetInterpFactor(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃJOGÊ±ËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //fValue Éè¶¨µÄËÙ¶ÈÖµ
-Return:         //´íÎóÂë
+Description:    //è®¾ç½®JOGæ—¶é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //fValue è®¾å®šçš„é€Ÿåº¦å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetJogSpeed(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -3355,19 +3355,19 @@ int32  ZAux_Direct_SetJogSpeed(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "JOGSPEED(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡JOGÊ±ËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-Output:         //pfValue ·µ»ØµÄJOGËÙ¶ÈÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–JOGæ—¶é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+Output:         //pfValue è¿”å›çš„JOGé€Ÿåº¦å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetJogSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -3382,10 +3382,10 @@ int32  ZAux_Direct_GetJogSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?JOGSPEED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3406,11 +3406,11 @@ int32  ZAux_Direct_GetJogSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ±Ç°Á´½ÓÔË¶¯µÄ²Î¿¼ÖáºÅ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØÁ´½ÓµÄ²Î¿¼ÖáºÅ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å½“å‰é“¾æ¥è¿åŠ¨çš„å‚è€ƒè½´å·
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›é“¾æ¥çš„å‚è€ƒè½´å·
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetLinkax(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3425,10 +3425,10 @@ int32  ZAux_Direct_GetLinkax(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?LINK_AXIS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3449,11 +3449,11 @@ int32  ZAux_Direct_GetLinkax(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ±Ç°³ıÁËµ±Ç°ÔË¶¯ÊÇ·ñ»¹ÓĞ»º³å 
-Input:          //¿¨Á´½Óhandle
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»Ø×´Ì¬Öµ  -1 Ã»ÓĞÊ£Óàº¯Êı 0-»¹ÓĞÊ£ÓàÔË¶¯
-Return:         //´íÎóÂë
+Description:    //è¯»å–å½“å‰é™¤äº†å½“å‰è¿åŠ¨æ˜¯å¦è¿˜æœ‰ç¼“å†² 
+Input:          //å¡é“¾æ¥handle
+				iaxis è½´å·
+Output:         //piValue è¿”å›çŠ¶æ€å€¼  -1 æ²¡æœ‰å‰©ä½™å‡½æ•° 0-è¿˜æœ‰å‰©ä½™è¿åŠ¨
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetLoaded(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3468,10 +3468,10 @@ int32  ZAux_Direct_GetLoaded(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?LOADED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3492,12 +3492,12 @@ int32  ZAux_Direct_GetLoaded(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÖáÆğÊ¼ËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄËÙ¶ÈÖµ
+Description:    //è®¾ç½®è½´èµ·å§‹é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„é€Ÿåº¦å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetLspeed(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -3510,19 +3510,19 @@ int32  ZAux_Direct_SetLspeed(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "LSPEED(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÖáÆğÊ¼ËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÆğÊ¼ËÙ¶ÈÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è½´èµ·å§‹é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„èµ·å§‹é€Ÿåº¦å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetLspeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -3537,10 +3537,10 @@ int32  ZAux_Direct_GetLspeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?LSPEED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3561,12 +3561,12 @@ int32  ZAux_Direct_GetLspeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ»ØÁã·´ÕÒµÈ´ıÊ±¼ä
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-				iValue »ØÁã·´ÕÒµÈ´ıÊ±¼ä MS
+Description:    //è®¾ç½®å›é›¶åæ‰¾ç­‰å¾…æ—¶é—´
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+				iValue å›é›¶åæ‰¾ç­‰å¾…æ—¶é—´ MS
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetHomeWait(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -3579,19 +3579,19 @@ int32  ZAux_Direct_SetHomeWait(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "HOMEWAIT(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡»ØÁã·´ÕÒµÈ´ıÊ±¼ä
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄ·´ÕÒµÈ´ıÊ±¼ä
-Return:         //´íÎóÂë
+Description:    //è¯»å–å›é›¶åæ‰¾ç­‰å¾…æ—¶é—´
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„åæ‰¾ç­‰å¾…æ—¶é—´
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetHomeWait(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3606,10 +3606,10 @@ int32  ZAux_Direct_GetHomeWait(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?HOMEWAIT(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3630,11 +3630,11 @@ int32  ZAux_Direct_GetHomeWait(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡±àÂëÆ÷Ëø´æÊ¾½Ì·µ»Ø×´Ì¬
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue  ·µ»ØµÄËø´æ´¥·¢×´Ì¬ -1-Ëø´æ´¥·¢ 0-Î´´¥·¢
-Return:         //´íÎóÂë
+Description:    //è¯»å–ç¼–ç å™¨é”å­˜ç¤ºæ•™è¿”å›çŠ¶æ€
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue  è¿”å›çš„é”å­˜è§¦å‘çŠ¶æ€ -1-é”å­˜è§¦å‘ 0-æœªè§¦å‘
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetMark(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3649,10 +3649,10 @@ int32  ZAux_Direct_GetMark(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?MARK(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3673,11 +3673,11 @@ int32  ZAux_Direct_GetMark(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡±àÂëÆ÷Ëø´æb·µ»Ø×´Ì¬
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue  ·µ»ØµÄËø´æ´¥·¢×´Ì¬ -1-Ëø´æ´¥·¢ 0-Î´´¥·¢
-Return:         //´íÎóÂë
+Description:    //è¯»å–ç¼–ç å™¨é”å­˜bè¿”å›çŠ¶æ€
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue  è¿”å›çš„é”å­˜è§¦å‘çŠ¶æ€ -1-é”å­˜è§¦å‘ 0-æœªè§¦å‘
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetMarkB(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3692,10 +3692,10 @@ int32  ZAux_Direct_GetMarkB(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?MARKB(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3716,12 +3716,12 @@ int32  ZAux_Direct_GetMarkB(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÂö³åÊä³ö×î¸ßÆµÂÊ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue ÉèÖÃµÄ×î¸ßÂö³åÆµÂÊ
+Description:    //è®¾ç½®è„‰å†²è¾“å‡ºæœ€é«˜é¢‘ç‡
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue è®¾ç½®çš„æœ€é«˜è„‰å†²é¢‘ç‡
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetMaxSpeed(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -3733,19 +3733,19 @@ int32  ZAux_Direct_SetMaxSpeed(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "MAX_SPEED(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Âö³åÊä³ö×î¸ßÆµÂÊ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄÂö³åÆµÂÊ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è„‰å†²è¾“å‡ºæœ€é«˜é¢‘ç‡
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„è„‰å†²é¢‘ç‡
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetMaxSpeed(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3760,10 +3760,10 @@ int32  ZAux_Direct_GetMaxSpeed(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?MAX_SPEED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3784,12 +3784,12 @@ int32  ZAux_Direct_GetMaxSpeed(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÁ¬Ğø²å²¹
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue	Á¬Ğø²å²¹¿ª¹Ø 0-¹Ø±ÕÁ¬Ğø²å²¹ 1-´ò¿ªÁ¬Ğø²å²¹
+Description:    //è®¾ç½®è¿ç»­æ’è¡¥
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue	è¿ç»­æ’è¡¥å¼€å…³ 0-å…³é—­è¿ç»­æ’è¡¥ 1-æ‰“å¼€è¿ç»­æ’è¡¥
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetMerge(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -3802,19 +3802,19 @@ int32  ZAux_Direct_SetMerge(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "MERGE(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Á¬Ğø²å²¹×´Ì¬
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄÁ¬Ğø²å²¹¿ª¹Ø×´Ì¬
-Return:         //´íÎóÂë
+Description:    //è¯»å–è¿ç»­æ’è¡¥çŠ¶æ€
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„è¿ç»­æ’è¡¥å¼€å…³çŠ¶æ€
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetMerge(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3829,10 +3829,10 @@ int32  ZAux_Direct_GetMerge(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?MERGE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3853,11 +3853,11 @@ int32  ZAux_Direct_GetMerge(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ±Ç°±»»º³åÆğÀ´µÄÔË¶¯¸öÊı
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáÊı
-Output:         //piValue »º³åÔË¶¯Êı
-Return:         //´íÎóÂë
+Description:    //è¯»å–å½“å‰è¢«ç¼“å†²èµ·æ¥çš„è¿åŠ¨ä¸ªæ•°
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´æ•°
+Output:         //piValue ç¼“å†²è¿åŠ¨æ•°
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetMovesBuffered(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3872,10 +3872,10 @@ int32  ZAux_Direct_GetMovesBuffered(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?MOVES_BUFFERED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3896,11 +3896,11 @@ int32  ZAux_Direct_GetMovesBuffered(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ±Ç°ÕıÔÚÔË¶¯Ö¸ÁîµÄMOVE_MARK±êºÅ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue µ±Ç°MARK±êºÅ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å½“å‰æ­£åœ¨è¿åŠ¨æŒ‡ä»¤çš„MOVE_MARKæ ‡å·
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue å½“å‰MARKæ ‡å·
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetMoveCurmark(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -3915,10 +3915,10 @@ int32  ZAux_Direct_GetMoveCurmark(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?MOVE_CURMARK(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -3939,12 +3939,12 @@ int32  ZAux_Direct_GetMoveCurmark(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÔË¶¯Ö¸ÁîµÄMOVE_MARK±êºÅ Ã¿µ±ÓĞÔË¶¯½øÈëÖáÔË¶¯»º³åÊ±MARK×Ô¶¯+1
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue Éè¶¨µÄMARKÖµ
+Description:    //è®¾ç½®è¿åŠ¨æŒ‡ä»¤çš„MOVE_MARKæ ‡å· æ¯å½“æœ‰è¿åŠ¨è¿›å…¥è½´è¿åŠ¨ç¼“å†²æ—¶MARKè‡ªåŠ¨+1
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue è®¾å®šçš„MARKå€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetMovemark(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -3957,21 +3957,21 @@ int32  ZAux_Direct_SetMovemark(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "MOVE_MARK(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //ÉèÖÃ·´À¡Î»ÖÃ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄ·´À¡Î»ÖÃ
+Description:    //è®¾ç½®åé¦ˆä½ç½®
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„åé¦ˆä½ç½®
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetMpos(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -3983,19 +3983,19 @@ int32  ZAux_Direct_SetMpos(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "MPOS(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡·´À¡Î»ÖÃ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÖá·´À¡Î»ÖÃ×ø±ê
-Return:         //´íÎóÂë
+Description:    //è¯»å–åé¦ˆä½ç½®
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„è½´åé¦ˆä½ç½®åæ ‡
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetMpos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -4010,10 +4010,10 @@ int32  ZAux_Direct_GetMpos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?MPOS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4034,11 +4034,11 @@ int32  ZAux_Direct_GetMpos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡·´À¡ËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄ±àÂëÆ÷·´À¡ËÙ¶È
-Return:         //´íÎóÂë
+Description:    //è¯»å–åé¦ˆé€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„ç¼–ç å™¨åé¦ˆé€Ÿåº¦
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetMspeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -4053,10 +4053,10 @@ int32  ZAux_Direct_GetMspeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?MSPEED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4077,11 +4077,11 @@ int32  ZAux_Direct_GetMspeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ±Ç°ÕıÔÚÔË¶¯Ö¸ÁîÀàĞÍ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»Øµ±Ç°µÄÔË¶¯ÀàĞÍ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å½“å‰æ­£åœ¨è¿åŠ¨æŒ‡ä»¤ç±»å‹
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›å½“å‰çš„è¿åŠ¨ç±»å‹
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetMtype(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -4096,10 +4096,10 @@ int32  ZAux_Direct_GetMtype(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?MTYPE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4120,11 +4120,11 @@ int32  ZAux_Direct_GetMtype(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ±Ç°ÕıÔÚ½øĞĞµÄÔË¶¯Ö¸ÁîºóÃæµÄµÚÒ»ÌõÖ¸ÁîÀàĞÍ£¬µ±²å²¹Áª¶¯Ê±£¬¶Ô´ÓÖá×ÜÊÇ·µ»ØÖ÷ÖáµÄÔË¶¯Ö¸ÁîÀàĞÍ
-Input:          //¿¨Á´½Óhandle  
-				iaxis  ÖáºÅ
-Output:         //piValue ·µ»ØÏÂÒ»ÌõÖ¸ÁîµÄÔË¶¯ÀàĞÍ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å½“å‰æ­£åœ¨è¿›è¡Œçš„è¿åŠ¨æŒ‡ä»¤åé¢çš„ç¬¬ä¸€æ¡æŒ‡ä»¤ç±»å‹ï¼Œå½“æ’è¡¥è”åŠ¨æ—¶ï¼Œå¯¹ä»è½´æ€»æ˜¯è¿”å›ä¸»è½´çš„è¿åŠ¨æŒ‡ä»¤ç±»å‹
+Input:          //å¡é“¾æ¥handle  
+				iaxis  è½´å·
+Output:         //piValue è¿”å›ä¸‹ä¸€æ¡æŒ‡ä»¤çš„è¿åŠ¨ç±»å‹
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetNtype(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -4139,10 +4139,10 @@ int32  ZAux_Direct_GetNtype(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?NTYPE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4163,12 +4163,12 @@ int32  ZAux_Direct_GetNtype(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃĞŞ¸ÄÆ«ÒÆÎ»ÖÃ
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄÆ«ÒÆÖµ
+Description:    //è®¾ç½®ä¿®æ”¹åç§»ä½ç½®
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+				fValue è®¾ç½®çš„åç§»å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetOffpos(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -4181,19 +4181,19 @@ int32  ZAux_Direct_SetOffpos(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "OFFPOS(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ĞŞ¸ÄÆ«ÒÆÎ»ÖÃ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÆ«ÒÆ×ø±êÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–ä¿®æ”¹åç§»ä½ç½®
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„åç§»åæ ‡å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetOffpos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -4208,10 +4208,10 @@ int32  ZAux_Direct_GetOffpos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?OFFPOS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4232,12 +4232,12 @@ int32  ZAux_Direct_GetOffpos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃËø´æ´¥·¢µÄ½áÊø×ø±ê·¶Î§µã¡£
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄ×ø±êÖµ
+Description:    //è®¾ç½®é”å­˜è§¦å‘çš„ç»“æŸåæ ‡èŒƒå›´ç‚¹ã€‚
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„åæ ‡å€¼
 Output:         // 
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetOpenWin(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -4250,19 +4250,19 @@ int32  ZAux_Direct_SetOpenWin(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "OPEN_WIN(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Ëø´æ´¥·¢µÄ½áÊø×ø±ê·¶Î§µã¡£
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄ½áÊø×ø±êÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–é”å­˜è§¦å‘çš„ç»“æŸåæ ‡èŒƒå›´ç‚¹ã€‚
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„ç»“æŸåæ ‡å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetOpenWin(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -4277,10 +4277,10 @@ int32  ZAux_Direct_GetOpenWin(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?OPEN_WIN(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4301,11 +4301,11 @@ int32  ZAux_Direct_GetOpenWin(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡·µ»ØËø´æµÄ²âÁ¿·´À¡Î»ÖÃ(MPOS)
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-Output:         //pfValue Ëø´æµÄ×ø±êÎ»ÖÃ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è¿”å›é”å­˜çš„æµ‹é‡åé¦ˆä½ç½®(MPOS)
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+Output:         //pfValue é”å­˜çš„åæ ‡ä½ç½®
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetRegPos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -4320,10 +4320,10 @@ int32  ZAux_Direct_GetRegPos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?REG_POS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4344,11 +4344,11 @@ int32  ZAux_Direct_GetRegPos(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡·µ»ØËø´æµÄ²âÁ¿·´À¡Î»ÖÃ(MPOS)
-Input:          //¿¨Á´½Óhandle 
-iaxis ÖáºÅ
-Output:         //pfValue Ëø´æµÄ×ø±êÎ»ÖÃ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è¿”å›é”å­˜çš„æµ‹é‡åé¦ˆä½ç½®(MPOS)
+Input:          //å¡é“¾æ¥handle 
+iaxis è½´å·
+Output:         //pfValue é”å­˜çš„åæ ‡ä½ç½®
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetRegPosB(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -4363,10 +4363,10 @@ int32  ZAux_Direct_GetRegPosB(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?REG_POSB(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4387,11 +4387,11 @@ int32  ZAux_Direct_GetRegPosB(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }	
 
 /*************************************************************
-Description:    //¶ÁÈ¡·µ»ØÖáµ±Ç°ÔË¶¯»¹Î´Íê³ÉµÄ¾àÀë
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÊ£Óà¾àÀë
-Return:         //´íÎóÂë
+Description:    //è¯»å–è¿”å›è½´å½“å‰è¿åŠ¨è¿˜æœªå®Œæˆçš„è·ç¦»
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„å‰©ä½™è·ç¦»
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetRemain(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -4406,10 +4406,10 @@ int32  ZAux_Direct_GetRemain(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?REMAIN(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4430,12 +4430,12 @@ int32  ZAux_Direct_GetRemain(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }	
 
 /*************************************************************
-Description:    //²ÎÊı  ÖáÊ£ÓàµÄ»º³å, °´Ö±Ïß¶ÎÀ´¼ÆËã
-REMAIN_BUFFERÎªÎ¨Ò»Ò»¸ö¿ÉÒÔ¼ÓAXIS²¢ÓÃZAux_DirectCommand»ñÈ¡µÄ.
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue Ê£ÓàµÄÖ±Ïß»º³åÊıÁ¿
-Return:         //´íÎóÂë
+Description:    //å‚æ•°  è½´å‰©ä½™çš„ç¼“å†², æŒ‰ç›´çº¿æ®µæ¥è®¡ç®—
+REMAIN_BUFFERä¸ºå”¯ä¸€ä¸€ä¸ªå¯ä»¥åŠ AXISå¹¶ç”¨ZAux_DirectCommandè·å–çš„.
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue å‰©ä½™çš„ç›´çº¿ç¼“å†²æ•°é‡
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetRemain_LineBuffer(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -4450,10 +4450,10 @@ int32  ZAux_Direct_GetRemain_LineBuffer(ZMC_HANDLE handle, int iaxis, int *piVal
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?REMAIN_BUFFER(1) AXIS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4475,12 +4475,12 @@ int32  ZAux_Direct_GetRemain_LineBuffer(ZMC_HANDLE handle, int iaxis, int *piVal
 
 
 /*************************************************************
-Description:    //²ÎÊı  ÖáÊ£ÓàµÄ»º³å, °´×î¸´ÔÓµÄ¿Õ¼äÔ²»¡À´¼ÆËã
-REMAIN_BUFFERÎªÎ¨Ò»Ò»¸ö¿ÉÒÔ¼ÓAXIS²¢ÓÃZAux_DirectCommand»ñÈ¡µÄ.
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue Ê£ÓàµÄ»º³åÊıÁ¿
-Return:         //´íÎóÂë
+Description:    //å‚æ•°  è½´å‰©ä½™çš„ç¼“å†², æŒ‰æœ€å¤æ‚çš„ç©ºé—´åœ†å¼§æ¥è®¡ç®—
+REMAIN_BUFFERä¸ºå”¯ä¸€ä¸€ä¸ªå¯ä»¥åŠ AXISå¹¶ç”¨ZAux_DirectCommandè·å–çš„.
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue å‰©ä½™çš„ç¼“å†²æ•°é‡
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetRemain_Buffer(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -4495,10 +4495,10 @@ int32  ZAux_Direct_GetRemain_Buffer(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?REMAIN_BUFFER() AXIS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4520,12 +4520,12 @@ int32  ZAux_Direct_GetRemain_Buffer(ZMC_HANDLE handle, int iaxis, int *piValue)
 
 
 /*************************************************************
-Description:    //ÉèÖÃ¸ù¾İREP_OPTIONÉèÖÃÀ´×Ô¶¯Ñ­»·ÖáDPOSºÍMPOS×ø±ê¡£
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue	ÉèÖÃµÄ×ø±êÖµ
+Description:    //è®¾ç½®æ ¹æ®REP_OPTIONè®¾ç½®æ¥è‡ªåŠ¨å¾ªç¯è½´DPOSå’ŒMPOSåæ ‡ã€‚
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue	è®¾ç½®çš„åæ ‡å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetRepDist(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -4538,19 +4538,19 @@ int32  ZAux_Direct_SetRepDist(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "REP_DIST(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¸ù¾İREP_OPTIONÉèÖÃÀ´×Ô¶¯Ñ­»·ÖáDPOSºÍMPOS×ø±ê¡£
-Input:          //¿¨Á´½Óhandle 
-				iaxis	ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÑ­»·×ø±êÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–æ ¹æ®REP_OPTIONè®¾ç½®æ¥è‡ªåŠ¨å¾ªç¯è½´DPOSå’ŒMPOSåæ ‡ã€‚
+Input:          //å¡é“¾æ¥handle 
+				iaxis	è½´å·
+Output:         //pfValue è¿”å›çš„å¾ªç¯åæ ‡å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetRepDist(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -4565,10 +4565,10 @@ int32  ZAux_Direct_GetRepDist(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?REP_DIST(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4589,12 +4589,12 @@ int32  ZAux_Direct_GetRepDist(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ×ø±êÖØ¸´ÉèÖÃ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue Ä£Ê½
+Description:    //è®¾ç½®åæ ‡é‡å¤è®¾ç½®
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue æ¨¡å¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetRepOption(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -4607,19 +4607,19 @@ int32  ZAux_Direct_SetRepOption(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "REP_OPTION(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡×ø±êÖØ¸´ÉèÖÃ
-Input:          //¿¨Á´½Óhandle
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄÄ£Ê½
-Return:         //´íÎóÂë
+Description:    //è¯»å–åæ ‡é‡å¤è®¾ç½®
+Input:          //å¡é“¾æ¥handle
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„æ¨¡å¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetRepOption(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -4634,10 +4634,10 @@ int32  ZAux_Direct_GetRepOption(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?REP_OPTION(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4658,12 +4658,12 @@ int32  ZAux_Direct_GetRepOption(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ¸ºÏòÓ²¼şÏŞÎ»¿ª¹Ø¶ÔÓ¦µÄÊäÈëµã±àºÅ£¬-1ÎŞĞ§¡£
-Input:          //¿¨Á´½Óhandle  
-				iaxis  ÖáºÅ
-				iValue ÉèÖÃµÄÊäÈë¿Ú±àºÅ
+Description:    //è®¾ç½®è´Ÿå‘ç¡¬ä»¶é™ä½å¼€å…³å¯¹åº”çš„è¾“å…¥ç‚¹ç¼–å·ï¼Œ-1æ— æ•ˆã€‚
+Input:          //å¡é“¾æ¥handle  
+				iaxis  è½´å·
+				iValue è®¾ç½®çš„è¾“å…¥å£ç¼–å·
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetRevIn(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -4676,19 +4676,19 @@ int32  ZAux_Direct_SetRevIn(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "Rev_In(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¸ºÏòÓ²¼şÏŞÎ»¿ª¹Ø¶ÔÓ¦µÄÊäÈëµã±àºÅ£¬-1ÎŞĞ§¡£
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄ¸ºÏòÏŞÎ»ÊäÈë¿Ú±àºÅ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è´Ÿå‘ç¡¬ä»¶é™ä½å¼€å…³å¯¹åº”çš„è¾“å…¥ç‚¹ç¼–å·ï¼Œ-1æ— æ•ˆã€‚
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„è´Ÿå‘é™ä½è¾“å…¥å£ç¼–å·
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetRevIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -4703,10 +4703,10 @@ int32  ZAux_Direct_GetRevIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?REV_IN(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4727,12 +4727,12 @@ int32  ZAux_Direct_GetRevIn(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ¸ºÏòJOGÊäÈë¶ÔÓ¦µÄÊäÈëµã±àºÅ£¬-1ÎŞĞ§¡£
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				iValue ÉèÖÃµÄÊäÈë¿Ú±àºÅ
+Description:    //è®¾ç½®è´Ÿå‘JOGè¾“å…¥å¯¹åº”çš„è¾“å…¥ç‚¹ç¼–å·ï¼Œ-1æ— æ•ˆã€‚
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				iValue è®¾ç½®çš„è¾“å…¥å£ç¼–å·
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetRevJog(ZMC_HANDLE handle, int iaxis, int iValue)
 {
@@ -4745,19 +4745,19 @@ int32  ZAux_Direct_SetRevJog(ZMC_HANDLE handle, int iaxis, int iValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "REV_JOG(%d)=%d", iaxis, iValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¸ºÏòJOGÊäÈë¶ÔÓ¦µÄÊäÈëµã±àºÅ£¬-1ÎŞĞ§¡£
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄÊäÈë¿Ú±àºÅ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è´Ÿå‘JOGè¾“å…¥å¯¹åº”çš„è¾“å…¥ç‚¹ç¼–å·ï¼Œ-1æ— æ•ˆã€‚
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„è¾“å…¥å£ç¼–å·
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetRevJog(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -4772,10 +4772,10 @@ int32  ZAux_Direct_GetRevJog(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?REV_JOG(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4796,12 +4796,12 @@ int32  ZAux_Direct_GetRevJog(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ¸ºÏòÈíÏŞÎ»Î»ÖÃ¡£  ÉèÖÃÒ»¸ö½Ï´óµÄÖµÊ±ÈÏÎªÈ¡ÏûÏŞÎ»
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-				fValue  ¸ºÏòÏŞÎ»Öµ
+Description:    //è®¾ç½®è´Ÿå‘è½¯é™ä½ä½ç½®ã€‚  è®¾ç½®ä¸€ä¸ªè¾ƒå¤§çš„å€¼æ—¶è®¤ä¸ºå–æ¶ˆé™ä½
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+				fValue  è´Ÿå‘é™ä½å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetRsLimit(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -4814,19 +4814,19 @@ int32  ZAux_Direct_SetRsLimit(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "RS_LIMIT(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¸ºÏòÈíÏŞÎ»Î»ÖÃ¡£
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-Output:         //pfValue Éè¶¨µÄÏŞÎ»Öµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è´Ÿå‘è½¯é™ä½ä½ç½®ã€‚
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+Output:         //pfValue è®¾å®šçš„é™ä½å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetRsLimit(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -4841,10 +4841,10 @@ int32  ZAux_Direct_GetRsLimit(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?RS_LIMIT(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4865,12 +4865,12 @@ int32  ZAux_Direct_GetRsLimit(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÖáËÙ¶È£¬µ¥Î»Îªunits/s£¬µ±¶àÖáÔË¶¯Ê±£¬×÷Îª²å²¹ÔË¶¯µÄËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄËÙ¶ÈÖµ
+Description:    //è®¾ç½®è½´é€Ÿåº¦ï¼Œå•ä½ä¸ºunits/sï¼Œå½“å¤šè½´è¿åŠ¨æ—¶ï¼Œä½œä¸ºæ’è¡¥è¿åŠ¨çš„é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„é€Ÿåº¦å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetSpeed(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -4883,19 +4883,19 @@ int32  ZAux_Direct_SetSpeed(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "SPEED(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÖáËÙ¶È£¬µ¥Î»Îªunits/s£¬µ±¶àÖáÔË¶¯Ê±£¬×÷Îª²å²¹ÔË¶¯µÄËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄËÙ¶ÈÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è½´é€Ÿåº¦ï¼Œå•ä½ä¸ºunits/sï¼Œå½“å¤šè½´è¿åŠ¨æ—¶ï¼Œä½œä¸ºæ’è¡¥è¿åŠ¨çš„é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„é€Ÿåº¦å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -4910,10 +4910,10 @@ int32  ZAux_Direct_GetSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?Speed(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -4934,12 +4934,12 @@ int32  ZAux_Direct_GetSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ SÇúÏßÉèÖÃ¡£ 0-ÌİĞÎ¼Ó¼õËÙ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue SÇúÏßÆ½»¬Ê±¼äMS
+Description:    //è®¾ç½® Sæ›²çº¿è®¾ç½®ã€‚ 0-æ¢¯å½¢åŠ å‡é€Ÿ
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue Sæ›²çº¿å¹³æ»‘æ—¶é—´MS
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetSramp(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -4952,19 +4952,19 @@ int32  ZAux_Direct_SetSramp(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "SRAMP(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ SÇúÏßÉèÖÃ¡£
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue Æ½»¬Ê±¼ä
-Return:         //´íÎóÂë
+Description:    //è¯»å– Sæ›²çº¿è®¾ç½®ã€‚
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue å¹³æ»‘æ—¶é—´
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetSramp(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -4979,10 +4979,10 @@ int32  ZAux_Direct_GetSramp(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?SRAMP(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -5003,12 +5003,12 @@ int32  ZAux_Direct_GetSramp(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ ×Ô¶¨ÒåËÙ¶ÈµÄSPÔË¶¯µÄÆğÊ¼ËÙ¶È
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄËÙ¶ÈÖµ
+Description:    //è®¾ç½® è‡ªå®šä¹‰é€Ÿåº¦çš„SPè¿åŠ¨çš„èµ·å§‹é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+				fValue è®¾ç½®çš„é€Ÿåº¦å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetStartMoveSpeed(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -5021,19 +5021,19 @@ int32  ZAux_Direct_SetStartMoveSpeed(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "STARTMOVE_SPEED(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡×Ô¶¨ÒåËÙ¶ÈµÄSPÔË¶¯µÄÆğÊ¼ËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-Output:         //pfValue ·µ»ØµÄSPÔË¶¯ÆğÊ¼ËÙ¶ÈÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è‡ªå®šä¹‰é€Ÿåº¦çš„SPè¿åŠ¨çš„èµ·å§‹é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+Output:         //pfValue è¿”å›çš„SPè¿åŠ¨èµ·å§‹é€Ÿåº¦å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetStartMoveSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -5048,10 +5048,10 @@ int32  ZAux_Direct_GetStartMoveSpeed(ZMC_HANDLE handle, int iaxis, float *pfValu
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?STARTMOVE_SPEED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -5072,12 +5072,12 @@ int32  ZAux_Direct_GetStartMoveSpeed(ZMC_HANDLE handle, int iaxis, float *pfValu
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ ¼õËÙµ½×îµÍµÄ×îĞ¡¹Õ½Ç »¡¶ÈÖÆ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄ½Ç¶ÈÖµ
+Description:    //è®¾ç½® å‡é€Ÿåˆ°æœ€ä½çš„æœ€å°æ‹è§’ å¼§åº¦åˆ¶
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„è§’åº¦å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetStopAngle(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -5090,19 +5090,19 @@ int32  ZAux_Direct_SetStopAngle(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "STOP_ANGLE(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¼õËÙµ½×îµÍµÄ×îĞ¡¹Õ½Ç »¡¶ÈÖÆ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄ¹Õ½ÇÍ£Ö¹½Ç¶È
-Return:         //´íÎóÂë
+Description:    //è¯»å–å‡é€Ÿåˆ°æœ€ä½çš„æœ€å°æ‹è§’ å¼§åº¦åˆ¶
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„æ‹è§’åœæ­¢è§’åº¦
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetStopAngle(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -5117,10 +5117,10 @@ int32  ZAux_Direct_GetStopAngle(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?STOP_ANGLE(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -5142,12 +5142,12 @@ int32  ZAux_Direct_GetStopAngle(ZMC_HANDLE handle, int iaxis, float *pfValue)
 
 
 /*************************************************************
-Description:    //ÉèÖÃ ¼õËÙµ¹½Ç°ë¾¶
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-				fValue	µ¹½Ç°ë¾¶
+Description:    //è®¾ç½® å‡é€Ÿå€’è§’åŠå¾„
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+				fValue	å€’è§’åŠå¾„
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetZsmooth(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -5160,19 +5160,19 @@ int32  ZAux_Direct_SetZsmooth(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "ZSMOOTH(%d)=%f", iaxis, fValue);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ¹½Ç°ë¾¶
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-Output:         //pfValue	·µ»ØµÄµ¹½Ç°ë¾¶Öµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å€’è§’åŠå¾„
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+Output:         //pfValue	è¿”å›çš„å€’è§’åŠå¾„å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetZsmooth(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -5187,10 +5187,10 @@ int32  ZAux_Direct_GetZsmooth(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?ZSMOOTH(%d)", iaxis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -5211,12 +5211,12 @@ int32  ZAux_Direct_GetZsmooth(ZMC_HANDLE handle, int iaxis, float *pfValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ Âö³åµ±Á¿
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue ÉèÖÃµÄµ±Á¿Öµ
+Description:    //è®¾ç½® è„‰å†²å½“é‡
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue è®¾ç½®çš„å½“é‡å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetUnits(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -5229,19 +5229,19 @@ int32  ZAux_Direct_SetUnits(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "UNITS(%d)=%f", iaxis, fValue);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Âö³åµ±Á¿
-Input:          //¿¨Á´½Óhandle
-				iaxis	ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÂö³åµ±Á¿
-Return:         //´íÎóÂë
+Description:    //è¯»å–è„‰å†²å½“é‡
+Input:          //å¡é“¾æ¥handle
+				iaxis	è½´å·
+Output:         //pfValue è¿”å›çš„è„‰å†²å½“é‡
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetUnits(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -5256,10 +5256,10 @@ int32  ZAux_Direct_GetUnits(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?UNITS(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -5281,11 +5281,11 @@ int32  ZAux_Direct_GetUnits(ZMC_HANDLE handle, int iaxis, float *pfValue)
 
 
 /*************************************************************
-Description:    //¶ÁÈ¡·µ»ØÖáµ±Ç°µ±Ç°ÔË¶¯ºÍ»º³åÔË¶¯»¹Î´Íê³ÉµÄ¾àÀë
-Input:          //¿¨Á´½Óhandle
-				iaxis ÖáºÅ
-Output:         //pfValue ·µ»ØµÄÕóÓê¾àÀë
-Return:         //´íÎóÂë
+Description:    //è¯»å–è¿”å›è½´å½“å‰å½“å‰è¿åŠ¨å’Œç¼“å†²è¿åŠ¨è¿˜æœªå®Œæˆçš„è·ç¦»
+Input:          //å¡é“¾æ¥handle
+				iaxis è½´å·
+Output:         //pfValue è¿”å›çš„é˜µé›¨è·ç¦»
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetVectorBuffered(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -5300,10 +5300,10 @@ int32  ZAux_Direct_GetVectorBuffered(ZMC_HANDLE handle, int iaxis, float *pfValu
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?VECTOR_BUFFERED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -5324,11 +5324,11 @@ int32  ZAux_Direct_GetVectorBuffered(ZMC_HANDLE handle, int iaxis, float *pfValu
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ±Ç°ÖáÔËĞĞµÄÃüÁîËÙ¶È
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-Output:         //pfValue	·µ»ØµÄµ±Ç°ËÙ¶ÈÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–å½“å‰è½´è¿è¡Œçš„å‘½ä»¤é€Ÿåº¦
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+Output:         //pfValue	è¿”å›çš„å½“å‰é€Ÿåº¦å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetVpSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 {
@@ -5343,10 +5343,10 @@ int32  ZAux_Direct_GetVpSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?VP_SPEED(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -5368,11 +5368,11 @@ int32  ZAux_Direct_GetVpSpeed(ZMC_HANDLE handle, int iaxis, float *pfValue)
 
 
 /*************************************************************
-Description:    //È«¾Ö±äÁ¿¶ÁÈ¡, Ò²¿ÉÒÔÊÇ²ÎÊıµÈµÈ
-Input:          //¿¨Á´½Óhandle  
-				pname È«¾Ö±äÁ¿Ãû³Æ/»òÕßÖ¸¶¨ÖáºÅµÄÖá²ÎÊıÃû³ÆDPOS(0)
-Output:         //pfValue ·µ»ØÖµ
-Return:         //´íÎóÂë
+Description:    //å…¨å±€å˜é‡è¯»å–, ä¹Ÿå¯ä»¥æ˜¯å‚æ•°ç­‰ç­‰
+Input:          //å¡é“¾æ¥handle  
+				pname å…¨å±€å˜é‡åç§°/æˆ–è€…æŒ‡å®šè½´å·çš„è½´å‚æ•°åç§°DPOS(0)
+Output:         //pfValue è¿”å›å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetVariablef(ZMC_HANDLE handle, const char *pname, float *pfValue)
 {
@@ -5387,10 +5387,10 @@ int32  ZAux_Direct_GetVariablef(ZMC_HANDLE handle, const char *pname, float *pfV
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?%s", pname);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -5411,11 +5411,11 @@ int32  ZAux_Direct_GetVariablef(ZMC_HANDLE handle, const char *pname, float *pfV
 }
 
 /*************************************************************
-Description:    //È«¾Ö±äÁ¿¶ÁÈ¡, Ò²¿ÉÒÔÊÇ²ÎÊıµÈµÈ
-Input:          //¿¨Á´½Óhandle  
-				pname È«¾Ö±äÁ¿Ãû³Æ/»òÕßÖ¸¶¨ÖáºÅµÄÖá²ÎÊıÃû³ÆDPOS(0)
-Output:         //piValue ·µ»ØÖµ
-Return:         //´íÎóÂë
+Description:    //å…¨å±€å˜é‡è¯»å–, ä¹Ÿå¯ä»¥æ˜¯å‚æ•°ç­‰ç­‰
+Input:          //å¡é“¾æ¥handle  
+				pname å…¨å±€å˜é‡åç§°/æˆ–è€…æŒ‡å®šè½´å·çš„è½´å‚æ•°åç§°DPOS(0)
+Output:         //piValue è¿”å›å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetVariableInt(ZMC_HANDLE handle, const char *pname, int *piValue)
 {
@@ -5430,10 +5430,10 @@ int32  ZAux_Direct_GetVariableInt(ZMC_HANDLE handle, const char *pname, int *piV
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?%s", pname);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -5454,18 +5454,18 @@ int32  ZAux_Direct_GetVariableInt(ZMC_HANDLE handle, const char *pname, int *piV
 }
 
 
-///////////////////////  Ö»ÓĞÏÂÃæµÄÔË¶¯º¯ÊıÖ§³ÖÖ±½Óµ÷ÓÃ£¬²¢²»ÊÇËùÓĞµÄÖ¸Áî¶¼Ö§³Ö
-///////////////////////  ±ØĞë 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
+///////////////////////  åªæœ‰ä¸‹é¢çš„è¿åŠ¨å‡½æ•°æ”¯æŒç›´æ¥è°ƒç”¨ï¼Œå¹¶ä¸æ˜¯æ‰€æœ‰çš„æŒ‡ä»¤éƒ½æ”¯æŒ
+///////////////////////  å¿…é¡» 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
 
 /*************************************************************
-Description:    //BASEÖ¸Áîµ÷ÓÃ
-½ö½öĞŞ¸ÄÔÚÏßÃüÁîµÄBASEÁĞ±í£¬²»¶Ô¿ØÖÆÆ÷µÄÔËĞĞÈÎÎñµÄBASE½øĞĞĞŞ¸Ä.
-ĞŞ¸Äºó£¬ºóĞøµÄËùÓĞMOVEµÈÖ¸Áî¶¼ÊÇÒÔÕâ¸öBASEÎª»ù´¡  
-Input:          //¿¨Á´½Óhandle
-				imaxaxises ²ÎÓëÖáÊı
-				piAxislist	ÖáÁĞ±í
+Description:    //BASEæŒ‡ä»¤è°ƒç”¨
+ä»…ä»…ä¿®æ”¹åœ¨çº¿å‘½ä»¤çš„BASEåˆ—è¡¨ï¼Œä¸å¯¹æ§åˆ¶å™¨çš„è¿è¡Œä»»åŠ¡çš„BASEè¿›è¡Œä¿®æ”¹.
+ä¿®æ”¹åï¼Œåç»­çš„æ‰€æœ‰MOVEç­‰æŒ‡ä»¤éƒ½æ˜¯ä»¥è¿™ä¸ªBASEä¸ºåŸºç¡€  
+Input:          //å¡é“¾æ¥handle
+				imaxaxises å‚ä¸è½´æ•°
+				piAxislist	è½´åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Base(ZMC_HANDLE handle, int imaxaxises, int *piAxislist)
 {
@@ -5481,7 +5481,7 @@ int32  ZAux_Direct_Base(ZMC_HANDLE handle, int imaxaxises, int *piAxislist)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5495,7 +5495,7 @@ int32  ZAux_Direct_Base(ZMC_HANDLE handle, int imaxaxises, int *piAxislist)
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,0);
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
@@ -5504,12 +5504,12 @@ int32  ZAux_Direct_Base(ZMC_HANDLE handle, int imaxaxises, int *piAxislist)
 
 
 /*************************************************************
-Description:    //¶¨ÒåDPOS,²»½¨ÒéÊ¹ÓÃ£¬¿ÉÒÔÖ±½Óµ÷ÓÃSETDPOS´ïµ½Í¬ÑùĞ§¹û
-Input:          //¿¨Á´½Óhandle
-				iaxis	ÖáºÅ
-				pfDpos ÉèÖÃµÄ×ø±êÖµ
+Description:    //å®šä¹‰DPOS,ä¸å»ºè®®ä½¿ç”¨ï¼Œå¯ä»¥ç›´æ¥è°ƒç”¨SETDPOSè¾¾åˆ°åŒæ ·æ•ˆæœ
+Input:          //å¡é“¾æ¥handle
+				iaxis	è½´å·
+				pfDpos è®¾ç½®çš„åæ ‡å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Defpos(ZMC_HANDLE handle, int iaxis, float pfDpos)
 {
@@ -5525,19 +5525,19 @@ int32  ZAux_Direct_Defpos(ZMC_HANDLE handle, int iaxis, float pfDpos)
 	
 	sprintf(cmdbuff, "DEFPOS(%f) AXIS(%d)",pfDpos,iaxis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_Execute(handle, cmdbuff,  cmdbuffAck,2048);
 	//return   ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,2048);
 }
 
 /*************************************************************
-Description:    //¶àÖáÏà¶ÔÖ±Ïß²å²¹  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				pfDisancelist		¾àÀëÁĞ±í
+Description:    //å¤šè½´ç›¸å¯¹ç›´çº¿æ’è¡¥  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				pfDisancelist		è·ç¦»åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Move(ZMC_HANDLE handle, int imaxaxises, int *piAxislist,float *pfDisancelist)
 {
@@ -5550,7 +5550,7 @@ int32  ZAux_Direct_Move(ZMC_HANDLE handle, int imaxaxises, int *piAxislist,float
 	{
 		return  ERR_AUX_PARAERR;
 	}
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5564,10 +5564,10 @@ int32  ZAux_Direct_Move(ZMC_HANDLE handle, int imaxaxises, int *piAxislist,float
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcat(cmdbuff, "MOVE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5581,18 +5581,18 @@ int32  ZAux_Direct_Move(ZMC_HANDLE handle, int imaxaxises, int *piAxislist,float
 	sprintf(tempbuff, "%f)",pfDisancelist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //Ïà¶Ô¶àÖáÖ±Ïß²å²¹SPÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				pfDisancelist		¾àÀëÁĞ±í
+Description:    //ç›¸å¯¹å¤šè½´ç›´çº¿æ’è¡¥SPè¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				pfDisancelist		è·ç¦»åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float *pfDisancelist)
 {
@@ -5605,7 +5605,7 @@ int32  ZAux_Direct_MoveSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, fl
 	{
 		return  ERR_AUX_PARAERR;
 	}
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5619,10 +5619,10 @@ int32  ZAux_Direct_MoveSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, fl
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcat(cmdbuff, "MOVESP(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5636,19 +5636,19 @@ int32  ZAux_Direct_MoveSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, fl
 	sprintf(tempbuff, "%f)",pfDisancelist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //¾ø¶Ô¶àÖáÖ±Ïß²å²¹  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				pfDisancelist		¾àÀëÁĞ±í
+Description:    //ç»å¯¹å¤šè½´ç›´çº¿æ’è¡¥  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				pfDisancelist		è·ç¦»åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float *pfDisancelist)
 {
@@ -5663,7 +5663,7 @@ int32  ZAux_Direct_MoveAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, f
 	{
 		return  ERR_AUX_PARAERR;
 	}
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5677,10 +5677,10 @@ int32  ZAux_Direct_MoveAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, f
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcat(cmdbuff, "MOVEABS(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5694,18 +5694,18 @@ int32  ZAux_Direct_MoveAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, f
 	sprintf(tempbuff, "%f)",pfDisancelist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¾ø¶Ô¶àÖáÖ±Ïß²å²¹SPÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				pfDisancelist		¾àÀëÁĞ±í
+Description:    //ç»å¯¹å¤šè½´ç›´çº¿æ’è¡¥SPè¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				pfDisancelist		è·ç¦»åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float *pfDisancelist)
 {
@@ -5719,7 +5719,7 @@ int32  ZAux_Direct_MoveAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist,
 	{
 		return  ERR_AUX_PARAERR;
 	}
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5733,10 +5733,10 @@ int32  ZAux_Direct_MoveAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist,
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 		
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcat(cmdbuff, "MOVEABSSP(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5750,17 +5750,17 @@ int32  ZAux_Direct_MoveAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist,
 	sprintf(tempbuff, "%f)",pfDisancelist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-//Description:    //ÔË¶¯ÖĞĞŞ¸Ä½áÊøÎ»ÖÃ  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-//Input:          //¿¨Á´½Óhandle
-					ÖáºÅ iaxis
-					¾ø¶Ô¾àÀë pfDisance
+//Description:    //è¿åŠ¨ä¸­ä¿®æ”¹ç»“æŸä½ç½®  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+//Input:          //å¡é“¾æ¥handle
+					è½´å· iaxis
+					ç»å¯¹è·ç¦» pfDisance
 //Output:         //
-//Return:         //´íÎóÂë
+//Return:         //é”™è¯¯ç 
 /*************************************************************/
 int32  ZAux_Direct_MoveModify(ZMC_HANDLE handle, int iaxis, float pfDisance)
 {
@@ -5773,26 +5773,26 @@ int32  ZAux_Direct_MoveModify(ZMC_HANDLE handle, int iaxis, float pfDisance)
 		return  ERR_AUX_PARAERR;
 	}
 
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	
 	sprintf(cmdbuff, "MOVEMODIFY(%f) AXIS(%d)",pfDisance,iaxis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //Ïà¶ÔÔ²ĞÄ¶¨Ô²»¡²å²¹ÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚÒ»¸öÖáÔË¶¯×ø±ê
-				end2              µÚ¶ş¸öÖáÔË¶¯×ø±ê
-				centre1    µÚÒ»¸öÖáÔË¶¯Ô²ĞÄ£¬Ïà¶ÔÓëÆğÊ¼µã¡£
-				centre2    µÚ¶ş¸öÖáÔË¶¯Ô²ĞÄ£¬Ïà¶ÔÓëÆğÊ¼µã¡£
-				direction  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
+Description:    //ç›¸å¯¹åœ†å¿ƒå®šåœ†å¼§æ’è¡¥è¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡
+				end2              ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡
+				centre1    ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç›¸å¯¹ä¸èµ·å§‹ç‚¹ã€‚
+				centre2    ç¬¬äºŒä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç›¸å¯¹ä¸èµ·å§‹ç‚¹ã€‚
+				direction  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveCirc(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection)
 {
@@ -5801,7 +5801,7 @@ int32  ZAux_Direct_MoveCirc(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, 
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5815,29 +5815,29 @@ int32  ZAux_Direct_MoveCirc(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, 
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 		
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVECIRC(%f,%f,%f,%f,%d)", fend1,fend2,fcenter1,fcenter2,idirection);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //Ïà¶ÔÔ²ĞÄ¶¨Ô²»¡ ²å²¹SPÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚÒ»¸öÖáÔË¶¯×ø±ê
-				end2              µÚ¶ş¸öÖáÔË¶¯×ø±ê
-				centre1    µÚÒ»¸öÖáÔË¶¯Ô²ĞÄ£¬Ïà¶ÔÓëÆğÊ¼µã¡£
-				centre2    µÚ¶ş¸öÖáÔË¶¯Ô²ĞÄ£¬Ïà¶ÔÓëÆğÊ¼µã¡£
-				direction  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
+Description:    //ç›¸å¯¹åœ†å¿ƒå®šåœ†å¼§ æ’è¡¥SPè¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡
+				end2              ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡
+				centre1    ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç›¸å¯¹ä¸èµ·å§‹ç‚¹ã€‚
+				centre2    ç¬¬äºŒä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç›¸å¯¹ä¸èµ·å§‹ç‚¹ã€‚
+				direction  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveCircSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection)
 {
@@ -5846,7 +5846,7 @@ int32  ZAux_Direct_MoveCircSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5860,30 +5860,30 @@ int32  ZAux_Direct_MoveCircSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 			
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVECIRCSP(%f,%f,%f,%f,%d)", fend1,fend2,fcenter1,fcenter2,idirection);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //¾ø¶ÔÔ²ĞÄÔ²»¡²å²¹ÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö  ÎŞ·¨»­ÕûÔ²
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚÒ»¸öÖáÔË¶¯×ø±ê£¬¾ø¶ÔÎ»ÖÃ
-				end2              µÚ¶ş¸öÖáÔË¶¯×ø±ê£¬¾ø¶ÔÎ»ÖÃ
-				centre1    µÚÒ»¸öÖáÔË¶¯Ô²ĞÄ£¬¾ø¶ÔÎ»ÖÃ
-				centre2    µÚ¶ş¸öÖáÔË¶¯Ô²ĞÄ£¬¾ø¶ÔÎ»ÖÃ
-				direction  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
+Description:    //ç»å¯¹åœ†å¿ƒåœ†å¼§æ’è¡¥è¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ  æ— æ³•ç”»æ•´åœ†
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç»å¯¹ä½ç½®
+				end2              ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç»å¯¹ä½ç½®
+				centre1    ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç»å¯¹ä½ç½®
+				centre2    ç¬¬äºŒä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç»å¯¹ä½ç½®
+				direction  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveCircAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection)
 {
@@ -5892,7 +5892,7 @@ int32  ZAux_Direct_MoveCircAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislis
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5906,29 +5906,29 @@ int32  ZAux_Direct_MoveCircAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislis
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVECIRCABS(%f,%f,%f,%f,%d)", fend1,fend2,fcenter1,fcenter2,idirection);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¾ø¶ÔÔ²ĞÄÔ²»¡²å²¹SPÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö  ÎŞ·¨»­ÕûÔ²
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚÒ»¸öÖáÔË¶¯×ø±ê£¬¾ø¶ÔÎ»ÖÃ
-				end2              µÚ¶ş¸öÖáÔË¶¯×ø±ê£¬¾ø¶ÔÎ»ÖÃ
-				centre1    µÚÒ»¸öÖáÔË¶¯Ô²ĞÄ£¬¾ø¶ÔÎ»ÖÃ
-				centre2    µÚ¶ş¸öÖáÔË¶¯Ô²ĞÄ£¬¾ø¶ÔÎ»ÖÃ
-				direction  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
+Description:    //ç»å¯¹åœ†å¿ƒåœ†å¼§æ’è¡¥SPè¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ  æ— æ³•ç”»æ•´åœ†
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç»å¯¹ä½ç½®
+				end2              ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç»å¯¹ä½ç½®
+				centre1    ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç»å¯¹ä½ç½®
+				centre2    ç¬¬äºŒä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç»å¯¹ä½ç½®
+				direction  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveCircAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection)
 {
@@ -5936,7 +5936,7 @@ int32  ZAux_Direct_MoveCircAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisl
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5950,30 +5950,30 @@ int32  ZAux_Direct_MoveCircAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisl
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVECIRCABSSP(%f,%f,%f,%f,%d)", fend1,fend2,fcenter1,fcenter2,idirection);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 
 /*************************************************************
-Description:    //Ïà¶Ô3µã¶¨Ô²»¡²å²¹ÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				mid1       µÚÒ»¸öÖáÖĞ¼äµã£¬Ïà¶ÔÆğÊ¼µã¾àÀë
-				mid2       µÚ¶ş¸öÖáÖĞ¼äµã£¬Ïà¶ÔÆğÊ¼µã¾àÀë
-				end1              µÚÒ»¸öÖá½áÊøµã£¬Ïà¶ÔÆğÊ¼µã¾àÀë
-				end2              µÚ¶ş¸öÖá½áÊøµã£¬Ïà¶ÔÆğÊ¼µã¾àÀë
+Description:    //ç›¸å¯¹3ç‚¹å®šåœ†å¼§æ’è¡¥è¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				mid1       ç¬¬ä¸€ä¸ªè½´ä¸­é—´ç‚¹ï¼Œç›¸å¯¹èµ·å§‹ç‚¹è·ç¦»
+				mid2       ç¬¬äºŒä¸ªè½´ä¸­é—´ç‚¹ï¼Œç›¸å¯¹èµ·å§‹ç‚¹è·ç¦»
+				end1              ç¬¬ä¸€ä¸ªè½´ç»“æŸç‚¹ï¼Œç›¸å¯¹èµ·å§‹ç‚¹è·ç¦»
+				end2              ç¬¬äºŒä¸ªè½´ç»“æŸç‚¹ï¼Œç›¸å¯¹èµ·å§‹ç‚¹è·ç¦»
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveCirc2(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fmid1, float fmid2, float fend1, float fend2)
 {
@@ -5982,7 +5982,7 @@ int32  ZAux_Direct_MoveCirc2(ZMC_HANDLE handle, int imaxaxises, int *piAxislist,
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -5996,29 +5996,29 @@ int32  ZAux_Direct_MoveCirc2(ZMC_HANDLE handle, int imaxaxises, int *piAxislist,
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 		
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVECIRC2(%f,%f,%f,%f)", fmid1,fmid2,fend1,fend2);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //¾ø¶Ô3µã¶¨Ô²»¡²å²¹ÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				mid1       µÚÒ»¸öÖáÖĞ¼äµã£¬¾ø¶ÔÎ»ÖÃ
-				mid2       µÚ¶ş¸öÖáÖĞ¼äµã£¬¾ø¶ÔÎ»ÖÃ
-				end1              µÚÒ»¸öÖá½áÊøµã£¬¾ø¶ÔÎ»ÖÃ
-				end2              µÚ¶ş¸öÖá½áÊøµã£¬¾ø¶ÔÎ»ÖÃ 
+Description:    //ç»å¯¹3ç‚¹å®šåœ†å¼§æ’è¡¥è¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				mid1       ç¬¬ä¸€ä¸ªè½´ä¸­é—´ç‚¹ï¼Œç»å¯¹ä½ç½®
+				mid2       ç¬¬äºŒä¸ªè½´ä¸­é—´ç‚¹ï¼Œç»å¯¹ä½ç½®
+				end1              ç¬¬ä¸€ä¸ªè½´ç»“æŸç‚¹ï¼Œç»å¯¹ä½ç½®
+				end2              ç¬¬äºŒä¸ªè½´ç»“æŸç‚¹ï¼Œç»å¯¹ä½ç½® 
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveCirc2Abs(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fmid1, float fmid2, float fend1, float fend2)
 {
@@ -6027,7 +6027,7 @@ int32  ZAux_Direct_MoveCirc2Abs(ZMC_HANDLE handle, int imaxaxises, int *piAxisli
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6041,28 +6041,28 @@ int32  ZAux_Direct_MoveCirc2Abs(ZMC_HANDLE handle, int imaxaxises, int *piAxisli
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 			
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVECIRC2ABS(%f,%f,%f,%f)", fmid1,fmid2,fend1,fend2);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //Ïà¶Ô3µã¶¨Ô²»¡²å²¹SPÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				mid1       µÚÒ»¸öÖáÖĞ¼äµã£¬Ïà¶ÔÆğÊ¼µã¾àÀë
-				mid2       µÚ¶ş¸öÖáÖĞ¼äµã£¬Ïà¶ÔÆğÊ¼µã¾àÀë
-				end1              µÚÒ»¸öÖá½áÊøµã£¬Ïà¶ÔÆğÊ¼µã¾àÀë
-				end2              µÚ¶ş¸öÖá½áÊøµã£¬Ïà¶ÔÆğÊ¼µã¾àÀë
+Description:    //ç›¸å¯¹3ç‚¹å®šåœ†å¼§æ’è¡¥SPè¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				mid1       ç¬¬ä¸€ä¸ªè½´ä¸­é—´ç‚¹ï¼Œç›¸å¯¹èµ·å§‹ç‚¹è·ç¦»
+				mid2       ç¬¬äºŒä¸ªè½´ä¸­é—´ç‚¹ï¼Œç›¸å¯¹èµ·å§‹ç‚¹è·ç¦»
+				end1              ç¬¬ä¸€ä¸ªè½´ç»“æŸç‚¹ï¼Œç›¸å¯¹èµ·å§‹ç‚¹è·ç¦»
+				end2              ç¬¬äºŒä¸ªè½´ç»“æŸç‚¹ï¼Œç›¸å¯¹èµ·å§‹ç‚¹è·ç¦»
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveCirc2Sp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fmid1, float fmid2, float fend1, float fend2)
 {
@@ -6071,7 +6071,7 @@ int32  ZAux_Direct_MoveCirc2Sp(ZMC_HANDLE handle, int imaxaxises, int *piAxislis
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6085,29 +6085,29 @@ int32  ZAux_Direct_MoveCirc2Sp(ZMC_HANDLE handle, int imaxaxises, int *piAxislis
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVECIRC2SP(%f,%f,%f,%f)", fmid1,fmid2,fend1,fend2);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //¾ø¶Ô3µã¶¨Ô²»¡²å²¹SPÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				mid1       µÚÒ»¸öÖáÖĞ¼äµã£¬¾ø¶ÔÎ»ÖÃ
-				mid2       µÚ¶ş¸öÖáÖĞ¼äµã£¬¾ø¶ÔÎ»ÖÃ
-				end1              µÚÒ»¸öÖá½áÊøµã£¬¾ø¶ÔÎ»ÖÃ
-				end2              µÚ¶ş¸öÖá½áÊøµã£¬¾ø¶ÔÎ»ÖÃ 
+Description:    //ç»å¯¹3ç‚¹å®šåœ†å¼§æ’è¡¥SPè¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				mid1       ç¬¬ä¸€ä¸ªè½´ä¸­é—´ç‚¹ï¼Œç»å¯¹ä½ç½®
+				mid2       ç¬¬äºŒä¸ªè½´ä¸­é—´ç‚¹ï¼Œç»å¯¹ä½ç½®
+				end1              ç¬¬ä¸€ä¸ªè½´ç»“æŸç‚¹ï¼Œç»å¯¹ä½ç½®
+				end2              ç¬¬äºŒä¸ªè½´ç»“æŸç‚¹ï¼Œç»å¯¹ä½ç½® 
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveCirc2AbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fmid1, float fmid2, float fend1, float fend2)
 {
@@ -6116,7 +6116,7 @@ int32  ZAux_Direct_MoveCirc2AbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxis
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6130,33 +6130,33 @@ int32  ZAux_Direct_MoveCirc2AbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxis
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 			
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVECIRC2ABSSP(%f,%f,%f,%f)", fmid1,fmid2,fend1,fend2);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 
 /*************************************************************
-Description:    //Ïà¶Ô3ÖáÔ²ĞÄÂİĞı²å²¹ÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚÒ»¸öÖáÔË¶¯×ø±ê
-				end2              µÚ¶ş¸öÖáÔË¶¯×ø±ê
-				centre1    µÚÒ»¸öÖáÔË¶¯Ô²ĞÄ£¬Ïà¶ÔÓëÆğÊ¼µã
-				centre2    µÚ¶ş¸öÖáÔË¶¯Ô²ĞÄ£¬Ïà¶ÔÓëÆğÊ¼µã		
-				direction  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
-				distance3µÚÈı¸öÖáÔË¶¯¾àÀë¡£
-				mode      µÚÈıÖáµÄËÙ¶È¼ÆËã:0(È±Ê¡)µÚÈıÖá²ÎÓëËÙ¶È¼ÆËã¡£1µÚÈıÖá²»²ÎÓëËÙ¶È¼ÆËã¡£
+Description:    //ç›¸å¯¹3è½´åœ†å¿ƒèºæ—‹æ’è¡¥è¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡
+				end2              ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡
+				centre1    ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç›¸å¯¹ä¸èµ·å§‹ç‚¹
+				centre2    ç¬¬äºŒä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç›¸å¯¹ä¸èµ·å§‹ç‚¹		
+				direction  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
+				distance3ç¬¬ä¸‰ä¸ªè½´è¿åŠ¨è·ç¦»ã€‚
+				mode      ç¬¬ä¸‰è½´çš„é€Ÿåº¦è®¡ç®—:0(ç¼ºçœ)ç¬¬ä¸‰è½´å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚1ç¬¬ä¸‰è½´ä¸å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MHelical(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fDistance3, int imode)
 {
@@ -6165,7 +6165,7 @@ int32  ZAux_Direct_MHelical(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, 
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6179,31 +6179,31 @@ int32  ZAux_Direct_MHelical(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, 
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MHELICAL(%f,%f,%f,%f,%d,%f,%d)", fend1,fend2,fcenter1,fcenter2,idirection, fDistance3, imode);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¾ø¶Ô3ÖáÔ²ĞÄÂİĞı²å²¹ÔË¶¯ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚÒ»¸öÖáÔË¶¯×ø±ê
-				end2              µÚ¶ş¸öÖáÔË¶¯×ø±ê
-				centre1    µÚÒ»¸öÖáÔË¶¯Ô²ĞÄ×ø±ê
-				centre2    µÚ¶ş¸öÖáÔË¶¯Ô²ĞÄ×ø±ê
-				direction  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
-				distance3µÚÈı¸öÖáÔË¶¯¾àÀë¡£
-				mode      µÚÈıÖáµÄËÙ¶È¼ÆËã:0(È±Ê¡) µÚÈıÖá²ÎÓëËÙ¶È¼ÆËã¡£1µÚÈıÖá²»²ÎÓëËÙ¶È¼ÆËã¡£
+Description:    //ç»å¯¹3è½´åœ†å¿ƒèºæ—‹æ’è¡¥è¿åŠ¨ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡
+				end2              ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡
+				centre1    ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åœ†å¿ƒåæ ‡
+				centre2    ç¬¬äºŒä¸ªè½´è¿åŠ¨åœ†å¿ƒåæ ‡
+				direction  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
+				distance3ç¬¬ä¸‰ä¸ªè½´è¿åŠ¨è·ç¦»ã€‚
+				mode      ç¬¬ä¸‰è½´çš„é€Ÿåº¦è®¡ç®—:0(ç¼ºçœ) ç¬¬ä¸‰è½´å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚1ç¬¬ä¸‰è½´ä¸å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚
 Output:         //
- Return:         //´íÎóÂë
+ Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MHelicalAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fDistance3, int imode)
 {
@@ -6212,7 +6212,7 @@ int32  ZAux_Direct_MHelicalAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislis
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6226,32 +6226,32 @@ int32  ZAux_Direct_MHelicalAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislis
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 		
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MHELICALABS(%f,%f,%f,%f,%d,%f,%d)", fend1,fend2,fcenter1,fcenter2,idirection, fDistance3, imode);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZMC_ExecuteNoAck(handle, cmdbuff, g_ZMC_MaxExcuteWaitms);
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //Ïà¶Ô3ÖáÔ²ĞÄÂİĞı²å²¹SPÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚÒ»¸öÖáÔË¶¯×ø±ê
-				end2              µÚ¶ş¸öÖáÔË¶¯×ø±ê
-				centre1    µÚÒ»¸öÖáÔË¶¯Ô²ĞÄ£¬Ïà¶ÔÓëÆğÊ¼µã	  
-				centre2    µÚ¶ş¸öÖáÔË¶¯Ô²ĞÄ£¬Ïà¶ÔÓëÆğÊ¼µã		
-				direction  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë  
-				distance3µÚÈı¸öÖáÔË¶¯¾àÀë¡£
-			  mode      µÚÈıÖáµÄËÙ¶È¼ÆËã: 0(È±Ê¡)µÚÈıÖá²ÎÓëËÙ¶È¼ÆËã¡£ 1µÚÈıÖá²»²ÎÓëËÙ¶È¼ÆËã¡£
+Description:    //ç›¸å¯¹3è½´åœ†å¿ƒèºæ—‹æ’è¡¥SPè¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡
+				end2              ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡
+				centre1    ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç›¸å¯¹ä¸èµ·å§‹ç‚¹	  
+				centre2    ç¬¬äºŒä¸ªè½´è¿åŠ¨åœ†å¿ƒï¼Œç›¸å¯¹ä¸èµ·å§‹ç‚¹		
+				direction  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ  
+				distance3ç¬¬ä¸‰ä¸ªè½´è¿åŠ¨è·ç¦»ã€‚
+			  mode      ç¬¬ä¸‰è½´çš„é€Ÿåº¦è®¡ç®—: 0(ç¼ºçœ)ç¬¬ä¸‰è½´å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚ 1ç¬¬ä¸‰è½´ä¸å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MHelicalSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fDistance3, int imode)
 {
@@ -6260,7 +6260,7 @@ int32  ZAux_Direct_MHelicalSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6274,30 +6274,30 @@ int32  ZAux_Direct_MHelicalSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 			
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MHELICALSP(%f,%f,%f,%f,%d,%f,%d)", fend1,fend2,fcenter1,fcenter2,idirection, fDistance3, imode);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¾ø¶Ô3ÖáÔ²ĞÄÂİĞı²å²¹SPÔË¶¯ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚÒ»¸öÖáÔË¶¯×ø±ê
-				end2              µÚ¶ş¸öÖáÔË¶¯×ø±ê
-				centre1    µÚÒ»¸öÖáÔË¶¯Ô²ĞÄ×ø±ê
-				centre2    µÚ¶ş¸öÖáÔË¶¯Ô²ĞÄ×ø±ê
-				direction  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
-				distance3µÚÈı¸öÖáÔË¶¯¾àÀë¡£
-				mode      µÚÈıÖáµÄËÙ¶È¼ÆËã:0(È±Ê¡) µÚÈıÖá²ÎÓëËÙ¶È¼ÆËã¡£1µÚÈıÖá²»²ÎÓëËÙ¶È¼ÆËã¡£
+Description:    //ç»å¯¹3è½´åœ†å¿ƒèºæ—‹æ’è¡¥SPè¿åŠ¨ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡
+				end2              ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡
+				centre1    ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åœ†å¿ƒåæ ‡
+				centre2    ç¬¬äºŒä¸ªè½´è¿åŠ¨åœ†å¿ƒåæ ‡
+				direction  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
+				distance3ç¬¬ä¸‰ä¸ªè½´è¿åŠ¨è·ç¦»ã€‚
+				mode      ç¬¬ä¸‰è½´çš„é€Ÿåº¦è®¡ç®—:0(ç¼ºçœ) ç¬¬ä¸‰è½´å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚1ç¬¬ä¸‰è½´ä¸å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚
 Output:         //
- Return:         //´íÎóÂë
+ Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MHelicalAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fDistance3, int imode)
 {
@@ -6306,7 +6306,7 @@ int32  ZAux_Direct_MHelicalAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisl
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6320,31 +6320,31 @@ int32  ZAux_Direct_MHelicalAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisl
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MHELICALABSSP(%f,%f,%f,%f,%d,%f,%d)", fend1,fend2,fcenter1,fcenter2,idirection, fDistance3, imode);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //Ïà¶Ô3Öá 3µã»­ÂİĞı²å²¹ÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				mid1       µÚÒ»¸öÖáÖĞ¼äµã  
-				mid2       µÚ¶ş¸öÖáÖĞ¼äµã	
-				end1              µÚÒ»¸öÖá½áÊøµã	  
-				end2              µÚ¶ş¸öÖá½áÊøµã		
-				distance3µÚÈı¸öÖáÔË¶¯¾àÀë		  
-				mode      µÚÈıÖáµÄËÙ¶È¼ÆËã:			
+Description:    //ç›¸å¯¹3è½´ 3ç‚¹ç”»èºæ—‹æ’è¡¥è¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				mid1       ç¬¬ä¸€ä¸ªè½´ä¸­é—´ç‚¹  
+				mid2       ç¬¬äºŒä¸ªè½´ä¸­é—´ç‚¹	
+				end1              ç¬¬ä¸€ä¸ªè½´ç»“æŸç‚¹	  
+				end2              ç¬¬äºŒä¸ªè½´ç»“æŸç‚¹		
+				distance3ç¬¬ä¸‰ä¸ªè½´è¿åŠ¨è·ç¦»		  
+				mode      ç¬¬ä¸‰è½´çš„é€Ÿåº¦è®¡ç®—:			
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MHelical2(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fmid1, float fmid2, float fend1, float fend2, float fDistance3, int imode)
 {
@@ -6353,7 +6353,7 @@ int32  ZAux_Direct_MHelical2(ZMC_HANDLE handle, int imaxaxises, int *piAxislist,
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6367,29 +6367,29 @@ int32  ZAux_Direct_MHelical2(ZMC_HANDLE handle, int imaxaxises, int *piAxislist,
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 					
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MHELICAL2(%f,%f,%f,%f,%f,%d)", fmid1,fmid2,fend1,fend2, fDistance3, imode);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¾ø¶Ô3Öá 3µã»­ÂİĞı²å²¹ÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-			imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-			piAxislist			ÖáºÅÁĞ±í
-			mid1       µÚÒ»¸öÖáÖĞ¼äµã
-			mid2       µÚ¶ş¸öÖáÖĞ¼äµã
-			end1              µÚÒ»¸öÖá½áÊøµã
-			end2              µÚ¶ş¸öÖá½áÊøµã
-			distance3   µÚÈı¸öÖáÔË¶¯½áÊøµã
-			mode      µÚÈıÖáµÄËÙ¶È¼ÆËã:
+Description:    //ç»å¯¹3è½´ 3ç‚¹ç”»èºæ—‹æ’è¡¥è¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+			imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+			piAxislist			è½´å·åˆ—è¡¨
+			mid1       ç¬¬ä¸€ä¸ªè½´ä¸­é—´ç‚¹
+			mid2       ç¬¬äºŒä¸ªè½´ä¸­é—´ç‚¹
+			end1              ç¬¬ä¸€ä¸ªè½´ç»“æŸç‚¹
+			end2              ç¬¬äºŒä¸ªè½´ç»“æŸç‚¹
+			distance3   ç¬¬ä¸‰ä¸ªè½´è¿åŠ¨ç»“æŸç‚¹
+			mode      ç¬¬ä¸‰è½´çš„é€Ÿåº¦è®¡ç®—:
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MHelical2Abs(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fmid1, float fmid2, float fend1, float fend2, float fDistance3, int imode)
 {
@@ -6398,7 +6398,7 @@ int32  ZAux_Direct_MHelical2Abs(ZMC_HANDLE handle, int imaxaxises, int *piAxisli
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6412,30 +6412,30 @@ int32  ZAux_Direct_MHelical2Abs(ZMC_HANDLE handle, int imaxaxises, int *piAxisli
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MHELICAL2ABS(%f,%f,%f,%f,%f,%d)", fmid1,fmid2,fend1,fend2, fDistance3, imode);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //Ïà¶Ô3Öá 3µã»­ÂİĞı²å²¹SPÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				mid1       µÚÒ»¸öÖáÖĞ¼äµã  
-				mid2       µÚ¶ş¸öÖáÖĞ¼äµã	
-				end1              µÚÒ»¸öÖá½áÊøµã	  
-				end2              µÚ¶ş¸öÖá½áÊøµã		
-				distance3µÚÈı¸öÖáÔË¶¯¾àÀë		  
-				mode      µÚÈıÖáµÄËÙ¶È¼ÆËã:			
+Description:    //ç›¸å¯¹3è½´ 3ç‚¹ç”»èºæ—‹æ’è¡¥SPè¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				mid1       ç¬¬ä¸€ä¸ªè½´ä¸­é—´ç‚¹  
+				mid2       ç¬¬äºŒä¸ªè½´ä¸­é—´ç‚¹	
+				end1              ç¬¬ä¸€ä¸ªè½´ç»“æŸç‚¹	  
+				end2              ç¬¬äºŒä¸ªè½´ç»“æŸç‚¹		
+				distance3ç¬¬ä¸‰ä¸ªè½´è¿åŠ¨è·ç¦»		  
+				mode      ç¬¬ä¸‰è½´çš„é€Ÿåº¦è®¡ç®—:			
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MHelical2Sp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fmid1, float fmid2, float fend1, float fend2, float fDistance3, int imode)
 {
@@ -6444,7 +6444,7 @@ int32  ZAux_Direct_MHelical2Sp(ZMC_HANDLE handle, int imaxaxises, int *piAxislis
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6458,29 +6458,29 @@ int32  ZAux_Direct_MHelical2Sp(ZMC_HANDLE handle, int imaxaxises, int *piAxislis
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 					
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MHELICAL2SP(%f,%f,%f,%f,%f,%d)", fmid1,fmid2,fend1,fend2, fDistance3, imode);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¾ø¶Ô3Öá 3µã»­ÂİĞı²å²¹SPÔË¶¯  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-			imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-			piAxislist			ÖáºÅÁĞ±í
-			mid1       µÚÒ»¸öÖáÖĞ¼äµã
-			mid2       µÚ¶ş¸öÖáÖĞ¼äµã
-			end1              µÚÒ»¸öÖá½áÊøµã
-			end2              µÚ¶ş¸öÖá½áÊøµã
-			distance3   µÚÈı¸öÖáÔË¶¯½áÊøµã
-			mode      µÚÈıÖáµÄËÙ¶È¼ÆËã:
+Description:    //ç»å¯¹3è½´ 3ç‚¹ç”»èºæ—‹æ’è¡¥SPè¿åŠ¨  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+			imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+			piAxislist			è½´å·åˆ—è¡¨
+			mid1       ç¬¬ä¸€ä¸ªè½´ä¸­é—´ç‚¹
+			mid2       ç¬¬äºŒä¸ªè½´ä¸­é—´ç‚¹
+			end1              ç¬¬ä¸€ä¸ªè½´ç»“æŸç‚¹
+			end2              ç¬¬äºŒä¸ªè½´ç»“æŸç‚¹
+			distance3   ç¬¬ä¸‰ä¸ªè½´è¿åŠ¨ç»“æŸç‚¹
+			mode      ç¬¬ä¸‰è½´çš„é€Ÿåº¦è®¡ç®—:
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MHelical2AbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fmid1, float fmid2, float fend1, float fend2, float fDistance3, int imode)
 {
@@ -6489,7 +6489,7 @@ int32  ZAux_Direct_MHelical2AbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxis
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6503,33 +6503,33 @@ int32  ZAux_Direct_MHelical2AbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxis
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 						
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MHELICAL2ABSSP(%f,%f,%f,%f,%f,%d)", fmid1,fmid2,fend1,fend2, fDistance3, imode);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 
 /*************************************************************
-Description:    //Ïà¶ÔÍÖÔ²²å²¹ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-			imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-			piAxislist			ÖáºÅÁĞ±í
-			fend1              ÖÕµãµÚÒ»¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-			fend2              ÖÕµãµÚ¶ş¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-			fcenter1    ÖĞĞÄµÚÒ»¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-			fcenter2    ÖĞĞÄµÚ¶ş¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-			idirection  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
-			fADis         µÚÒ»ÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É¡£
-			fBDis        µÚ¶şÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É£¬ABÏàµÈÊ±×Ô¶¯ÎªÔ²»¡»òÂİĞı¡£
+Description:    //ç›¸å¯¹æ¤­åœ†æ’è¡¥ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+			imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+			piAxislist			è½´å·åˆ—è¡¨
+			fend1              ç»ˆç‚¹ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+			fend2              ç»ˆç‚¹ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+			fcenter1    ä¸­å¿ƒç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+			fcenter2    ä¸­å¿ƒç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+			idirection  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
+			fADis         ç¬¬ä¸€è½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ã€‚
+			fBDis        ç¬¬äºŒè½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ï¼ŒABç›¸ç­‰æ—¶è‡ªåŠ¨ä¸ºåœ†å¼§æˆ–èºæ—‹ã€‚
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MEclipse(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fADis, float fBDis)
 {
@@ -6538,7 +6538,7 @@ int32  ZAux_Direct_MEclipse(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, 
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6552,32 +6552,32 @@ int32  ZAux_Direct_MEclipse(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, 
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 						
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MECLIPSE(%f,%f,%f,%f,%d,%f,%f,%f)", fend1,fend2,fcenter1,fcenter2,idirection, fADis, fBDis);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¾ø¶ÔÍÖÔ²²å²¹ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				fend1              ÖÕµãµÚÒ»¸öÖáÔË¶¯×ø±ê
-				fend2              ÖÕµãµÚ¶ş¸öÖáÔË¶¯×ø±ê
-				fcenter1    ÖĞĞÄµÚÒ»¸öÖáÔË¶¯×ø±ê¡£
-				fcenter2    ÖĞĞÄµÚ¶ş¸öÖáÔË¶¯×ø±ê¡£
-				idirection  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
-				fADis         µÚÒ»ÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É¡£
-				fBDis        µÚ¶şÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É£¬ABÏàµÈÊ±×Ô¶¯ÎªÔ²»¡»òÂİĞı¡£
+Description:    //ç»å¯¹æ¤­åœ†æ’è¡¥ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				fend1              ç»ˆç‚¹ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡
+				fend2              ç»ˆç‚¹ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡
+				fcenter1    ä¸­å¿ƒç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ã€‚
+				fcenter2    ä¸­å¿ƒç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ã€‚
+				idirection  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
+				fADis         ç¬¬ä¸€è½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ã€‚
+				fBDis        ç¬¬äºŒè½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ï¼ŒABç›¸ç­‰æ—¶è‡ªåŠ¨ä¸ºåœ†å¼§æˆ–èºæ—‹ã€‚
 
   Output:         //
-  Return:         //´íÎóÂë
+  Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MEclipseAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fADis, float fBDis)
 {
@@ -6586,7 +6586,7 @@ int32  ZAux_Direct_MEclipseAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislis
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6600,31 +6600,31 @@ int32  ZAux_Direct_MEclipseAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislis
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MECLIPSEABS(%f,%f,%f,%f,%d,%f,%f)", fend1,fend2,fcenter1,fcenter2,idirection, fADis, fBDis);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //Ïà¶ÔÍÖÔ²²å²¹SPÔË¶¯ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-			imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-			piAxislist			ÖáºÅÁĞ±í
-			fend1              ÖÕµãµÚÒ»¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-			fend2              ÖÕµãµÚ¶ş¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-			fcenter1    ÖĞĞÄµÚÒ»¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-			fcenter2    ÖĞĞÄµÚ¶ş¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-			idirection  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
-			fADis         µÚÒ»ÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É¡£
-			fBDis        µÚ¶şÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É£¬ABÏàµÈÊ±×Ô¶¯ÎªÔ²»¡»òÂİĞı¡£
+Description:    //ç›¸å¯¹æ¤­åœ†æ’è¡¥SPè¿åŠ¨ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+			imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+			piAxislist			è½´å·åˆ—è¡¨
+			fend1              ç»ˆç‚¹ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+			fend2              ç»ˆç‚¹ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+			fcenter1    ä¸­å¿ƒç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+			fcenter2    ä¸­å¿ƒç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+			idirection  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
+			fADis         ç¬¬ä¸€è½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ã€‚
+			fBDis        ç¬¬äºŒè½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ï¼ŒABç›¸ç­‰æ—¶è‡ªåŠ¨ä¸ºåœ†å¼§æˆ–èºæ—‹ã€‚
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MEclipseSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fADis, float fBDis)
 {
@@ -6632,7 +6632,7 @@ int32  ZAux_Direct_MEclipseSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6646,32 +6646,32 @@ int32  ZAux_Direct_MEclipseSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 					
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MECLIPSESP(%f,%f,%f,%f,%d,%f,%f)", fend1,fend2,fcenter1,fcenter2,idirection, fADis, fBDis);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¾ø¶ÔÍÖÔ²²å²¹SPÔË¶¯ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				fend1              ÖÕµãµÚÒ»¸öÖáÔË¶¯×ø±ê
-				fend2              ÖÕµãµÚ¶ş¸öÖáÔË¶¯×ø±ê
-				fcenter1    ÖĞĞÄµÚÒ»¸öÖáÔË¶¯×ø±ê¡£
-				fcenter2    ÖĞĞÄµÚ¶ş¸öÖáÔË¶¯×ø±ê¡£
-				idirection  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
-				fADis         µÚÒ»ÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É¡£
-				fBDis        µÚ¶şÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É£¬ABÏàµÈÊ±×Ô¶¯ÎªÔ²»¡»òÂİĞı¡£
+Description:    //ç»å¯¹æ¤­åœ†æ’è¡¥SPè¿åŠ¨ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				fend1              ç»ˆç‚¹ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡
+				fend2              ç»ˆç‚¹ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡
+				fcenter1    ä¸­å¿ƒç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ã€‚
+				fcenter2    ä¸­å¿ƒç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ã€‚
+				idirection  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
+				fADis         ç¬¬ä¸€è½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ã€‚
+				fBDis        ç¬¬äºŒè½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ï¼ŒABç›¸ç­‰æ—¶è‡ªåŠ¨ä¸ºåœ†å¼§æˆ–èºæ—‹ã€‚
 
   Output:         //
-  Return:         //´íÎóÂë
+  Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MEclipseAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fADis, float fBDis)
 {
@@ -6680,7 +6680,7 @@ int32  ZAux_Direct_MEclipseAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisl
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6694,33 +6694,33 @@ int32  ZAux_Direct_MEclipseAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisl
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 						
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MECLIPSEABSSP(%f,%f,%f,%f,%d,%f,%f)", fend1,fend2,fcenter1,fcenter2,idirection, fADis, fBDis);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //Ïà¶Ô ÍÖÔ² + ÂİĞı²å²¹ÔË¶¯ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				fend1              ÖÕµãµÚÒ»¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-				fend2              ÖÕµãµÚ¶ş¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-				fcenter1    ÖĞĞÄµÚÒ»¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-				fcenter2    ÖĞĞÄµÚ¶ş¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-				idirection  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
-				fADis         µÚÒ»ÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É¡£
-				fBDis        µÚ¶şÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É£¬ABÏàµÈÊ±×Ô¶¯ÎªÔ²»¡»òÂİĞı¡£
-				fDistance3	µÚÈı¸öÖáµÄÔË¶¯¾àÀë
+Description:    //ç›¸å¯¹ æ¤­åœ† + èºæ—‹æ’è¡¥è¿åŠ¨ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				fend1              ç»ˆç‚¹ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+				fend2              ç»ˆç‚¹ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+				fcenter1    ä¸­å¿ƒç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+				fcenter2    ä¸­å¿ƒç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+				idirection  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
+				fADis         ç¬¬ä¸€è½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ã€‚
+				fBDis        ç¬¬äºŒè½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ï¼ŒABç›¸ç­‰æ—¶è‡ªåŠ¨ä¸ºåœ†å¼§æˆ–èºæ—‹ã€‚
+				fDistance3	ç¬¬ä¸‰ä¸ªè½´çš„è¿åŠ¨è·ç¦»
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MEclipseHelical(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fADis, float fBDis, float fDistance3)
 {
@@ -6729,7 +6729,7 @@ int32  ZAux_Direct_MEclipseHelical(ZMC_HANDLE handle, int imaxaxises, int *piAxi
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6743,32 +6743,32 @@ int32  ZAux_Direct_MEclipseHelical(ZMC_HANDLE handle, int imaxaxises, int *piAxi
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 						
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MECLIPSE(%f,%f,%f,%f,%d,%f,%f,%f)", fend1,fend2,fcenter1,fcenter2,idirection, fADis, fBDis, fDistance3);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¾ø¶ÔÍÖÔ² + ÂİĞı²å²¹ÔË¶¯ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				fend1              ÖÕµãµÚÒ»¸öÖáÔË¶¯×ø±ê
-				fend2              ÖÕµãµÚ¶ş¸öÖáÔË¶¯×ø±ê
-				fcenter1    ÖĞĞÄµÚÒ»¸öÖáÔË¶¯×ø±ê¡£
-				fcenter2    ÖĞĞÄµÚ¶ş¸öÖáÔË¶¯×ø±ê¡£
-				idirection  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
-				fADis         µÚÒ»ÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É¡£
-				fBDis        µÚ¶şÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É£¬ABÏàµÈÊ±×Ô¶¯ÎªÔ²»¡»òÂİĞı¡£
-				fDistance3	µÚÈı¸öÖáµÄÔË¶¯¾àÀë
+Description:    //ç»å¯¹æ¤­åœ† + èºæ—‹æ’è¡¥è¿åŠ¨ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				fend1              ç»ˆç‚¹ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡
+				fend2              ç»ˆç‚¹ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡
+				fcenter1    ä¸­å¿ƒç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ã€‚
+				fcenter2    ä¸­å¿ƒç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ã€‚
+				idirection  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
+				fADis         ç¬¬ä¸€è½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ã€‚
+				fBDis        ç¬¬äºŒè½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ï¼ŒABç›¸ç­‰æ—¶è‡ªåŠ¨ä¸ºåœ†å¼§æˆ–èºæ—‹ã€‚
+				fDistance3	ç¬¬ä¸‰ä¸ªè½´çš„è¿åŠ¨è·ç¦»
   Output:         //
-  Return:         //´íÎóÂë
+  Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MEclipseHelicalAbs(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fADis, float fBDis,float fDistance3)
 {
@@ -6776,7 +6776,7 @@ int32  ZAux_Direct_MEclipseHelicalAbs(ZMC_HANDLE handle, int imaxaxises, int *pi
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6790,31 +6790,31 @@ int32  ZAux_Direct_MEclipseHelicalAbs(ZMC_HANDLE handle, int imaxaxises, int *pi
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MECLIPSEABS(%f,%f,%f,%f,%d,%f,%f,%f)", fend1,fend2,fcenter1,fcenter2,idirection, fADis, fBDis,fDistance3);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //Ïà¶Ô ÍÖÔ² + ÂİĞı²å²¹SPÔË¶¯ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				fend1              ÖÕµãµÚÒ»¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-				fend2              ÖÕµãµÚ¶ş¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-				fcenter1    ÖĞĞÄµÚÒ»¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-				fcenter2    ÖĞĞÄµÚ¶ş¸öÖáÔË¶¯×ø±ê£¬Ïà¶ÔÓÚÆğÊ¼µã¡£
-				idirection  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
-				fADis         µÚÒ»ÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É¡£
-				fBDis        µÚ¶şÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É£¬ABÏàµÈÊ±×Ô¶¯ÎªÔ²»¡»òÂİĞı¡£
-				fDistance3	µÚÈı¸öÖáµÄÔË¶¯¾àÀë
+Description:    //ç›¸å¯¹ æ¤­åœ† + èºæ—‹æ’è¡¥SPè¿åŠ¨ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				fend1              ç»ˆç‚¹ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+				fend2              ç»ˆç‚¹ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+				fcenter1    ä¸­å¿ƒç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+				fcenter2    ä¸­å¿ƒç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ï¼Œç›¸å¯¹äºèµ·å§‹ç‚¹ã€‚
+				idirection  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
+				fADis         ç¬¬ä¸€è½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ã€‚
+				fBDis        ç¬¬äºŒè½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ï¼ŒABç›¸ç­‰æ—¶è‡ªåŠ¨ä¸ºåœ†å¼§æˆ–èºæ—‹ã€‚
+				fDistance3	ç¬¬ä¸‰ä¸ªè½´çš„è¿åŠ¨è·ç¦»
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MEclipseHelicalSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fADis, float fBDis, float fDistance3)
 {
@@ -6823,7 +6823,7 @@ int32  ZAux_Direct_MEclipseHelicalSp(ZMC_HANDLE handle, int imaxaxises, int *piA
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6837,31 +6837,31 @@ int32  ZAux_Direct_MEclipseHelicalSp(ZMC_HANDLE handle, int imaxaxises, int *piA
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MECLIPSESP(%f,%f,%f,%f,%d,%f,%f,%f)", fend1,fend2,fcenter1,fcenter2,idirection, fADis, fBDis, fDistance3);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¾ø¶ÔÍÖÔ² + ÂİĞı²å²¹SPÔË¶¯ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				fend1              ÖÕµãµÚÒ»¸öÖáÔË¶¯×ø±ê
-				fend2              ÖÕµãµÚ¶ş¸öÖáÔË¶¯×ø±ê
-				fcenter1    ÖĞĞÄµÚÒ»¸öÖáÔË¶¯×ø±ê¡£
-				fcenter2    ÖĞĞÄµÚ¶ş¸öÖáÔË¶¯×ø±ê¡£
-				idirection  0-ÄæÊ±Õë£¬1-Ë³Ê±Õë
-				fADis         µÚÒ»ÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É¡£
-				fBDis        µÚ¶şÖáµÄÍÖÔ²°ë¾¶£¬°ë³¤Öá»òÕß°ë¶ÌÖá¶¼¿É£¬ABÏàµÈÊ±×Ô¶¯ÎªÔ²»¡»òÂİĞı¡£
-				fDistance3	µÚÈı¸öÖáµÄÔË¶¯¾àÀë
+Description:    //ç»å¯¹æ¤­åœ† + èºæ—‹æ’è¡¥SPè¿åŠ¨ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				fend1              ç»ˆç‚¹ç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡
+				fend2              ç»ˆç‚¹ç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡
+				fcenter1    ä¸­å¿ƒç¬¬ä¸€ä¸ªè½´è¿åŠ¨åæ ‡ã€‚
+				fcenter2    ä¸­å¿ƒç¬¬äºŒä¸ªè½´è¿åŠ¨åæ ‡ã€‚
+				idirection  0-é€†æ—¶é’ˆï¼Œ1-é¡ºæ—¶é’ˆ
+				fADis         ç¬¬ä¸€è½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ã€‚
+				fBDis        ç¬¬äºŒè½´çš„æ¤­åœ†åŠå¾„ï¼ŒåŠé•¿è½´æˆ–è€…åŠçŸ­è½´éƒ½å¯ï¼ŒABç›¸ç­‰æ—¶è‡ªåŠ¨ä¸ºåœ†å¼§æˆ–èºæ—‹ã€‚
+				fDistance3	ç¬¬ä¸‰ä¸ªè½´çš„è¿åŠ¨è·ç¦»
   Output:         //
-  Return:         //´íÎóÂë
+  Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MEclipseHelicalAbsSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fcenter1, float fcenter2, int idirection, float fADis, float fBDis,float fDistance3)
 {
@@ -6869,7 +6869,7 @@ int32  ZAux_Direct_MEclipseHelicalAbsSp(ZMC_HANDLE handle, int imaxaxises, int *
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6883,37 +6883,37 @@ int32  ZAux_Direct_MEclipseHelicalAbsSp(ZMC_HANDLE handle, int imaxaxises, int *
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MECLIPSEABSSP(%f,%f,%f,%f,%d,%f,%f,%f)", fend1,fend2,fcenter1,fcenter2,idirection, fADis, fBDis,fDistance3);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //¿Õ¼äÔ²»¡ + ÂİĞı²å²¹ÔË¶¯ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚ1¸öÖáÔË¶¯¾àÀë²ÎÊı1	Ïà¶ÔÓëÆğµã
-				end2              µÚ2¸öÖáÔË¶¯¾àÀë²ÎÊı1	Ïà¶ÔÓëÆğµã  
-				end3              µÚ3¸öÖáÔË¶¯¾àÀë²ÎÊı1	Ïà¶ÔÓëÆğµã
-				centre1    µÚ1¸öÖáÔË¶¯¾àÀë²ÎÊı2	Ïà¶ÔÓëÆğµã
-				centre2    µÚ2¸öÖáÔË¶¯¾àÀë²ÎÊı2	Ïà¶ÔÓëÆğµã
-				centre3    µÚ3¸öÖáÔË¶¯¾àÀë²ÎÊı2 Ïà¶ÔÓëÆğµã
-				mode      Ö¸¶¨Ç°Ãæ²ÎÊıµÄÒâÒå
-					0 µ±Ç°µã£¬ÖĞ¼äµã£¬ÖÕµãÈıµã¶¨Ô²»¡£¬¾àÀë²ÎÊı1ÎªÖÕµã¾àÀë£¬¾àÀë²ÎÊı2ÎªÖĞ¼äµã¾àÀë¡£
-					1 ×ß×îĞ¡µÄÔ²»¡£¬¾àÀë²ÎÊı1ÎªÖÕµã¾àÀë£¬¾àÀë²ÎÊı2ÎªÔ²ĞÄµÄ¾àÀë¡£
-					2 µ±Ç°µã£¬ÖĞ¼äµã£¬ÖÕµãÈıµã¶¨Ô²£¬¾àÀë²ÎÊı1ÎªÖÕµã¾àÀë£¬¾àÀë²ÎÊı2ÎªÖĞ¼äµã¾àÀë¡£
-					3 ÏÈ×ß×îĞ¡µÄÔ²»¡£¬ÔÙ¼ÌĞø×ßÍêÕûÔ²£¬¾àÀë²ÎÊı1ÎªÖÕµã¾àÀë£¬¾àÀë²ÎÊı2ÎªÔ²ĞÄµÄ¾àÀë¡£
-				fcenter4	µÚ4¸öÖáÔË¶¯¾àÀë²ÎÊı 
-				fcenter5	µÚ5¸öÖáÔË¶¯¾àÀë²ÎÊı
+Description:    //ç©ºé—´åœ†å¼§ + èºæ—‹æ’è¡¥è¿åŠ¨ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬1ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°1	ç›¸å¯¹ä¸èµ·ç‚¹
+				end2              ç¬¬2ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°1	ç›¸å¯¹ä¸èµ·ç‚¹  
+				end3              ç¬¬3ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°1	ç›¸å¯¹ä¸èµ·ç‚¹
+				centre1    ç¬¬1ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°2	ç›¸å¯¹ä¸èµ·ç‚¹
+				centre2    ç¬¬2ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°2	ç›¸å¯¹ä¸èµ·ç‚¹
+				centre3    ç¬¬3ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°2 ç›¸å¯¹ä¸èµ·ç‚¹
+				mode      æŒ‡å®šå‰é¢å‚æ•°çš„æ„ä¹‰
+					0 å½“å‰ç‚¹ï¼Œä¸­é—´ç‚¹ï¼Œç»ˆç‚¹ä¸‰ç‚¹å®šåœ†å¼§ï¼Œè·ç¦»å‚æ•°1ä¸ºç»ˆç‚¹è·ç¦»ï¼Œè·ç¦»å‚æ•°2ä¸ºä¸­é—´ç‚¹è·ç¦»ã€‚
+					1 èµ°æœ€å°çš„åœ†å¼§ï¼Œè·ç¦»å‚æ•°1ä¸ºç»ˆç‚¹è·ç¦»ï¼Œè·ç¦»å‚æ•°2ä¸ºåœ†å¿ƒçš„è·ç¦»ã€‚
+					2 å½“å‰ç‚¹ï¼Œä¸­é—´ç‚¹ï¼Œç»ˆç‚¹ä¸‰ç‚¹å®šåœ†ï¼Œè·ç¦»å‚æ•°1ä¸ºç»ˆç‚¹è·ç¦»ï¼Œè·ç¦»å‚æ•°2ä¸ºä¸­é—´ç‚¹è·ç¦»ã€‚
+					3 å…ˆèµ°æœ€å°çš„åœ†å¼§ï¼Œå†ç»§ç»­èµ°å®Œæ•´åœ†ï¼Œè·ç¦»å‚æ•°1ä¸ºç»ˆç‚¹è·ç¦»ï¼Œè·ç¦»å‚æ•°2ä¸ºåœ†å¿ƒçš„è·ç¦»ã€‚
+				fcenter4	ç¬¬4ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•° 
+				fcenter5	ç¬¬5ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MSpherical(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fend3, float fcenter1, float fcenter2, float fcenter3, int imode, float fcenter4, float fcenter5)
 {
@@ -6922,7 +6922,7 @@ int32  ZAux_Direct_MSpherical(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6936,37 +6936,37 @@ int32  ZAux_Direct_MSpherical(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MSPHERICAL(%f,%f,%f,%f,%f,%f,%d,%f,%f)", fend1,fend2,fend3,fcenter1,fcenter2,fcenter3,imode,fcenter4,fcenter5);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //¿Õ¼äÔ²»¡ + ÂİĞı ²å²¹SPÔË¶¯ 20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚ1¸öÖáÔË¶¯¾àÀë²ÎÊı1	Ïà¶ÔÓëÆğµã
-				end2              µÚ2¸öÖáÔË¶¯¾àÀë²ÎÊı1	Ïà¶ÔÓëÆğµã  
-				end3              µÚ3¸öÖáÔË¶¯¾àÀë²ÎÊı1	Ïà¶ÔÓëÆğµã
-				centre1    µÚ1¸öÖáÔË¶¯¾àÀë²ÎÊı2	Ïà¶ÔÓëÆğµã
-				centre2    µÚ2¸öÖáÔË¶¯¾àÀë²ÎÊı2	Ïà¶ÔÓëÆğµã
-				centre3    µÚ3¸öÖáÔË¶¯¾àÀë²ÎÊı2 Ïà¶ÔÓëÆğµã
-				mode      Ö¸¶¨Ç°Ãæ²ÎÊıµÄÒâÒå
-					0 µ±Ç°µã£¬ÖĞ¼äµã£¬ÖÕµãÈıµã¶¨Ô²»¡£¬¾àÀë²ÎÊı1ÎªÖÕµã¾àÀë£¬¾àÀë²ÎÊı2ÎªÖĞ¼äµã¾àÀë¡£
-					1 ×ß×îĞ¡µÄÔ²»¡£¬¾àÀë²ÎÊı1ÎªÖÕµã¾àÀë£¬¾àÀë²ÎÊı2ÎªÔ²ĞÄµÄ¾àÀë¡£
-					2 µ±Ç°µã£¬ÖĞ¼äµã£¬ÖÕµãÈıµã¶¨Ô²£¬¾àÀë²ÎÊı1ÎªÖÕµã¾àÀë£¬¾àÀë²ÎÊı2ÎªÖĞ¼äµã¾àÀë¡£
-					3 ÏÈ×ß×îĞ¡µÄÔ²»¡£¬ÔÙ¼ÌĞø×ßÍêÕûÔ²£¬¾àÀë²ÎÊı1ÎªÖÕµã¾àÀë£¬¾àÀë²ÎÊı2ÎªÔ²ĞÄµÄ¾àÀë¡£
-				fcenter4	µÚ4¸öÖáÔË¶¯¾àÀë²ÎÊı 
-				fcenter5	µÚ5¸öÖáÔË¶¯¾àÀë²ÎÊı
+Description:    //ç©ºé—´åœ†å¼§ + èºæ—‹ æ’è¡¥SPè¿åŠ¨ 20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬1ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°1	ç›¸å¯¹ä¸èµ·ç‚¹
+				end2              ç¬¬2ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°1	ç›¸å¯¹ä¸èµ·ç‚¹  
+				end3              ç¬¬3ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°1	ç›¸å¯¹ä¸èµ·ç‚¹
+				centre1    ç¬¬1ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°2	ç›¸å¯¹ä¸èµ·ç‚¹
+				centre2    ç¬¬2ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°2	ç›¸å¯¹ä¸èµ·ç‚¹
+				centre3    ç¬¬3ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°2 ç›¸å¯¹ä¸èµ·ç‚¹
+				mode      æŒ‡å®šå‰é¢å‚æ•°çš„æ„ä¹‰
+					0 å½“å‰ç‚¹ï¼Œä¸­é—´ç‚¹ï¼Œç»ˆç‚¹ä¸‰ç‚¹å®šåœ†å¼§ï¼Œè·ç¦»å‚æ•°1ä¸ºç»ˆç‚¹è·ç¦»ï¼Œè·ç¦»å‚æ•°2ä¸ºä¸­é—´ç‚¹è·ç¦»ã€‚
+					1 èµ°æœ€å°çš„åœ†å¼§ï¼Œè·ç¦»å‚æ•°1ä¸ºç»ˆç‚¹è·ç¦»ï¼Œè·ç¦»å‚æ•°2ä¸ºåœ†å¿ƒçš„è·ç¦»ã€‚
+					2 å½“å‰ç‚¹ï¼Œä¸­é—´ç‚¹ï¼Œç»ˆç‚¹ä¸‰ç‚¹å®šåœ†ï¼Œè·ç¦»å‚æ•°1ä¸ºç»ˆç‚¹è·ç¦»ï¼Œè·ç¦»å‚æ•°2ä¸ºä¸­é—´ç‚¹è·ç¦»ã€‚
+					3 å…ˆèµ°æœ€å°çš„åœ†å¼§ï¼Œå†ç»§ç»­èµ°å®Œæ•´åœ†ï¼Œè·ç¦»å‚æ•°1ä¸ºç»ˆç‚¹è·ç¦»ï¼Œè·ç¦»å‚æ•°2ä¸ºåœ†å¿ƒçš„è·ç¦»ã€‚
+				fcenter4	ç¬¬4ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•° 
+				fcenter5	ç¬¬5ä¸ªè½´è¿åŠ¨è·ç¦»å‚æ•°
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MSphericalSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float fend1, float fend2, float fend3, float fcenter1, float fcenter2, float fcenter3, int imode, float fcenter4, float fcenter5)
 {
@@ -6974,7 +6974,7 @@ int32  ZAux_Direct_MSphericalSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisli
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -6988,29 +6988,29 @@ int32  ZAux_Direct_MSphericalSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisli
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MSPHERICALSP(%f,%f,%f,%f,%f,%f,%d,%f,%f)", fend1,fend2,fend3,fcenter1,fcenter2,fcenter3,imode, fcenter4, fcenter5);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //½¥¿ªÏßÔ²»¡²å²¹ÔË¶¯£¬Ïà¶ÔÒÆ¶¯·½Ê½£¬µ±ÆğÊ¼°ë¾¶0Ö±½ÓÀ©É¢Ê±´Ó0½Ç¶È¿ªÊ¼
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				centre1: µÚ1ÖáÔ²ĞÄµÄÏà¶Ô¾àÀë
-				centre2: µÚ2ÖáÔ²ĞÄµÄÏà¶Ô¾àÀë
-				circles:  ÒªĞı×ªµÄÈ¦Êı£¬¿ÉÒÔÎªĞ¡ÊıÈ¦£¬¸ºÊı±íÊ¾Ë³Ê±Õë.
-				pitch:   Ã¿È¦µÄÀ©É¢¾àÀë£¬¿ÉÒÔÎª¸º¡£
-				distance3        µÚ3ÖáÂİĞıµÄ¹¦ÄÜ£¬Ö¸¶¨µÚ3ÖáµÄÏà¶Ô¾àÀë£¬´ËÖá²»²ÎÓëËÙ¶È¼ÆËã¡£
-				distance4        µÚ4ÖáÂİĞıµÄ¹¦ÄÜ£¬Ö¸¶¨µÚ4ÖáµÄÏà¶Ô¾àÀë£¬´ËÖá²»²ÎÓëËÙ¶È¼ÆËã¡£
+Description:    //æ¸å¼€çº¿åœ†å¼§æ’è¡¥è¿åŠ¨ï¼Œç›¸å¯¹ç§»åŠ¨æ–¹å¼ï¼Œå½“èµ·å§‹åŠå¾„0ç›´æ¥æ‰©æ•£æ—¶ä»0è§’åº¦å¼€å§‹
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				centre1: ç¬¬1è½´åœ†å¿ƒçš„ç›¸å¯¹è·ç¦»
+				centre2: ç¬¬2è½´åœ†å¿ƒçš„ç›¸å¯¹è·ç¦»
+				circles:  è¦æ—‹è½¬çš„åœˆæ•°ï¼Œå¯ä»¥ä¸ºå°æ•°åœˆï¼Œè´Ÿæ•°è¡¨ç¤ºé¡ºæ—¶é’ˆ.
+				pitch:   æ¯åœˆçš„æ‰©æ•£è·ç¦»ï¼Œå¯ä»¥ä¸ºè´Ÿã€‚
+				distance3        ç¬¬3è½´èºæ—‹çš„åŠŸèƒ½ï¼ŒæŒ‡å®šç¬¬3è½´çš„ç›¸å¯¹è·ç¦»ï¼Œæ­¤è½´ä¸å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚
+				distance4        ç¬¬4è½´èºæ—‹çš„åŠŸèƒ½ï¼ŒæŒ‡å®šç¬¬4è½´çš„ç›¸å¯¹è·ç¦»ï¼Œæ­¤è½´ä¸å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveSpiral(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float centre1, float centre2, float circles, float pitch, float distance3, float distance4)
 {
@@ -7019,7 +7019,7 @@ int32  ZAux_Direct_MoveSpiral(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -7033,30 +7033,30 @@ int32  ZAux_Direct_MoveSpiral(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVESPIRAL(%f,%f,%f,%f,%f,%f)", centre1,centre2,circles,pitch,distance3,distance4);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //½¥¿ªÏßÔ²»¡²å²¹SPÔË¶¯£¬Ïà¶ÔÒÆ¶¯·½Ê½£¬µ±ÆğÊ¼°ë¾¶0Ö±½ÓÀ©É¢Ê±´Ó0½Ç¶È¿ªÊ¼
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				centre1: µÚ1ÖáÔ²ĞÄµÄÏà¶Ô¾àÀë
-				centre2: µÚ2ÖáÔ²ĞÄµÄÏà¶Ô¾àÀë
-				circles:  ÒªĞı×ªµÄÈ¦Êı£¬¿ÉÒÔÎªĞ¡ÊıÈ¦£¬¸ºÊı±íÊ¾Ë³Ê±Õë.
-				pitch:   Ã¿È¦µÄÀ©É¢¾àÀë£¬¿ÉÒÔÎª¸º¡£
-				distance3        µÚ3ÖáÂİĞıµÄ¹¦ÄÜ£¬Ö¸¶¨µÚ3ÖáµÄÏà¶Ô¾àÀë£¬´ËÖá²»²ÎÓëËÙ¶È¼ÆËã¡£
-				distance4        µÚ4ÖáÂİĞıµÄ¹¦ÄÜ£¬Ö¸¶¨µÚ4ÖáµÄÏà¶Ô¾àÀë£¬´ËÖá²»²ÎÓëËÙ¶È¼ÆËã¡£
+Description:    //æ¸å¼€çº¿åœ†å¼§æ’è¡¥SPè¿åŠ¨ï¼Œç›¸å¯¹ç§»åŠ¨æ–¹å¼ï¼Œå½“èµ·å§‹åŠå¾„0ç›´æ¥æ‰©æ•£æ—¶ä»0è§’åº¦å¼€å§‹
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				centre1: ç¬¬1è½´åœ†å¿ƒçš„ç›¸å¯¹è·ç¦»
+				centre2: ç¬¬2è½´åœ†å¿ƒçš„ç›¸å¯¹è·ç¦»
+				circles:  è¦æ—‹è½¬çš„åœˆæ•°ï¼Œå¯ä»¥ä¸ºå°æ•°åœˆï¼Œè´Ÿæ•°è¡¨ç¤ºé¡ºæ—¶é’ˆ.
+				pitch:   æ¯åœˆçš„æ‰©æ•£è·ç¦»ï¼Œå¯ä»¥ä¸ºè´Ÿã€‚
+				distance3        ç¬¬3è½´èºæ—‹çš„åŠŸèƒ½ï¼ŒæŒ‡å®šç¬¬3è½´çš„ç›¸å¯¹è·ç¦»ï¼Œæ­¤è½´ä¸å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚
+				distance4        ç¬¬4è½´èºæ—‹çš„åŠŸèƒ½ï¼ŒæŒ‡å®šç¬¬4è½´çš„ç›¸å¯¹è·ç¦»ï¼Œæ­¤è½´ä¸å‚ä¸é€Ÿåº¦è®¡ç®—ã€‚
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveSpiralSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float centre1, float centre2, float circles, float pitch, float distance3, float distance4)
 {
@@ -7065,7 +7065,7 @@ int32  ZAux_Direct_MoveSpiralSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisli
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -7079,30 +7079,30 @@ int32  ZAux_Direct_MoveSpiralSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisli
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 					
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVESPIRALSP(%f,%f,%f,%f,%f,%f)", centre1,centre2,circles,pitch,distance3,distance4);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¿Õ¼äÖ±Ïß²å²¹ÔË¶¯£¬¸ù¾İÏÂÒ»¸öÖ±ÏßÔË¶¯µÄ¾ø¶Ô×ø±êÔÚ¹Õ½Ç×Ô¶¯²åÈëÔ²»¡£¬¼ÓÈëÔ²»¡ºó»áÊ¹µÃÔË¶¯µÄÖÕµãÓëÖ±ÏßµÄÖÕµã²»Ò»ÖÂ£¬¹Õ½Ç¹ı´óÊ±²»»á²åÈëÔ²»¡£¬µ±¾àÀë²»¹»Ê±»á×Ô¶¯¼õĞ¡°ë¾¶
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚ1¸öÖáÔË¶¯¾ø¶Ô×ø±ê
-				end2              µÚ2¸öÖáÔË¶¯¾ø¶Ô×ø±ê
-				end3              µÚ3¸öÖáÔË¶¯¾ø¶Ô×ø±ê
-				next1      µÚ1¸öÖáÏÂÒ»¸öÖ±ÏßÔË¶¯¾ø¶Ô×ø±ê
-				next2      µÚ2¸öÖáÏÂÒ»¸öÖ±ÏßÔË¶¯¾ø¶Ô×ø±ê
-				next3      µÚ3¸öÖáÏÂÒ»¸öÖ±ÏßÔË¶¯¾ø¶Ô×ø±ê
-				radius      ²åÈëÔ²»¡µÄ°ë¾¶£¬µ±¹ı´óµÄÊ±ºò×Ô¶¯ËõĞ¡¡£
+Description:    //ç©ºé—´ç›´çº¿æ’è¡¥è¿åŠ¨ï¼Œæ ¹æ®ä¸‹ä¸€ä¸ªç›´çº¿è¿åŠ¨çš„ç»å¯¹åæ ‡åœ¨æ‹è§’è‡ªåŠ¨æ’å…¥åœ†å¼§ï¼ŒåŠ å…¥åœ†å¼§åä¼šä½¿å¾—è¿åŠ¨çš„ç»ˆç‚¹ä¸ç›´çº¿çš„ç»ˆç‚¹ä¸ä¸€è‡´ï¼Œæ‹è§’è¿‡å¤§æ—¶ä¸ä¼šæ’å…¥åœ†å¼§ï¼Œå½“è·ç¦»ä¸å¤Ÿæ—¶ä¼šè‡ªåŠ¨å‡å°åŠå¾„
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬1ä¸ªè½´è¿åŠ¨ç»å¯¹åæ ‡
+				end2              ç¬¬2ä¸ªè½´è¿åŠ¨ç»å¯¹åæ ‡
+				end3              ç¬¬3ä¸ªè½´è¿åŠ¨ç»å¯¹åæ ‡
+				next1      ç¬¬1ä¸ªè½´ä¸‹ä¸€ä¸ªç›´çº¿è¿åŠ¨ç»å¯¹åæ ‡
+				next2      ç¬¬2ä¸ªè½´ä¸‹ä¸€ä¸ªç›´çº¿è¿åŠ¨ç»å¯¹åæ ‡
+				next3      ç¬¬3ä¸ªè½´ä¸‹ä¸€ä¸ªç›´çº¿è¿åŠ¨ç»å¯¹åæ ‡
+				radius      æ’å…¥åœ†å¼§çš„åŠå¾„ï¼Œå½“è¿‡å¤§çš„æ—¶å€™è‡ªåŠ¨ç¼©å°ã€‚
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveSmooth(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float end1, float end2, float end3, float next1, float next2, float next3, float radius)
 {
@@ -7111,7 +7111,7 @@ int32  ZAux_Direct_MoveSmooth(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -7125,31 +7125,31 @@ int32  ZAux_Direct_MoveSmooth(ZMC_HANDLE handle, int imaxaxises, int *piAxislist
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 					
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVESMOOTH(%f,%f,%f,%f,%f,%f,%f)", end1,end2,end3,next1,next2,next3,radius);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck, 2048);
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¿Õ¼äÖ±Ïß²å²¹SPÔË¶¯£¬¸ù¾İÏÂÒ»¸öÖ±ÏßÔË¶¯µÄ¾ø¶Ô×ø±êÔÚ¹Õ½Ç×Ô¶¯²åÈëÔ²»¡£¬¼ÓÈëÔ²»¡ºó»áÊ¹µÃÔË¶¯µÄÖÕµãÓëÖ±ÏßµÄÖÕµã²»Ò»ÖÂ£¬¹Õ½Ç¹ı´óÊ±²»»á²åÈëÔ²»¡£¬µ±¾àÀë²»¹»Ê±»á×Ô¶¯¼õĞ¡°ë¾¶
-Input:          //¿¨Á´½Óhandle
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				end1              µÚ1¸öÖáÔË¶¯¾ø¶Ô×ø±ê
-				end2              µÚ2¸öÖáÔË¶¯¾ø¶Ô×ø±ê
-				end3              µÚ3¸öÖáÔË¶¯¾ø¶Ô×ø±ê
-				next1      µÚ1¸öÖáÏÂÒ»¸öÖ±ÏßÔË¶¯¾ø¶Ô×ø±ê
-				next2      µÚ2¸öÖáÏÂÒ»¸öÖ±ÏßÔË¶¯¾ø¶Ô×ø±ê
-				next3      µÚ3¸öÖáÏÂÒ»¸öÖ±ÏßÔË¶¯¾ø¶Ô×ø±ê
-				radius      ²åÈëÔ²»¡µÄ°ë¾¶£¬µ±¹ı´óµÄÊ±ºò×Ô¶¯ËõĞ¡¡£
+Description:    //ç©ºé—´ç›´çº¿æ’è¡¥SPè¿åŠ¨ï¼Œæ ¹æ®ä¸‹ä¸€ä¸ªç›´çº¿è¿åŠ¨çš„ç»å¯¹åæ ‡åœ¨æ‹è§’è‡ªåŠ¨æ’å…¥åœ†å¼§ï¼ŒåŠ å…¥åœ†å¼§åä¼šä½¿å¾—è¿åŠ¨çš„ç»ˆç‚¹ä¸ç›´çº¿çš„ç»ˆç‚¹ä¸ä¸€è‡´ï¼Œæ‹è§’è¿‡å¤§æ—¶ä¸ä¼šæ’å…¥åœ†å¼§ï¼Œå½“è·ç¦»ä¸å¤Ÿæ—¶ä¼šè‡ªåŠ¨å‡å°åŠå¾„
+Input:          //å¡é“¾æ¥handle
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				end1              ç¬¬1ä¸ªè½´è¿åŠ¨ç»å¯¹åæ ‡
+				end2              ç¬¬2ä¸ªè½´è¿åŠ¨ç»å¯¹åæ ‡
+				end3              ç¬¬3ä¸ªè½´è¿åŠ¨ç»å¯¹åæ ‡
+				next1      ç¬¬1ä¸ªè½´ä¸‹ä¸€ä¸ªç›´çº¿è¿åŠ¨ç»å¯¹åæ ‡
+				next2      ç¬¬2ä¸ªè½´ä¸‹ä¸€ä¸ªç›´çº¿è¿åŠ¨ç»å¯¹åæ ‡
+				next3      ç¬¬3ä¸ªè½´ä¸‹ä¸€ä¸ªç›´çº¿è¿åŠ¨ç»å¯¹åæ ‡
+				radius      æ’å…¥åœ†å¼§çš„åŠå¾„ï¼Œå½“è¿‡å¤§çš„æ—¶å€™è‡ªåŠ¨ç¼©å°ã€‚
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveSmoothSp(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, float end1, float end2, float end3, float next1, float next2, float next3, float radius)
 {
@@ -7158,7 +7158,7 @@ int32  ZAux_Direct_MoveSmoothSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisli
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -7172,65 +7172,65 @@ int32  ZAux_Direct_MoveSmoothSp(ZMC_HANDLE handle, int imaxaxises, int *piAxisli
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 					
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVESMOOTHSP(%f,%f,%f,%f,%f,%f,%f)", end1,end2,end3,next1,next2,next3,radius);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck, 2048);
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //ÔË¶¯ÔİÍ£		£¬²å²¹ÔË¶¯ÔİÍ£Ö÷Öá¡£ÖáÁĞ±íÖáµÚÒ»¸öÖá
-Input:          //¿¨Á´½Óhandle  
-				ÖáºÅ iaxis
-				Ä£Ê½ imode	0£¨È±Ê¡£© ÔİÍ£µ±Ç°ÔË¶¯¡£ 
-							1 ÔÚµ±Ç°ÔË¶¯Íê³ÉºóÕı×¼±¸Ö´ĞĞÏÂÒ»ÌõÔË¶¯Ö¸ÁîÊ±ÔİÍ£¡£ 
-							2 ÔÚµ±Ç°ÔË¶¯Íê³ÉºóÕı×¼±¸Ö´ĞĞÏÂÒ»ÌõÔË¶¯Ö¸ÁîÊ±£¬²¢ÇÒÁ½ÌõÖ¸ÁîµÄMARK±êÊ¶²»Ò»ÑùÊ±ÔİÍ£¡£Õâ¸öÄ£Ê½¿ÉÒÔÓÃÓÚÒ»¸ö¶¯×÷ÓÉ¶à¸öÖ¸ÁîÀ´ÊµÏÖÊ±£¬¿ÉÒÔÔÚÒ»Õû¸ö¶¯×÷Íê³ÉºóÔİÍ£¡£ 
+Description:    //è¿åŠ¨æš‚åœ		ï¼Œæ’è¡¥è¿åŠ¨æš‚åœä¸»è½´ã€‚è½´åˆ—è¡¨è½´ç¬¬ä¸€ä¸ªè½´
+Input:          //å¡é“¾æ¥handle  
+				è½´å· iaxis
+				æ¨¡å¼ imode	0ï¼ˆç¼ºçœï¼‰ æš‚åœå½“å‰è¿åŠ¨ã€‚ 
+							1 åœ¨å½“å‰è¿åŠ¨å®Œæˆåæ­£å‡†å¤‡æ‰§è¡Œä¸‹ä¸€æ¡è¿åŠ¨æŒ‡ä»¤æ—¶æš‚åœã€‚ 
+							2 åœ¨å½“å‰è¿åŠ¨å®Œæˆåæ­£å‡†å¤‡æ‰§è¡Œä¸‹ä¸€æ¡è¿åŠ¨æŒ‡ä»¤æ—¶ï¼Œå¹¶ä¸”ä¸¤æ¡æŒ‡ä»¤çš„MARKæ ‡è¯†ä¸ä¸€æ ·æ—¶æš‚åœã€‚è¿™ä¸ªæ¨¡å¼å¯ä»¥ç”¨äºä¸€ä¸ªåŠ¨ä½œç”±å¤šä¸ªæŒ‡ä»¤æ¥å®ç°æ—¶ï¼Œå¯ä»¥åœ¨ä¸€æ•´ä¸ªåŠ¨ä½œå®Œæˆåæš‚åœã€‚ 
   
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MovePause(ZMC_HANDLE handle,int iaxis, int imode)
 {
 
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "MOVE_PAUSE(%d) axis(%d)", imode,iaxis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //È¡ÏûÔË¶¯ÔİÍ£
-Input:          //¿¨Á´½Óhandle  
-					ÖáºÅ iaxis
+Description:    //å–æ¶ˆè¿åŠ¨æš‚åœ
+Input:          //å¡é“¾æ¥handle  
+					è½´å· iaxis
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveResume(ZMC_HANDLE handle,int iaxis)
 {
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "MOVE_RESUME AXIS(%d)",iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //ÔÚµ±Ç°µÄÔË¶¯Ä©Î²Î»ÖÃÔö¼ÓËÙ¶ÈÏŞÖÆ£¬ÓÃÓÚÇ¿ÖÆ¹Õ½Ç¼õËÙ
-Input:          //¿¨Á´½Óhandle  
-				 ÖáºÅ iaxis
+Description:    //åœ¨å½“å‰çš„è¿åŠ¨æœ«å°¾ä½ç½®å¢åŠ é€Ÿåº¦é™åˆ¶ï¼Œç”¨äºå¼ºåˆ¶æ‹è§’å‡é€Ÿ
+Input:          //å¡é“¾æ¥handle  
+				 è½´å· iaxis
 Output:         //
- Return:         //´íÎóÂë
+ Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveLimit(ZMC_HANDLE handle, int iaxis,float limitspeed)
 {
@@ -7238,23 +7238,23 @@ int32  ZAux_Direct_MoveLimit(ZMC_HANDLE handle, int iaxis,float limitspeed)
 	
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "MOVELIMIT(%f) AXIS(%d)", limitspeed,iaxis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //ÔÚÔË¶¯»º³åÖĞ¼ÓÈëÊä³öÖ¸Áî
-Input:          //¿¨Á´½Óhandle  
-				ÖáºÅ iaxis
-				Êä³ö¿Ú±àºÅ ioutnum
-				Êä³ö¿Ú×´Ì¬	ivalue
+Description:    //åœ¨è¿åŠ¨ç¼“å†²ä¸­åŠ å…¥è¾“å‡ºæŒ‡ä»¤
+Input:          //å¡é“¾æ¥handle  
+				è½´å· iaxis
+				è¾“å‡ºå£ç¼–å· ioutnum
+				è¾“å‡ºå£çŠ¶æ€	ivalue
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveOp(ZMC_HANDLE handle, int iaxis,int ioutnum, int ivalue)
 {
@@ -7262,26 +7262,26 @@ int32  ZAux_Direct_MoveOp(ZMC_HANDLE handle, int iaxis,int ioutnum, int ivalue)
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-   //Éú³ÉÃüÁî
+   //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "BASE(%d)\r\n",iaxis);
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVE_OP(%d,%d)", ioutnum, ivalue);
     strcat(cmdbuff, tempbuff);
 		
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //ÔÚÔË¶¯»º³åÖĞ¼ÓÈëÁ¬ĞøÊä³ö¿ÚÊä³öÖ¸Áî
-Input:          //¿¨Á´½Óhandle  
-				ÖáºÅ iaxis
-				Êä³ö¿ÚÆğÊ¼±àºÅ ioutnumfirst
-				Êä³ö¿Ú½áÊø±àºÅ ioutnumend
-				¶ÔÓ¦Êä³ö¿Ú×´Ì¬¶ş½øÖÆ×éºÏÖµ	ivalue
+Description:    //åœ¨è¿åŠ¨ç¼“å†²ä¸­åŠ å…¥è¿ç»­è¾“å‡ºå£è¾“å‡ºæŒ‡ä»¤
+Input:          //å¡é“¾æ¥handle  
+				è½´å· iaxis
+				è¾“å‡ºå£èµ·å§‹ç¼–å· ioutnumfirst
+				è¾“å‡ºå£ç»“æŸç¼–å· ioutnumend
+				å¯¹åº”è¾“å‡ºå£çŠ¶æ€äºŒè¿›åˆ¶ç»„åˆå€¼	ivalue
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveOpMulti(ZMC_HANDLE handle, int iaxis, int ioutnumfirst, int ioutnumend, int ivalue)
 {
@@ -7289,27 +7289,27 @@ int32  ZAux_Direct_MoveOpMulti(ZMC_HANDLE handle, int iaxis, int ioutnumfirst, i
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "BASE(%d)\r\n",iaxis);
 		
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVE_OP(%d,%d,%d)", ioutnumfirst, ioutnumend, ivalue);
     strcat(cmdbuff, tempbuff);	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //ÔÚÔË¶¯»º³åÖĞ¼ÓÈëÊä³öÖ¸Áî ,Ö¸¶¨Ê±¼äºóÊä³ö×´Ì¬·­×ª
-Input:          //¿¨Á´½Óhandle  
-				ÖáºÅ iaxis
-				Êä³ö¿Ú±àºÅ ioutnum
-				Êä³ö¿Ú×´Ì¬	ivalue
-				×´Ì¬·´×ªÊ±¼ä iofftimems
+Description:    //åœ¨è¿åŠ¨ç¼“å†²ä¸­åŠ å…¥è¾“å‡ºæŒ‡ä»¤ ,æŒ‡å®šæ—¶é—´åè¾“å‡ºçŠ¶æ€ç¿»è½¬
+Input:          //å¡é“¾æ¥handle  
+				è½´å· iaxis
+				è¾“å‡ºå£ç¼–å· ioutnum
+				è¾“å‡ºå£çŠ¶æ€	ivalue
+				çŠ¶æ€åè½¬æ—¶é—´ iofftimems
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveOp2(ZMC_HANDLE handle, int iaxis, int ioutnum, int ivalue, int iofftimems)
 {
@@ -7318,25 +7318,25 @@ int32  ZAux_Direct_MoveOp2(ZMC_HANDLE handle, int iaxis, int ioutnum, int ivalue
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "BASE(%d)\r\n",iaxis);
 			
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVE_OP2(%d,%d,%d)", ioutnum, ivalue, iofftimems);
     strcat(cmdbuff, tempbuff);		
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //ÔÚÔË¶¯»º³åÖĞ¼ÓÈëAOUTÊä³öÖ¸Áî
-Input:          //¿¨Á´½Óhandle  
-				ÖáºÅ iaxis
-				DA¿Ú±àºÅ ioutnum
-				Ä£ÄâÁ¿Öµ fvalue £¨4ÏµÁĞÒÔÏÂ 12Î»0-4095£©
+Description:    //åœ¨è¿åŠ¨ç¼“å†²ä¸­åŠ å…¥AOUTè¾“å‡ºæŒ‡ä»¤
+Input:          //å¡é“¾æ¥handle  
+				è½´å· iaxis
+				DAå£ç¼–å· ioutnum
+				æ¨¡æ‹Ÿé‡å€¼ fvalue ï¼ˆ4ç³»åˆ—ä»¥ä¸‹ 12ä½0-4095ï¼‰
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveAout(ZMC_HANDLE handle, int iaxis, int ioutnum, float fvalue)
 {
@@ -7344,24 +7344,24 @@ int32  ZAux_Direct_MoveAout(ZMC_HANDLE handle, int iaxis, int ioutnum, float fva
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "BASE(%d)\r\n",iaxis);
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVE_AOUT(%d,%f)", ioutnum, fvalue);
     strcat(cmdbuff, tempbuff);			
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //ÔÚÔË¶¯»º³åÖĞ¼ÓÈëÑÓÊ±Ö¸Áî
-Input:          //¿¨Á´½Óhandle  
-				ÖáºÅ iaxis
-				ÑÓÊ±Ê±¼ä itimems ºÁÃë
+Description:    //åœ¨è¿åŠ¨ç¼“å†²ä¸­åŠ å…¥å»¶æ—¶æŒ‡ä»¤
+Input:          //å¡é“¾æ¥handle  
+				è½´å· iaxis
+				å»¶æ—¶æ—¶é—´ itimems æ¯«ç§’
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveDelay(ZMC_HANDLE handle, int iaxis, int itimems)
 {
@@ -7369,26 +7369,26 @@ int32  ZAux_Direct_MoveDelay(ZMC_HANDLE handle, int iaxis, int itimems)
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "BASE(%d)\r\n",iaxis);
 				
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MOVE_WA(%d)", itimems);
     strcat(cmdbuff, tempbuff);		
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //Ğı×ªÌ¨Ö±Ïß²å²¹ÔË¶¯¡£  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				tablenum			´æ´¢Ğı×ªÌ¨²ÎÊıµÄtable±àºÅ 
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				pfDisancelist		¾àÀëÁĞ±í
+Description:    //æ—‹è½¬å°ç›´çº¿æ’è¡¥è¿åŠ¨ã€‚  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				tablenum			å­˜å‚¨æ—‹è½¬å°å‚æ•°çš„tableç¼–å· 
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				pfDisancelist		è·ç¦»åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveTurnabs(ZMC_HANDLE handle, int tablenum ,int imaxaxises,int *piAxislist, float *pfDisancelist)
 {
@@ -7403,7 +7403,7 @@ int32  ZAux_Direct_MoveTurnabs(ZMC_HANDLE handle, int tablenum ,int imaxaxises,i
 		return  ERR_AUX_PARAERR;
 	}
 
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -7417,7 +7417,7 @@ int32  ZAux_Direct_MoveTurnabs(ZMC_HANDLE handle, int tablenum ,int imaxaxises,i
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 	
 	sprintf(tempbuff, "MOVE_TURNABS(%d,",tablenum);
@@ -7434,26 +7434,26 @@ int32  ZAux_Direct_MoveTurnabs(ZMC_HANDLE handle, int tablenum ,int imaxaxises,i
 	sprintf(tempbuff, "%f)",pfDisancelist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //Ğı×ªÌ¨Ô²»¡+ÂİĞı²å²¹ÔË¶¯¡£  20130901 ÒÔºóµÄ¿ØÖÆÆ÷°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				tablenum       ´æ´¢Ğı×ª²ÎÊıµÄtable±àºÅ
-				refpos1    µÚÒ»¸öÖá²Î¿¼µã£¬¾ø¶ÔÎ»ÖÃ
-				refpos2    µÚ¶ş¸öÖá²Î¿¼µã£¬¾ø¶ÔÎ»ÖÃ
-				mode      1-²Î¿¼µãÊÇµ±Ç°µãÇ°Ãæ£¬2-²Î¿¼µãÊÇ½áÊøµãºóÃæ£¬3-²Î¿¼µãÔÚÖĞ¼ä£¬²ÉÓÃÈıµã¶¨Ô²µÄ·½Ê½¡£
-				end1              µÚÒ»¸öÖá½áÊøµã£¬¾ø¶ÔÎ»ÖÃ
-				end2              µÚ¶ş¸öÖá½áÊøµã£¬¾ø¶ÔÎ»ÖÃ
-				imaxaxises        ²ÎÓëÔË¶¯ÖáÊıÁ¿
-				piAxislist		  ÖáÁĞ±í
-				pfDisancelist	ÂİĞıÖá¾àÀëÁĞ±í
+Description:    //æ—‹è½¬å°åœ†å¼§+èºæ—‹æ’è¡¥è¿åŠ¨ã€‚  20130901 ä»¥åçš„æ§åˆ¶å™¨ç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				tablenum       å­˜å‚¨æ—‹è½¬å‚æ•°çš„tableç¼–å·
+				refpos1    ç¬¬ä¸€ä¸ªè½´å‚è€ƒç‚¹ï¼Œç»å¯¹ä½ç½®
+				refpos2    ç¬¬äºŒä¸ªè½´å‚è€ƒç‚¹ï¼Œç»å¯¹ä½ç½®
+				mode      1-å‚è€ƒç‚¹æ˜¯å½“å‰ç‚¹å‰é¢ï¼Œ2-å‚è€ƒç‚¹æ˜¯ç»“æŸç‚¹åé¢ï¼Œ3-å‚è€ƒç‚¹åœ¨ä¸­é—´ï¼Œé‡‡ç”¨ä¸‰ç‚¹å®šåœ†çš„æ–¹å¼ã€‚
+				end1              ç¬¬ä¸€ä¸ªè½´ç»“æŸç‚¹ï¼Œç»å¯¹ä½ç½®
+				end2              ç¬¬äºŒä¸ªè½´ç»“æŸç‚¹ï¼Œç»å¯¹ä½ç½®
+				imaxaxises        å‚ä¸è¿åŠ¨è½´æ•°é‡
+				piAxislist		  è½´åˆ—è¡¨
+				pfDisancelist	èºæ—‹è½´è·ç¦»åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_McircTurnabs(ZMC_HANDLE handle, int tablenum ,float refpos1,float refpos2,int mode,float end1,float end2,int imaxaxises,int *piAxislist ,float *pfDisancelist)
 {
@@ -7467,7 +7467,7 @@ int32  ZAux_Direct_McircTurnabs(ZMC_HANDLE handle, int tablenum ,float refpos1,f
 	{
 		return  ERR_AUX_PARAERR;
 	}
-  //Éú³ÉÃüÁî
+  //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< imaxaxises-1; i++)
@@ -7481,10 +7481,10 @@ int32  ZAux_Direct_McircTurnabs(ZMC_HANDLE handle, int tablenum ,float refpos1,f
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 		
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "MCIRC_TURNABS(%d,%f,%f,%d,%f,%f,",tablenum,refpos1,refpos2,mode,end1,end2);
 	strcat(cmdbuff, tempbuff);
 	
@@ -7499,47 +7499,47 @@ int32  ZAux_Direct_McircTurnabs(ZMC_HANDLE handle, int tablenum ,float refpos1,f
 	sprintf(tempbuff, "%f)",pfDisancelist[imaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //µç×ÓÍ¹ÂÖ Í¬²½ÔË¶¯
-Input:          //¿¨Á´½Óhandle  
-				iaxis			ÖáºÅ
-				istartpoint		ÆğÊ¼µãTABLE±àºÅ
-				iendpoint		½áÊøµãTABLE±àºÅ
-				ftablemulti		Î»ÖÃ±ÈÀı£¬Ò»°ãÉèÎªÂö³åµ±Á¿Öµ
-				fDistance		²Î¿¼ÔË¶¯µÄ¾àÀë£¬ÓÃÀ´¼ÆËã×ÜÔË¶¯Ê±¼ä
+Description:    //ç”µå­å‡¸è½® åŒæ­¥è¿åŠ¨
+Input:          //å¡é“¾æ¥handle  
+				iaxis			è½´å·
+				istartpoint		èµ·å§‹ç‚¹TABLEç¼–å·
+				iendpoint		ç»“æŸç‚¹TABLEç¼–å·
+				ftablemulti		ä½ç½®æ¯”ä¾‹ï¼Œä¸€èˆ¬è®¾ä¸ºè„‰å†²å½“é‡å€¼
+				fDistance		å‚è€ƒè¿åŠ¨çš„è·ç¦»ï¼Œç”¨æ¥è®¡ç®—æ€»è¿åŠ¨æ—¶é—´
  Output:         //
- Return:         //´íÎóÂë
+ Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Cam(ZMC_HANDLE handle,int iaxis, int istartpoint, int iendpoint, float ftablemulti, float fDistance)
 {
 	
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "CAM(%d,%d,%f,%f) AXIS(%d)", istartpoint,iendpoint,ftablemulti,fDistance,iaxis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //µç×ÓÍ¹ÂÖ Í¬²½ÔË¶¯
-Input:          //¿¨Á´½Óhandle  
-				iaxis			ÖáºÅ
-				istartpoint		ÆğÊ¼µãTABLE±àºÅ
-				iendpoint		½áÊøµãTABLE±àºÅ
-				ftablemulti		Î»ÖÃ±ÈÀı£¬Ò»°ãÉèÎªÂö³åµ±Á¿Öµ
-				fDistance		²Î¿¼ÔË¶¯µÄ¾àÀë
-				ilinkaxis		²Î¿¼Ö÷Öá
-				ioption			²Î¿¼ÖáµÄÁ¬½Ó·½Ê½
-				flinkstartpos	ioptionÌõ¼şÖĞ¾àÀë²ÎÊı
+Description:    //ç”µå­å‡¸è½® åŒæ­¥è¿åŠ¨
+Input:          //å¡é“¾æ¥handle  
+				iaxis			è½´å·
+				istartpoint		èµ·å§‹ç‚¹TABLEç¼–å·
+				iendpoint		ç»“æŸç‚¹TABLEç¼–å·
+				ftablemulti		ä½ç½®æ¯”ä¾‹ï¼Œä¸€èˆ¬è®¾ä¸ºè„‰å†²å½“é‡å€¼
+				fDistance		å‚è€ƒè¿åŠ¨çš„è·ç¦»
+				ilinkaxis		å‚è€ƒä¸»è½´
+				ioption			å‚è€ƒè½´çš„è¿æ¥æ–¹å¼
+				flinkstartpos	ioptionæ¡ä»¶ä¸­è·ç¦»å‚æ•°
  Output:         //
- Return:         //´íÎóÂë
+ Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Cambox(ZMC_HANDLE handle, int iaxis,int istartpoint, int iendpoint, float ftablemulti, float fDistance, int ilinkaxis, int ioption, float flinkstartpos)
 {
@@ -7547,28 +7547,28 @@ int32  ZAux_Direct_Cambox(ZMC_HANDLE handle, int iaxis,int istartpoint, int iend
 	
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "CAMBOX(%d,%d,%f,%f,%d,%d,%f) AXIS(%d)", istartpoint,iendpoint,ftablemulti,fDistance, ilinkaxis, ioption, flinkstartpos,iaxis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //ÌØÊâÍ¹ÂÖ Í¬²½ÔË¶¯
-Input:          //¿¨Á´½Óhandle  
-				iaxis			²ÎÓëÔË¶¯µÄÖáºÅ(¸úËæÖá)
-				fDistance		Í¬²½¹ı³Ì¸úËæÖáÔË¶¯¾àÀë
-				fLinkDis		Í¬²½¹ı³Ì²Î¿¼Öá(Ö÷Öá)ÔË¶¯¾ø¶Ô¾àÀë
-				fLinkAcc		¸úËæÖá¼ÓËÙ½×¶Î£¬²Î¿¼ÖáÒÆ¶¯µÄ¾ø¶Ô¾àÀë
-				fLinkDec		¸úËæÖá¼õËÙ½×¶Î£¬²Î¿¼ÖáÒÆ¶¯µÄ¾ø¶Ô¾àÀë
-				iLinkaxis		²Î¿¼ÖáµÄÖáºÅ
-				ioption			Á¬½ÓÄ£Ê½Ñ¡Ïî
-				flinkstartpos	Á¬½ÓÄ£Ê½Ñ¡ÏîÖĞÔË¶¯¾àÀë
+Description:    //ç‰¹æ®Šå‡¸è½® åŒæ­¥è¿åŠ¨
+Input:          //å¡é“¾æ¥handle  
+				iaxis			å‚ä¸è¿åŠ¨çš„è½´å·(è·Ÿéšè½´)
+				fDistance		åŒæ­¥è¿‡ç¨‹è·Ÿéšè½´è¿åŠ¨è·ç¦»
+				fLinkDis		åŒæ­¥è¿‡ç¨‹å‚è€ƒè½´(ä¸»è½´)è¿åŠ¨ç»å¯¹è·ç¦»
+				fLinkAcc		è·Ÿéšè½´åŠ é€Ÿé˜¶æ®µï¼Œå‚è€ƒè½´ç§»åŠ¨çš„ç»å¯¹è·ç¦»
+				fLinkDec		è·Ÿéšè½´å‡é€Ÿé˜¶æ®µï¼Œå‚è€ƒè½´ç§»åŠ¨çš„ç»å¯¹è·ç¦»
+				iLinkaxis		å‚è€ƒè½´çš„è½´å·
+				ioption			è¿æ¥æ¨¡å¼é€‰é¡¹
+				flinkstartpos	è¿æ¥æ¨¡å¼é€‰é¡¹ä¸­è¿åŠ¨è·ç¦»
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Movelink(ZMC_HANDLE handle, int iaxis,float fDistance, float fLinkDis, float fLinkAcc, float fLinkDec,int iLinkaxis, int ioption, float flinkstartpos)
 {
@@ -7576,27 +7576,27 @@ int32  ZAux_Direct_Movelink(ZMC_HANDLE handle, int iaxis,float fDistance, float 
 	
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "MOVELINK(%f,%f,%f,%f,%d,%d,%f) AXIS(%d)", fDistance, fLinkDis, fLinkAcc,fLinkDec,iLinkaxis,ioption,flinkstartpos,iaxis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //ÌØÊâÍ¹ÂÖ Í¬²½ÔË¶¯
-Input:          //¿¨Á´½Óhandle  
-				iaxis			²ÎÓëÔË¶¯µÄÖáºÅ(¸úËæÖá)
-				fDistance		Í¬²½¹ı³Ì¸úËæÖáÔË¶¯¾àÀë
-				fLinkDis		Í¬²½¹ı³Ì²Î¿¼Öá(Ö÷Öá)ÔË¶¯¾ø¶Ô¾àÀë
-				startsp			Æô¶¯Ê±¸úËæÖáºÍ²Î¿¼ÖáµÄËÙ¶È±ÈÀı£¬units/unitsµ¥Î»£¬¸ºÊı±íÊ¾¸úËæÖá¸ºÏòÔË¶¯
-				endsp			½áÊøÊ±¸úËæÖáºÍ²Î¿¼ÖáµÄËÙ¶È±ÈÀı£¬units/unitsµ¥Î», ¸ºÊı±íÊ¾¸úËæÖá¸ºÏòÔË¶¯¡£
-				iLinkaxis		²Î¿¼ÖáµÄÖáºÅ
-				ioption			Á¬½ÓÄ£Ê½Ñ¡Ïî
-				flinkstartpos	Á¬½ÓÄ£Ê½Ñ¡ÏîÖĞÔË¶¯¾àÀë
+Description:    //ç‰¹æ®Šå‡¸è½® åŒæ­¥è¿åŠ¨
+Input:          //å¡é“¾æ¥handle  
+				iaxis			å‚ä¸è¿åŠ¨çš„è½´å·(è·Ÿéšè½´)
+				fDistance		åŒæ­¥è¿‡ç¨‹è·Ÿéšè½´è¿åŠ¨è·ç¦»
+				fLinkDis		åŒæ­¥è¿‡ç¨‹å‚è€ƒè½´(ä¸»è½´)è¿åŠ¨ç»å¯¹è·ç¦»
+				startsp			å¯åŠ¨æ—¶è·Ÿéšè½´å’Œå‚è€ƒè½´çš„é€Ÿåº¦æ¯”ä¾‹ï¼Œunits/unitså•ä½ï¼Œè´Ÿæ•°è¡¨ç¤ºè·Ÿéšè½´è´Ÿå‘è¿åŠ¨
+				endsp			ç»“æŸæ—¶è·Ÿéšè½´å’Œå‚è€ƒè½´çš„é€Ÿåº¦æ¯”ä¾‹ï¼Œunits/unitså•ä½, è´Ÿæ•°è¡¨ç¤ºè·Ÿéšè½´è´Ÿå‘è¿åŠ¨ã€‚
+				iLinkaxis		å‚è€ƒè½´çš„è½´å·
+				ioption			è¿æ¥æ¨¡å¼é€‰é¡¹
+				flinkstartpos	è¿æ¥æ¨¡å¼é€‰é¡¹ä¸­è¿åŠ¨è·ç¦»
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Moveslink(ZMC_HANDLE handle, int iaxis,float fDistance, float fLinkDis, float startsp, float endsp,int iLinkaxis, int ioption, float flinkstartpos)
 {
@@ -7604,22 +7604,22 @@ int32  ZAux_Direct_Moveslink(ZMC_HANDLE handle, int iaxis,float fDistance, float
 	
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "MOVESLINK(%f,%f,%f,%f,%d,%d,%f) AXIS(%d)", fDistance, fLinkDis, startsp,endsp,iLinkaxis,ioption,flinkstartpos,iaxis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //Á¬½Ó Í¬²½ÔË¶¯Ö¸Áî µç×Ó³İÂÖ
-Input:          //¿¨Á´½Óhandle  
-				ratio		±ÈÂÊ£¬¿ÉÕı¿É¸º£¬×¢ÒâÊÇÂö³å¸öÊıµÄ±ÈÀı¡£	
-				link_axis	Á¬½ÓÖáµÄÖáºÅ£¬ÊÖÂÖÊ±Îª±àÂëÆ÷Öá
-				move_axis	Ëæ¶¯ÖáºÅ
+Description:    //è¿æ¥ åŒæ­¥è¿åŠ¨æŒ‡ä»¤ ç”µå­é½¿è½®
+Input:          //å¡é“¾æ¥handle  
+				ratio		æ¯”ç‡ï¼Œå¯æ­£å¯è´Ÿï¼Œæ³¨æ„æ˜¯è„‰å†²ä¸ªæ•°çš„æ¯”ä¾‹ã€‚	
+				link_axis	è¿æ¥è½´çš„è½´å·ï¼Œæ‰‹è½®æ—¶ä¸ºç¼–ç å™¨è½´
+				move_axis	éšåŠ¨è½´å·
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Connect(ZMC_HANDLE handle, float ratio, int link_axis,int move_axis)
 {
@@ -7627,22 +7627,22 @@ int32  ZAux_Direct_Connect(ZMC_HANDLE handle, float ratio, int link_axis,int mov
 	
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "CONNECT(%f,%d) AXIS(%d)", ratio, link_axis,move_axis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //Á¬½Ó Í¬²½ÔË¶¯Ö¸Áî µç×Ó³İÂÖ ½«µ±Ç°ÖáµÄÄ¿±êÎ»ÖÃÓëlink_axisÖáµÄ²å²¹Ê¸Á¿³¤¶ÈÍ¨¹ıµç×Ó³İÂÖÁ¬½Ó
-Input:          //¿¨Á´½Óhandle  
-				ratio		±ÈÂÊ£¬¿ÉÕı¿É¸º£¬×¢ÒâÊÇÂö³å¸öÊıµÄ±ÈÀı¡£	
-				link_axis	Á¬½ÓÖáµÄÖáºÅ£¬ÊÖÂÖÊ±Îª±àÂëÆ÷Öá
-				move_axis	Ëæ¶¯ÖáºÅ
+Description:    //è¿æ¥ åŒæ­¥è¿åŠ¨æŒ‡ä»¤ ç”µå­é½¿è½® å°†å½“å‰è½´çš„ç›®æ ‡ä½ç½®ä¸link_axisè½´çš„æ’è¡¥çŸ¢é‡é•¿åº¦é€šè¿‡ç”µå­é½¿è½®è¿æ¥
+Input:          //å¡é“¾æ¥handle  
+				ratio		æ¯”ç‡ï¼Œå¯æ­£å¯è´Ÿï¼Œæ³¨æ„æ˜¯è„‰å†²ä¸ªæ•°çš„æ¯”ä¾‹ã€‚	
+				link_axis	è¿æ¥è½´çš„è½´å·ï¼Œæ‰‹è½®æ—¶ä¸ºç¼–ç å™¨è½´
+				move_axis	éšåŠ¨è½´å·
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Connpath(ZMC_HANDLE handle, float ratio, int link_axis,int move_axis)
 {
@@ -7650,21 +7650,21 @@ int32  ZAux_Direct_Connpath(ZMC_HANDLE handle, float ratio, int link_axis,int mo
 	
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "CONNPATH(%f,%d) AXIS(%d)", ratio, link_axis,move_axis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //Î»ÖÃËø´æÖ¸Áî
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-				imode	Ëø´æÄ£Ê½
+Description:    //ä½ç½®é”å­˜æŒ‡ä»¤
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+				imode	é”å­˜æ¨¡å¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Regist(ZMC_HANDLE handle,int iaxis, int imode)
 {
@@ -7672,23 +7672,23 @@ int32  ZAux_Direct_Regist(ZMC_HANDLE handle,int iaxis, int imode)
 	
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "REGIST(%d) AXIS(%d)", imode,iaxis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //±àÂëÆ÷ÊäÈë³İÂÖ±È£¬È±Ê¡(1,1)
-Input:          //¿¨Á´½Óhandle  
-				iaxis		ÖáºÅ
-				mpos_count	·Ö×Ó£¬²»Òª³¬¹ı65535
-				input_count	 ·ÖÄ¸£¬²»Òª³¬¹ı65535
+Description:    //ç¼–ç å™¨è¾“å…¥é½¿è½®æ¯”ï¼Œç¼ºçœ(1,1)
+Input:          //å¡é“¾æ¥handle  
+				iaxis		è½´å·
+				mpos_count	åˆ†å­ï¼Œä¸è¦è¶…è¿‡65535
+				input_count	 åˆ†æ¯ï¼Œä¸è¦è¶…è¿‡65535
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_EncoderRatio(ZMC_HANDLE handle, int iaxis,int mpos_count,int input_count)
 {
@@ -7697,27 +7697,27 @@ int32  ZAux_Direct_EncoderRatio(ZMC_HANDLE handle, int iaxis,int mpos_count,int 
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "BASE(%d)\r\n",iaxis);
 					
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "ENCODER_RATIO(%d,%d)", mpos_count,input_count);
     strcat(cmdbuff, tempbuff);	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //ÉèÖÃ²½½øÊä³ö³İÂÖ±È£¬È±Ê¡(1,1)
-Input:          //¿¨Á´½Óhandle  
-				iaxis		ÖáºÅ
-				mpos_count	·Ö×Ó£¬1-65535
-				input_count	 ·ÖÄ¸£¬1-65535
+Description:    //è®¾ç½®æ­¥è¿›è¾“å‡ºé½¿è½®æ¯”ï¼Œç¼ºçœ(1,1)
+Input:          //å¡é“¾æ¥handle  
+				iaxis		è½´å·
+				mpos_count	åˆ†å­ï¼Œ1-65535
+				input_count	 åˆ†æ¯ï¼Œ1-65535
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_StepRatio(ZMC_HANDLE handle, int iaxis, int mpos_count,int input_count)
 {
@@ -7725,53 +7725,53 @@ int32  ZAux_Direct_StepRatio(ZMC_HANDLE handle, int iaxis, int mpos_count,int in
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "BASE(%d)\r\n",iaxis);	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "STEP_RATIO(%d,%d)", mpos_count,input_count);
     strcat(cmdbuff, tempbuff);		
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //ËùÓĞÖáÁ¢¼´Í£Ö¹
-Input:          //¿¨Á´½Óhandle 
-				imode Í£Ö¹Ä£Ê½
-				0£¨È±Ê¡£©È¡Ïûµ±Ç°ÔË¶¯
-				1	È¡Ïû»º³åµÄÔË¶¯
-				2	È¡Ïûµ±Ç°ÔË¶¯ºÍ»º³åÔË¶¯¡£
-				3	Á¢¼´ÖĞ¶ÏÂö³å·¢ËÍ¡£
+Description:    //æ‰€æœ‰è½´ç«‹å³åœæ­¢
+Input:          //å¡é“¾æ¥handle 
+				imode åœæ­¢æ¨¡å¼
+				0ï¼ˆç¼ºçœï¼‰å–æ¶ˆå½“å‰è¿åŠ¨
+				1	å–æ¶ˆç¼“å†²çš„è¿åŠ¨
+				2	å–æ¶ˆå½“å‰è¿åŠ¨å’Œç¼“å†²è¿åŠ¨ã€‚
+				3	ç«‹å³ä¸­æ–­è„‰å†²å‘é€ã€‚
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Rapidstop(ZMC_HANDLE handle, int imode)
 {
 
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "RAPIDSTOP(%d)", imode);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶à¸öÖáÔË¶¯Í£Ö¹
-Input:          //¿¨Á´½Óhandle  ÖáºÅ£¬ ¾àÀë
-				imaxaxises		ÖáÊı
-				piAxislist		ÖáÁĞ±í
-				imode	Ä£Ê½
-					0£¨È±Ê¡£©È¡Ïûµ±Ç°ÔË¶¯
-					1	È¡Ïû»º³åµÄÔË¶¯
-					2	È¡Ïûµ±Ç°ÔË¶¯ºÍ»º³åÔË¶¯¡£
-					3	Á¢¼´ÖĞ¶ÏÂö³å·¢ËÍ¡£
+Description:    //å¤šä¸ªè½´è¿åŠ¨åœæ­¢
+Input:          //å¡é“¾æ¥handle  è½´å·ï¼Œ è·ç¦»
+				imaxaxises		è½´æ•°
+				piAxislist		è½´åˆ—è¡¨
+				imode	æ¨¡å¼
+					0ï¼ˆç¼ºçœï¼‰å–æ¶ˆå½“å‰è¿åŠ¨
+					1	å–æ¶ˆç¼“å†²çš„è¿åŠ¨
+					2	å–æ¶ˆå½“å‰è¿åŠ¨å’Œç¼“å†²è¿åŠ¨ã€‚
+					3	ç«‹å³ä¸­æ–­è„‰å†²å‘é€ã€‚
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_CancelAxisList(ZMC_HANDLE handle, int imaxaxises, int *piAxislist, int imode)
 {
@@ -7795,21 +7795,21 @@ int32  ZAux_Direct_CancelAxisList(ZMC_HANDLE handle, int imaxaxises, int *piAxis
 	}
 
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //CONNFRAME»úĞµÊÖÄæ½âÖ¸Áî	2ÏµÁĞÒÔÉÏ¿ØÖÆÆ÷Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				Jogmaxaxises	¹Ø½ÚÖáÊıÁ¿
-				JogAxislist		¹Ø½ÚÖáÁĞ±í
-				frame			»úĞµÊÖÀàĞÍ
-				tablenum		»úĞµÊÖ²ÎÊıTABLEÆğÊ¼±àºÅ
-				Virmaxaxises	¹ØÁªĞéÄâÖá¸öÊı
-				VirAxislist		ĞéÄâÖáÁĞ±í
+Description:    //CONNFRAMEæœºæ¢°æ‰‹é€†è§£æŒ‡ä»¤	2ç³»åˆ—ä»¥ä¸Šæ§åˆ¶å™¨æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				Jogmaxaxises	å…³èŠ‚è½´æ•°é‡
+				JogAxislist		å…³èŠ‚è½´åˆ—è¡¨
+				frame			æœºæ¢°æ‰‹ç±»å‹
+				tablenum		æœºæ¢°æ‰‹å‚æ•°TABLEèµ·å§‹ç¼–å·
+				Virmaxaxises	å…³è”è™šæ‹Ÿè½´ä¸ªæ•°
+				VirAxislist		è™šæ‹Ÿè½´åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Connframe(ZMC_HANDLE handle,int Jogmaxaxises,int *JogAxislist, int frame, int tablenum , int Virmaxaxises , int *VirAxislist)
 {
@@ -7827,7 +7827,7 @@ int32  ZAux_Direct_Connframe(ZMC_HANDLE handle,int Jogmaxaxises,int *JogAxislist
 	{
 		return  ERR_AUX_PARAERR;
 	}
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< Jogmaxaxises-1; i++)
@@ -7841,10 +7841,10 @@ int32  ZAux_Direct_Connframe(ZMC_HANDLE handle,int Jogmaxaxises,int *JogAxislist
 	sprintf(tempbuff, "%d)",JogAxislist[Jogmaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 
 	sprintf(tempbuff, "CONNFRAME(%d,%d,",frame,tablenum);
 	strcat(cmdbuff, tempbuff);
@@ -7860,21 +7860,21 @@ int32  ZAux_Direct_Connframe(ZMC_HANDLE handle,int Jogmaxaxises,int *JogAxislist
 	sprintf(tempbuff, "%d)",VirAxislist[Virmaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //CONNREFRAME»úĞµÊÖÕı½âÖ¸Áî	2ÏµÁĞÒÔÉÏ¿ØÖÆÆ÷Ö§³Ö
-Input:          //¿¨Á´½Óhandle
-				Virmaxaxises	¹ØÁªĞéÄâÖá¸öÊı
-				VirAxislist		ĞéÄâÖáÁĞ±í
-				frame			»úĞµÊÖÀàĞÍ
-				tablenum		»úĞµÊÖ²ÎÊıTABLEÆğÊ¼±àºÅ
-				Jogmaxaxises	¹Ø½ÚÖáÊıÁ¿
-				JogAxislist		¹Ø½ÚÖáÁĞ±í
+Description:    //CONNREFRAMEæœºæ¢°æ‰‹æ­£è§£æŒ‡ä»¤	2ç³»åˆ—ä»¥ä¸Šæ§åˆ¶å™¨æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				Virmaxaxises	å…³è”è™šæ‹Ÿè½´ä¸ªæ•°
+				VirAxislist		è™šæ‹Ÿè½´åˆ—è¡¨
+				frame			æœºæ¢°æ‰‹ç±»å‹
+				tablenum		æœºæ¢°æ‰‹å‚æ•°TABLEèµ·å§‹ç¼–å·
+				Jogmaxaxises	å…³èŠ‚è½´æ•°é‡
+				JogAxislist		å…³èŠ‚è½´åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Connreframe(ZMC_HANDLE handle,int Virmaxaxises , int *VirAxislist, int frame, int tablenum , int Jogmaxaxises,int *JogAxislist)
 {
@@ -7893,7 +7893,7 @@ int32  ZAux_Direct_Connreframe(ZMC_HANDLE handle,int Virmaxaxises , int *VirAxis
 	{
 		return  ERR_AUX_PARAERR;
 	}
-   //Éú³ÉÃüÁî
+   //ç”Ÿæˆå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	
 	for(i = 0; i< Virmaxaxises-1; i++)
@@ -7907,11 +7907,11 @@ int32  ZAux_Direct_Connreframe(ZMC_HANDLE handle,int Virmaxaxises , int *VirAxis
 	sprintf(tempbuff, "%d)",VirAxislist[Virmaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 		
 
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	
 	sprintf(tempbuff, "CONNREFRAME(%d,%d,",frame,tablenum);
 	strcat(cmdbuff, tempbuff);
@@ -7927,21 +7927,21 @@ int32  ZAux_Direct_Connreframe(ZMC_HANDLE handle,int Virmaxaxises , int *VirAxis
 	sprintf(tempbuff, "%d)",JogAxislist[Jogmaxaxises-1]);
     strcat(cmdbuff, tempbuff);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 
-/*********************************µ¥ÖáÔË¶¯****************************************************
+/*********************************å•è½´è¿åŠ¨****************************************************
 
 /*************************************************************
-Description:    //Öáµş¼ÓÔË¶¯	iaddaxisÔË¶¯µş¼Óµ½iaxisÖá £¬ADDAXÖ¸Áîµş¼ÓµÄÊÇÂö³å¸öÊı
-Input:          //¿¨Á´½Óhandle  
-				 iaxis		±»µş¼ÓÖá
-				 iaddaxis	µş¼ÓÖá
+Description:    //è½´å åŠ è¿åŠ¨	iaddaxisè¿åŠ¨å åŠ åˆ°iaxisè½´ ï¼ŒADDAXæŒ‡ä»¤å åŠ çš„æ˜¯è„‰å†²ä¸ªæ•°
+Input:          //å¡é“¾æ¥handle  
+				 iaxis		è¢«å åŠ è½´
+				 iaddaxis	å åŠ è½´
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Single_Addax(ZMC_HANDLE handle, int iaxis, int iaddaxis)
 {
@@ -7954,27 +7954,27 @@ int32  ZAux_Direct_Single_Addax(ZMC_HANDLE handle, int iaxis, int iaddaxis)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "ADDAX(%d) AXIS(%d)", iaddaxis, iaxis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,2048);
 }
 
 
 /*************************************************************
-Description:    //µ¥ÖáÔË¶¯Í£Ö¹
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				imode Ä£Ê½
-					0£¨È±Ê¡£©È¡Ïûµ±Ç°ÔË¶¯
-					1	È¡Ïû»º³åµÄÔË¶¯
-					2	È¡Ïûµ±Ç°ÔË¶¯ºÍ»º³åÔË¶¯¡£
-					3	Á¢¼´ÖĞ¶ÏÂö³å·¢ËÍ¡£
+Description:    //å•è½´è¿åŠ¨åœæ­¢
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				imode æ¨¡å¼
+					0ï¼ˆç¼ºçœï¼‰å–æ¶ˆå½“å‰è¿åŠ¨
+					1	å–æ¶ˆç¼“å†²çš„è¿åŠ¨
+					2	å–æ¶ˆå½“å‰è¿åŠ¨å’Œç¼“å†²è¿åŠ¨ã€‚
+					3	ç«‹å³ä¸­æ–­è„‰å†²å‘é€ã€‚
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Single_Cancel(ZMC_HANDLE handle, int iaxis, int imode)
 {
@@ -7987,20 +7987,20 @@ int32  ZAux_Direct_Single_Cancel(ZMC_HANDLE handle, int iaxis, int imode)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "CANCEL(%d) AXIS(%d)", imode, iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //µ¥ÖáÁ¬ĞøÔË¶¯
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				idir ·½Ïò 1ÕıÏò -1¸ºÏò
+Description:    //å•è½´è¿ç»­è¿åŠ¨
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				idir æ–¹å‘ 1æ­£å‘ -1è´Ÿå‘
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Single_Vmove(ZMC_HANDLE handle, int iaxis, int idir)
 {
@@ -8013,21 +8013,21 @@ int32  ZAux_Direct_Single_Vmove(ZMC_HANDLE handle, int iaxis, int idir)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "VMOVE(%d) AXIS(%d)", idir, iaxis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,2048);
 }
 
 /*************************************************************
-Description:    //¿ØÖÆÆ÷·½Ê½»ØÁã
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-				imode	Ä£Ê½
+Description:    //æ§åˆ¶å™¨æ–¹å¼å›é›¶
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+				imode	æ¨¡å¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Single_Datum(ZMC_HANDLE handle, int iaxis, int imode)
 {
@@ -8040,19 +8040,19 @@ int32  ZAux_Direct_Single_Datum(ZMC_HANDLE handle, int iaxis, int imode)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "AXIS_STOPREASON(%d) = 0\r\nDATUM(%d) AXIS(%d)",iaxis,imode,iaxis);	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,2048);
 }
 
 /*************************************************************
-Description:    //»ØÁãÍê³É×´Ì¬
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //homestatus »ØÁãÍê³É±êÖ¾ 0-»ØÁãÒì³£ 1»ØÁã³É¹¦
-Return:         //´íÎóÂë
+Description:    //å›é›¶å®ŒæˆçŠ¶æ€
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //homestatus å›é›¶å®Œæˆæ ‡å¿— 0-å›é›¶å¼‚å¸¸ 1å›é›¶æˆåŠŸ
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetHomeStatus(ZMC_HANDLE handle,uint32 iaxis,uint32 * homestatus)
 {
@@ -8078,24 +8078,24 @@ int32  ZAux_Direct_GetHomeStatus(ZMC_HANDLE handle,uint32 iaxis,uint32 * homesta
 	int stopstatus = temparray[1];
 
 	
-	if((idlestatus == -1)  && stopstatus == 0)		//Í£Ö¹ÁË
+	if((idlestatus == -1)  && stopstatus == 0)		//åœæ­¢äº†
 	{
-		*homestatus = 1;	//»ØÁãÍê³É	
+		*homestatus = 1;	//å›é›¶å®Œæˆ	
 	}
 	else
 	{
-		*homestatus = 0;	//»ØÁãÎ´³É¹¦
+		*homestatus = 0;	//å›é›¶æœªæˆåŠŸ
 	}
 	return ERR_OK;
 }
 
 /*************************************************************
-Description:    //µ¥ÖáÏà¶ÔÔË¶¯
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fdistance ¾àÀë
+Description:    //å•è½´ç›¸å¯¹è¿åŠ¨
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fdistance è·ç¦»
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Single_Move(ZMC_HANDLE handle, int iaxis, float fdistance)
 {
@@ -8107,21 +8107,21 @@ int32  ZAux_Direct_Single_Move(ZMC_HANDLE handle, int iaxis, float fdistance)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "MOVE(%f) AXIS(%d)", fdistance, iaxis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //µ¥Öá¾ø¶ÔÔË¶¯
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fdistance ¾àÀë
+Description:    //å•è½´ç»å¯¹è¿åŠ¨
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fdistance è·ç¦»
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Single_MoveAbs(ZMC_HANDLE handle, int iaxis, float fdistance)
 {
@@ -8134,25 +8134,25 @@ int32  ZAux_Direct_Single_MoveAbs(ZMC_HANDLE handle, int iaxis, float fdistance)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "MOVEABS(%f) AXIS(%d)", fdistance, iaxis);
 	
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 
-/*********************ÄÚ´æ²Ù×÷
+/*********************å†…å­˜æ“ä½œ
 /*************************************************************
-Description:    //Ğ´VR, 
-Input:          //¿¨Á´½Óhandle 
-				vrstartnum		VRÆğÊ¼±àºÅ
-				numes			Ğ´ÈëµÄÊıÁ¿
-				pfValue			Ğ´ÈëµÄÊı¾İÁĞ±í
+Description:    //å†™VR, 
+Input:          //å¡é“¾æ¥handle 
+				vrstartnum		VRèµ·å§‹ç¼–å·
+				numes			å†™å…¥çš„æ•°é‡
+				pfValue			å†™å…¥çš„æ•°æ®åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetVrf(ZMC_HANDLE handle,int vrstartnum, int numes, float *pfValue)
 {
@@ -8170,7 +8170,7 @@ int32  ZAux_Direct_SetVrf(ZMC_HANDLE handle,int vrstartnum, int numes, float *pf
 	//{
 	//	//
 	//	sprintf(cmdbuff, "VR(%d) =  %f ", (i + vrstartnum) , pfValue[i]);
-	//	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	//	if(ERR_OK != iresult)
 	//	{
@@ -8195,7 +8195,7 @@ int32  ZAux_Direct_SetVrf(ZMC_HANDLE handle,int vrstartnum, int numes, float *pf
 	isend = 0;
 	while(1)
 	{
-		//Ò»´Î·¢ËÍ¸öÊı40¸ö
+		//ä¸€æ¬¡å‘é€ä¸ªæ•°40ä¸ª
 		icur = numes - isend;
 		if(icur > 200)
 		{
@@ -8220,12 +8220,12 @@ int32  ZAux_Direct_SetVrf(ZMC_HANDLE handle,int vrstartnum, int numes, float *pf
 
 
 /*************************************************************
-Description:    //VR¶ÁÈ¡, ¿ÉÒÔÒ»´Î¶ÁÈ¡¶à¸ö
-Input:          //¿¨Á´½Óhandle  
-				vrstartnum	¶ÁÈ¡µÄVRÆğÊ¼µØÖ·
-				numes		¶ÁÈ¡µÄÊıÁ¿
-Output:         //pfValue  ·µ»ØµÄ¶ÁÈ¡Öµ£¬¶à¸öÊ±±ØĞë·ÖÅä¿Õ¼ä.
-Return:         //´íÎóÂë
+Description:    //VRè¯»å–, å¯ä»¥ä¸€æ¬¡è¯»å–å¤šä¸ª
+Input:          //å¡é“¾æ¥handle  
+				vrstartnum	è¯»å–çš„VRèµ·å§‹åœ°å€
+				numes		è¯»å–çš„æ•°é‡
+Output:         //pfValue  è¿”å›çš„è¯»å–å€¼ï¼Œå¤šä¸ªæ—¶å¿…é¡»åˆ†é…ç©ºé—´.
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetVrf(ZMC_HANDLE handle, int vrstartnum, int numes, float *pfValue)
 {
@@ -8243,14 +8243,14 @@ int32  ZAux_Direct_GetVrf(ZMC_HANDLE handle, int vrstartnum, int numes, float *p
 	//isend = 0;
 	//while(1)
 	//{
-	//	//Ò»´Î·¢ËÍ¸öÊı15¸ö
+	//	//ä¸€æ¬¡å‘é€ä¸ªæ•°15ä¸ª
 	//	icur = numes - isend;
 	//	if(icur > 15)
 	//	{
 	//		icur = 15;
 	//	}
 	//	
-	//	//Éú³ÉÃüÁî
+	//	//ç”Ÿæˆå‘½ä»¤
 	//	strcpy(cmdbuff, "?");
 	//	for(i = 0; i< icur; i++)
 	//	{
@@ -8259,7 +8259,7 @@ int32  ZAux_Direct_GetVrf(ZMC_HANDLE handle, int vrstartnum, int numes, float *p
 	//		strcat(cmdbuff, tempbuff);
 	//	}
 	//	
-	//	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	//	if(ERR_OK != iresult)
 	//	{
@@ -8304,7 +8304,7 @@ int32  ZAux_Direct_GetVrf(ZMC_HANDLE handle, int vrstartnum, int numes, float *p
 	isend = 0;
 	while(1)
 	{
-		//Ò»´Î·¢ËÍ¸öÊı40¸ö
+		//ä¸€æ¬¡å‘é€ä¸ªæ•°40ä¸ª
 		icur = numes - isend;
 		if(icur > 200)
 		{
@@ -8327,12 +8327,12 @@ int32  ZAux_Direct_GetVrf(ZMC_HANDLE handle, int vrstartnum, int numes, float *p
 }
 
 /*************************************************************
-Description:    //VRINT¶ÁÈ¡£¬ ±ØĞë150401ÒÔÉÏ°æ±¾²ÅÖ§³ÖVRINTµÄDIRECTCOMMAND¶ÁÈ¡
-Input:          //¿¨Á´½Óhandle  
-				vrstartnum	¶ÁÈ¡µÄVRÆğÊ¼µØÖ·
-				numes		¶ÁÈ¡µÄÊıÁ¿
-				Output:         //piValue  ·µ»ØµÄ¶ÁÈ¡Öµ£¬¶à¸öÊ±±ØĞë·ÖÅä¿Õ¼ä.
-Return:         //´íÎóÂë
+Description:    //VRINTè¯»å–ï¼Œ å¿…é¡»150401ä»¥ä¸Šç‰ˆæœ¬æ‰æ”¯æŒVRINTçš„DIRECTCOMMANDè¯»å–
+Input:          //å¡é“¾æ¥handle  
+				vrstartnum	è¯»å–çš„VRèµ·å§‹åœ°å€
+				numes		è¯»å–çš„æ•°é‡
+				Output:         //piValue  è¿”å›çš„è¯»å–å€¼ï¼Œå¤šä¸ªæ—¶å¿…é¡»åˆ†é…ç©ºé—´.
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetVrInt(ZMC_HANDLE handle, int vrstartnum, int numes, int *piValue)
 {
@@ -8351,14 +8351,14 @@ int32  ZAux_Direct_GetVrInt(ZMC_HANDLE handle, int vrstartnum, int numes, int *p
 	isend = 0;
 	while(1)
 	{
-		//Ò»´Î·¢ËÍ¸öÊı15¸ö
+		//ä¸€æ¬¡å‘é€ä¸ªæ•°15ä¸ª
 		icur = numes - isend;
 		if(icur > 15)
 		{
 			icur = 15;
 		}
 		
-		//Éú³ÉÃüÁî
+		//ç”Ÿæˆå‘½ä»¤
 		strcpy(cmdbuff, "?");
 		for(i = 0; i< icur; i++)
 		{
@@ -8367,7 +8367,7 @@ int32  ZAux_Direct_GetVrInt(ZMC_HANDLE handle, int vrstartnum, int numes, int *p
 			strcat(cmdbuff, tempbuff);
 		}
 		
-		//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+		//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 		iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 		if(ERR_OK != iresult)
 		{
@@ -8398,13 +8398,13 @@ int32  ZAux_Direct_GetVrInt(ZMC_HANDLE handle, int vrstartnum, int numes, int *p
 }
 
 /*************************************************************
-Description:    //Ğ´table 
-Input:          //¿¨Á´½Óhandle 
-				tabstart	Ğ´ÈëµÄTABLEÆğÊ¼±àºÅ
-				numes		Ğ´ÈëµÄÊıÁ¿
-				pfValue		Ğ´ÈëµÄÊı¾İÖµ
+Description:    //å†™table 
+Input:          //å¡é“¾æ¥handle 
+				tabstart	å†™å…¥çš„TABLEèµ·å§‹ç¼–å·
+				numes		å†™å…¥çš„æ•°é‡
+				pfValue		å†™å…¥çš„æ•°æ®å€¼
 Output:         //	
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetTable(ZMC_HANDLE handle,int tabstart, int numes, float *pfValue)
 {
@@ -8423,14 +8423,14 @@ int32  ZAux_Direct_SetTable(ZMC_HANDLE handle,int tabstart, int numes, float *pf
 	int isend = 0;
 	while(1)
 	{
-		//Ò»´Î·¢ËÍ¸öÊı15¸ö
+		//ä¸€æ¬¡å‘é€ä¸ªæ•°15ä¸ª
 		icur = numes - isend;
 		if(icur > 15)
 		{
 			icur = 15;
 		}
 
-		//Éú³ÉÃüÁî
+		//ç”Ÿæˆå‘½ä»¤
 		sprintf(cmdbuff, "table(%d",tabstart+isend);
 		for(i = 0; i< icur; i++)
 		{
@@ -8441,7 +8441,7 @@ int32  ZAux_Direct_SetTable(ZMC_HANDLE handle,int tabstart, int numes, float *pf
 		sprintf(tempbuff, ")");
 		strcat(cmdbuff, tempbuff);
 
-		//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+		//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 		iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 		if(ERR_OK != iresult)
 		{
@@ -8462,12 +8462,12 @@ int32  ZAux_Direct_SetTable(ZMC_HANDLE handle,int tabstart, int numes, float *pf
 }
 
 /*************************************************************
-Description:    //table¶ÁÈ¡, ¿ÉÒÔÒ»´Î¶ÁÈ¡¶à¸ö
-Input:          //¿¨Á´½Óhandle  
-				tabstart	¶ÁÈ¡TABLEÆğÊ¼µØÖ·
-				numes		¶ÁÈ¡µÄÊıÁ¿
-Output:         //pfValue  ¶à¸öÊ±±ØĞë·ÖÅä¿Õ¼ä.
-Return:         //´íÎóÂë
+Description:    //tableè¯»å–, å¯ä»¥ä¸€æ¬¡è¯»å–å¤šä¸ª
+Input:          //å¡é“¾æ¥handle  
+				tabstart	è¯»å–TABLEèµ·å§‹åœ°å€
+				numes		è¯»å–çš„æ•°é‡
+Output:         //pfValue  å¤šä¸ªæ—¶å¿…é¡»åˆ†é…ç©ºé—´.
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetTable(ZMC_HANDLE handle, int tabstart, int numes, float *pfValue)
 {
@@ -8486,14 +8486,14 @@ int32  ZAux_Direct_GetTable(ZMC_HANDLE handle, int tabstart, int numes, float *p
 	isend = 0;
 	while(1)
 	{
-		//Ò»´Î·¢ËÍ¸öÊı15¸ö
+		//ä¸€æ¬¡å‘é€ä¸ªæ•°15ä¸ª
 		icur = numes - isend;
 		if(icur > 15)
 		{
 			icur = 15;
 		}
 		
-		//Éú³ÉÃüÁî
+		//ç”Ÿæˆå‘½ä»¤
 		strcpy(cmdbuff, "?");
 		for(i = 0; i< icur; i++)
 		{
@@ -8502,7 +8502,7 @@ int32  ZAux_Direct_GetTable(ZMC_HANDLE handle, int tabstart, int numes, float *p
 			strcat(cmdbuff, tempbuff);
 		}
 		
-		//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+		//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 		iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 		if(ERR_OK != iresult)
 		{
@@ -8536,16 +8536,16 @@ int32  ZAux_Direct_GetTable(ZMC_HANDLE handle, int tabstart, int numes, float *p
 
 
 #if 0
-//¸¨Öúº¯Êı
+//è¾…åŠ©å‡½æ•°
 #endif
 
 /*************************************************************
-Description:    //×Ö·û´®×ªÎªfloat
-Input:          //¿¨Á´½Óhandle 
-				pstringin Êı¾İµÄ×Ö·û´®
-				inumes   ×ª»»Êı¾İ¸öÊı
-Output:         //pfvlaue ×ª»»µÄÊı¾İ
-Return:         //´íÎóÂë
+Description:    //å­—ç¬¦ä¸²è½¬ä¸ºfloat
+Input:          //å¡é“¾æ¥handle 
+				pstringin æ•°æ®çš„å­—ç¬¦ä¸²
+				inumes   è½¬æ¢æ•°æ®ä¸ªæ•°
+Output:         //pfvlaue è½¬æ¢çš„æ•°æ®
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_TransStringtoFloat(const char* pstringin, int inumes,  float* pfvlaue)
 {
@@ -8586,7 +8586,7 @@ int32  ZAux_TransStringtoFloat(const char* pstringin, int inumes,  float* pfvlau
 		
         pfvlaue[i] = dvalue;
         
-        //Ìø¹ıÉÏ´ÎµÄ
+        //è·³è¿‡ä¸Šæ¬¡çš„
         pstringnew = ptemp;
     }
 	
@@ -8595,12 +8595,12 @@ int32  ZAux_TransStringtoFloat(const char* pstringin, int inumes,  float* pfvlau
 }
 
 /*************************************************************
-Description:    //×Ö·û´®×ªÎªint
-Input:          //¿¨Á´½Óhandle 
-				pstringin Êı¾İµÄ×Ö·û´®
-				inumes   ×ª»»Êı¾İ¸öÊı
-Output:         //pivlaue ×ª»»µÄÊı¾İ
-Return:         //´íÎóÂë
+Description:    //å­—ç¬¦ä¸²è½¬ä¸ºint
+Input:          //å¡é“¾æ¥handle 
+				pstringin æ•°æ®çš„å­—ç¬¦ä¸²
+				inumes   è½¬æ¢æ•°æ®ä¸ªæ•°
+Output:         //pivlaue è½¬æ¢çš„æ•°æ®
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_TransStringtoInt(const char* pstringin, int inumes,  int* pivlaue)
 {
@@ -8639,9 +8639,9 @@ int32  ZAux_TransStringtoInt(const char* pstringin, int inumes,  int* pivlaue)
             return ERR_ACKERROR;
         }    
 		
-        pivlaue[i] = dvalue;    //×ª»»³ÉÕûÊı
+        pivlaue[i] = dvalue;    //è½¬æ¢æˆæ•´æ•°
         
-        //Ìø¹ıÉÏ´ÎµÄ
+        //è·³è¿‡ä¸Šæ¬¡çš„
         pstringnew = ptemp;
     }
 	
@@ -8651,22 +8651,22 @@ int32  ZAux_TransStringtoInt(const char* pstringin, int inumes,  int* pivlaue)
 
 
 #if 0
-//UÅÌ¸ñÊ½µÄÏà¹Øº¯Êı
+//Uç›˜æ ¼å¼çš„ç›¸å…³å‡½æ•°
 #endif
 
 /*************************************************************
-Description:    //°Ñfloat¸ñÊ½µÄ±äÁ¿ÁĞ±í´æ´¢µ½ÎÄ¼ş£¬ Óë¿ØÖÆÆ÷µÄUÅÌÎÄ¼ş¸ñÊ½Ò»ÖÂ.
-Input:          //sFilename ÎÄ¼ş¾ø¶ÔÂ·¾¶
-				pVarlist	Ğ´ÈëµÄÊı¾İÁĞ±í
-				inum		Êı¾İµÄ³¤¶È
+Description:    //æŠŠfloatæ ¼å¼çš„å˜é‡åˆ—è¡¨å­˜å‚¨åˆ°æ–‡ä»¶ï¼Œ ä¸æ§åˆ¶å™¨çš„Uç›˜æ–‡ä»¶æ ¼å¼ä¸€è‡´.
+Input:          //sFilename æ–‡ä»¶ç»å¯¹è·¯å¾„
+				pVarlist	å†™å…¥çš„æ•°æ®åˆ—è¡¨
+				inum		æ•°æ®çš„é•¿åº¦
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_WriteUFile(const char *sFilename, float *pVarlist, int inum)
 {
     FILE *pfile;
 	
-    //Ğ´ÈëÎÄ¼ş
+    //å†™å…¥æ–‡ä»¶
     pfile = fopen(sFilename, "wb");
     if(NULL == pfile)
     {
@@ -8685,24 +8685,24 @@ int32  ZAux_WriteUFile(const char *sFilename, float *pVarlist, int inum)
         return ERR_AUX_OS_ERR;
 	}
 	
-	//¹Ø±ÕÎÄ¼ş
+	//å…³é—­æ–‡ä»¶
 	fclose(pfile);
 	return ERR_OK;
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡float¸ñÊ½µÄ±äÁ¿ÁĞ±í£¬ Óë¿ØÖÆÆ÷µÄUÅÌÎÄ¼ş¸ñÊ½Ò»ÖÂ.
-Input:          //sFilename ÎÄ¼ş¾ø¶ÔÂ·¾¶
-				inum		Êı¾İµÄ³¤¶È	
-Output:         //pVarlist	¶ÁÈ¡µÄÊı¾İÁĞ±í
-Return:         //´íÎóÂë
+Description:    //è¯»å–floatæ ¼å¼çš„å˜é‡åˆ—è¡¨ï¼Œ ä¸æ§åˆ¶å™¨çš„Uç›˜æ–‡ä»¶æ ¼å¼ä¸€è‡´.
+Input:          //sFilename æ–‡ä»¶ç»å¯¹è·¯å¾„
+				inum		æ•°æ®çš„é•¿åº¦	
+Output:         //pVarlist	è¯»å–çš„æ•°æ®åˆ—è¡¨
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_ReadUFile(const char *sFilename, float *pVarlist, int* pinum)
 {
     FILE *pfile;
     uint32 uifilesize;
 	
-    //¶ÁÈ¡ÎÄ¼ş
+    //è¯»å–æ–‡ä»¶
     pfile = fopen(sFilename, "rb");
     if(NULL == pfile)
     {
@@ -8723,7 +8723,7 @@ int32  ZAux_ReadUFile(const char *sFilename, float *pVarlist, int* pinum)
 		
         return ERR_AUX_OS_ERR;
 	}
-	//¹Ø±ÕÎÄ¼ş
+	//å…³é—­æ–‡ä»¶
 	fclose(pfile);
 	
 	*pinum = uifilesize/4;
@@ -8733,13 +8733,13 @@ int32  ZAux_ReadUFile(const char *sFilename, float *pVarlist, int* pinum)
 
 
 /*************************************************************
-Description:    //modbus¼Ä´æÆ÷²Ù×÷ modbus_bit
-Input:          //¿¨Á´½Óhandle ¼Ä´æÆ÷µØÖ·
-				start	ÆğÊ¼±àºÅ
-				inum	ÊıÁ¿
-				pdata ÉèÖÃµÄÎ»×´Ì¬  °´Î»´æ´¢
+Description:    //modbuså¯„å­˜å™¨æ“ä½œ modbus_bit
+Input:          //å¡é“¾æ¥handle å¯„å­˜å™¨åœ°å€
+				start	èµ·å§‹ç¼–å·
+				inum	æ•°é‡
+				pdata è®¾ç½®çš„ä½çŠ¶æ€  æŒ‰ä½å­˜å‚¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Modbus_Set0x(ZMC_HANDLE handle, uint16 start, uint16 inum, uint8* pdata)
 {
@@ -8750,12 +8750,12 @@ int32  ZAux_Modbus_Set0x(ZMC_HANDLE handle, uint16 start, uint16 inum, uint8* pd
 }
 
 /*************************************************************
-Description:    //modbus¼Ä´æÆ÷²Ù×÷ modbus_bit
-Input:          //¿¨Á´½Óhandle ¼Ä´æÆ÷µØÖ·
-				start	ÆğÊ¼±àºÅ
-				inum	ÊıÁ¿
-Output:         //pdata ·µ»ØµÄÎ»×´Ì¬  °´Î»´æ´¢
-Return:         //´íÎóÂë
+Description:    //modbuså¯„å­˜å™¨æ“ä½œ modbus_bit
+Input:          //å¡é“¾æ¥handle å¯„å­˜å™¨åœ°å€
+				start	èµ·å§‹ç¼–å·
+				inum	æ•°é‡
+Output:         //pdata è¿”å›çš„ä½çŠ¶æ€  æŒ‰ä½å­˜å‚¨
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Modbus_Get0x(ZMC_HANDLE handle, uint16 start, uint16 inum, uint8* pdata)
 {
@@ -8766,13 +8766,13 @@ int32  ZAux_Modbus_Get0x(ZMC_HANDLE handle, uint16 start, uint16 inum, uint8* pd
 }
 
 /*************************************************************
-Description:    //modbus¼Ä´æÆ÷²Ù×÷		MODBUS_REG
-Input:          //¿¨Á´½Óhandle ¼Ä´æÆ÷µØÖ·
-				start	ÆğÊ¼±àºÅ
-				inum	ÊıÁ¿
-				pdata	ÉèÖÃÖµ
+Description:    //modbuså¯„å­˜å™¨æ“ä½œ		MODBUS_REG
+Input:          //å¡é“¾æ¥handle å¯„å­˜å™¨åœ°å€
+				start	èµ·å§‹ç¼–å·
+				inum	æ•°é‡
+				pdata	è®¾ç½®å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Modbus_Set4x(ZMC_HANDLE handle, uint16 start, uint16 inum, uint16* pdata)
 {
@@ -8783,12 +8783,12 @@ int32  ZAux_Modbus_Set4x(ZMC_HANDLE handle, uint16 start, uint16 inum, uint16* p
 }
 
 /*************************************************************
-Description:    //modbus¼Ä´æÆ÷²Ù×÷ MODBUS_REG
-Input:          //¿¨Á´½Óhandle ¼Ä´æÆ÷µØÖ·
-				start	ÆğÊ¼±àºÅ
-				inum	ÊıÁ¿
-Output:         //pdata	¶ÁÈ¡µÄREG¼Ä´æÆ÷Öµ
-Return:         //´íÎóÂë
+Description:    //modbuså¯„å­˜å™¨æ“ä½œ MODBUS_REG
+Input:          //å¡é“¾æ¥handle å¯„å­˜å™¨åœ°å€
+				start	èµ·å§‹ç¼–å·
+				inum	æ•°é‡
+Output:         //pdata	è¯»å–çš„REGå¯„å­˜å™¨å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Modbus_Get4x(ZMC_HANDLE handle, uint16 start, uint16 inum, uint16* pdata)
 {
@@ -8799,13 +8799,13 @@ int32  ZAux_Modbus_Get4x(ZMC_HANDLE handle, uint16 start, uint16 inum, uint16* p
 }
 
 /*************************************************************
-Description:    //modbus¼Ä´æÆ÷²Ù×÷		MODBUS_IEEE
-Input:          //¿¨Á´½Óhandle ¼Ä´æÆ÷µØÖ·
-				start	ÆğÊ¼±àºÅ
-				inum	ÊıÁ¿
-				pfdata	ÉèÖÃÖµ
+Description:    //modbuså¯„å­˜å™¨æ“ä½œ		MODBUS_IEEE
+Input:          //å¡é“¾æ¥handle å¯„å­˜å™¨åœ°å€
+				start	èµ·å§‹ç¼–å·
+				inum	æ•°é‡
+				pfdata	è®¾ç½®å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Modbus_Get4x_Float(ZMC_HANDLE handle, uint16 start, uint16 inum, float* pfdata)
 {
@@ -8843,12 +8843,12 @@ int32  ZAux_Modbus_Get4x_Float(ZMC_HANDLE handle, uint16 start, uint16 inum, flo
 }
 
 /*************************************************************
-Description:    //modbus¼Ä´æÆ÷²Ù×÷ MODBUS_IEEE
-Input:          //¿¨Á´½Óhandle ¼Ä´æÆ÷µØÖ·
-				start	ÆğÊ¼±àºÅ
-				inum	ÊıÁ¿
-Output:         //pfdata	¶ÁÈ¡µÄREG¼Ä´æÆ÷Öµ
-Return:         //´íÎóÂë
+Description:    //modbuså¯„å­˜å™¨æ“ä½œ MODBUS_IEEE
+Input:          //å¡é“¾æ¥handle å¯„å­˜å™¨åœ°å€
+				start	èµ·å§‹ç¼–å·
+				inum	æ•°é‡
+Output:         //pfdata	è¯»å–çš„REGå¯„å­˜å™¨å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Modbus_Set4x_Float(ZMC_HANDLE handle, uint16 start, uint16 inum, float* pfdata)
 {
@@ -8880,13 +8880,13 @@ int32  ZAux_Modbus_Set4x_Float(ZMC_HANDLE handle, uint16 start, uint16 inum, flo
 }
 
 /*************************************************************
-Description:    //modbus¼Ä´æÆ÷²Ù×÷		MODBUS_LONG
-Input:          //¿¨Á´½Óhandle ¼Ä´æÆ÷µØÖ·
-				start	ÆğÊ¼±àºÅ
-				inum	ÊıÁ¿
-				pidata	ÉèÖÃÖµ
+Description:    //modbuså¯„å­˜å™¨æ“ä½œ		MODBUS_LONG
+Input:          //å¡é“¾æ¥handle å¯„å­˜å™¨åœ°å€
+				start	èµ·å§‹ç¼–å·
+				inum	æ•°é‡
+				pidata	è®¾ç½®å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Modbus_Get4x_Long(ZMC_HANDLE handle, uint16 start, uint16 inum, int32 * pidata)
 {
@@ -8923,12 +8923,12 @@ int32  ZAux_Modbus_Get4x_Long(ZMC_HANDLE handle, uint16 start, uint16 inum, int3
 }
 
 /*************************************************************
-Description:    //modbus¼Ä´æÆ÷²Ù×÷ MODBUS_LONG
-Input:          //¿¨Á´½Óhandle ¼Ä´æÆ÷µØÖ·
-				start	ÆğÊ¼±àºÅ
-				inum	ÊıÁ¿
-Output:         //pidata	¶ÁÈ¡µÄREG¼Ä´æÆ÷Öµ
-Return:         //´íÎóÂë
+Description:    //modbuså¯„å­˜å™¨æ“ä½œ MODBUS_LONG
+Input:          //å¡é“¾æ¥handle å¯„å­˜å™¨åœ°å€
+				start	èµ·å§‹ç¼–å·
+				inum	æ•°é‡
+Output:         //pidata	è¯»å–çš„REGå¯„å­˜å™¨å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Modbus_Set4x_Long(ZMC_HANDLE handle, uint16 start, uint16 inum, int32 * pidata)
 {
@@ -8960,12 +8960,12 @@ int32  ZAux_Modbus_Set4x_Long(ZMC_HANDLE handle, uint16 start, uint16 inum, int3
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡modbus_string
-Input:          //¿¨Á´½Óhandle
-				start	modbusÆğÊ¼µØÖ·
-				inum	³¤¶È			
-Output:         pidata	¶ÁÈ¡·µ»ØµÄ×Ö·û´®
-Return:         //´íÎóÂë
+Description:    //è¯»å–modbus_string
+Input:          //å¡é“¾æ¥handle
+				start	modbusèµ·å§‹åœ°å€
+				inum	é•¿åº¦			
+Output:         pidata	è¯»å–è¿”å›çš„å­—ç¬¦ä¸²
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Modbus_Get4x_String(ZMC_HANDLE handle, uint16 start, uint16 inum, char * pidata)
 {
@@ -9001,13 +9001,13 @@ int32  ZAux_Modbus_Get4x_String(ZMC_HANDLE handle, uint16 start, uint16 inum, ch
 }
 
 /*************************************************************
-Description:    //ÉèÖÃmodbus_string
-Input:          //¿¨Á´½Óhandle
-				start	modbusÆğÊ¼µØÖ·
-				inum	³¤¶È
-				pidata	Ğ´ÈëµÄ×Ö·û´®
+Description:    //è®¾ç½®modbus_string
+Input:          //å¡é“¾æ¥handle
+				start	modbusèµ·å§‹åœ°å€
+				inum	é•¿åº¦
+				pidata	å†™å…¥çš„å­—ç¬¦ä¸²
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Modbus_Set4x_String(ZMC_HANDLE handle, uint16 start, uint16 inum, char * pidata)
 {
@@ -9043,13 +9043,13 @@ int32  ZAux_Modbus_Set4x_String(ZMC_HANDLE handle, uint16 start, uint16 inum, ch
 
 
 /*************************************************************
-Description:    //Ğ´ÓÃ»§flash¿é, floatÊı¾İ
-Input:          //¿¨Á´½Óhandle
-				uiflashid 	flash¿éºÅ
-				uinumes		±äÁ¿¸öÊı
-				pfvlue		Êı¾İ
+Description:    //å†™ç”¨æˆ·flashå—, floatæ•°æ®
+Input:          //å¡é“¾æ¥handle
+				uiflashid 	flashå—å·
+				uinumes		å˜é‡ä¸ªæ•°
+				pfvlue		æ•°æ®
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_FlashWritef(ZMC_HANDLE handle, uint16 uiflashid, uint32 uinumes, float *pfvlue)
 {
@@ -9061,13 +9061,13 @@ int32  ZAux_FlashWritef(ZMC_HANDLE handle, uint16 uiflashid, uint32 uinumes, flo
 
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÓÃ»§flash¿é, floatÊı¾İ
-Input:          //¿¨Á´½Óhandle
-uiflashid 	flash¿éºÅ
-uibuffnum	»º³å±äÁ¿¸öÊı
+Description:    //è¯»å–ç”¨æˆ·flashå—, floatæ•°æ®
+Input:          //å¡é“¾æ¥handle
+uiflashid 	flashå—å·
+uibuffnum	ç¼“å†²å˜é‡ä¸ªæ•°
 Output:         //
-puinumesread ¶ÁÈ¡µ½µÄ±äÁ¿¸öÊı
-Return:         //´íÎóÂë
+puinumesread è¯»å–åˆ°çš„å˜é‡ä¸ªæ•°
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_FlashReadf(ZMC_HANDLE handle, uint16 uiflashid, uint32 uibuffnum, float *pfvlue, uint32* puinumesread)
 {
@@ -9077,21 +9077,21 @@ int32  ZAux_FlashReadf(ZMC_HANDLE handle, uint16 uiflashid, uint32 uibuffnum, fl
 }
 
 
-/***********************************2018-08-24 V2.1º¯ÊıÌí¼Ó****************************************************************************
-Ôö¼Ó²¿·ÖÌØÊâ¹¦ÄÜº¯Êı
-Ôö¼Ó×ÜÏßÏà¹Øº¯Êı
+/***********************************2018-08-24 V2.1å‡½æ•°æ·»åŠ ****************************************************************************
+å¢åŠ éƒ¨åˆ†ç‰¹æ®ŠåŠŸèƒ½å‡½æ•°
+å¢åŠ æ€»çº¿ç›¸å…³å‡½æ•°
 ***************************************************************************************************************************************/
 
 /*************************************************************
-Description:    //Ê¾²¨Æ÷´¥·¢º¯Êı 150723ÒÔºó°æ±¾Ö§³Ö
-Input:          //¿¨Á´½Óhandle  
+Description:    //ç¤ºæ³¢å™¨è§¦å‘å‡½æ•° 150723ä»¥åç‰ˆæœ¬æ”¯æŒ
+Input:          //å¡é“¾æ¥handle  
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Trigger(ZMC_HANDLE handle)
 {
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 		char  cmdbuffAck[2048];
 		return ZAux_Execute(handle, "Trigger", cmdbuffAck, 2048);
 }
@@ -9099,14 +9099,14 @@ int32  ZAux_Trigger(ZMC_HANDLE handle)
 
 //MOVE_PARA,MOVE_PWM, MOVE_SYNMOVE,MOVE_ASYNMOVE
 /*************************************************************
-Description:    //ÔË¶¯ÖĞĞŞ¸Ä²ÎÊı. 20170503ÒÔÉÏ¹Ì¼şÖ§³Ö
-Input:          //¿¨Á´½Óhandle  
-				base_axis ÔË¶¯Ö÷Öá
-				paraname  ĞŞ¸ÄµÄÖá²ÎÊı×Ö·û´®Ãû³Æ
-				iaxis	  ²ÎÊıĞŞ¸ÄÖáºÅ
-				fvalue	  ÉèÖÃÖµ
+Description:    //è¿åŠ¨ä¸­ä¿®æ”¹å‚æ•°. 20170503ä»¥ä¸Šå›ºä»¶æ”¯æŒ
+Input:          //å¡é“¾æ¥handle  
+				base_axis è¿åŠ¨ä¸»è½´
+				paraname  ä¿®æ”¹çš„è½´å‚æ•°å­—ç¬¦ä¸²åç§°
+				iaxis	  å‚æ•°ä¿®æ”¹è½´å·
+				fvalue	  è®¾ç½®å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MovePara(ZMC_HANDLE handle,uint32 base_axis,char *  paraname,uint32 iaxis,float fvalue)
 {
@@ -9122,7 +9122,7 @@ int32  ZAux_Direct_MovePara(ZMC_HANDLE handle,uint32 base_axis,char *  paraname,
 
 	sprintf(cmdbuff, "MOVE_PARA(%s,%d,%f) axis(%d)",paraname,iaxis,fvalue,base_axis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,2048);
 	if(ERR_OK != iresult)
@@ -9134,14 +9134,14 @@ int32  ZAux_Direct_MovePara(ZMC_HANDLE handle,uint32 base_axis,char *  paraname,
 }
 
 /*************************************************************
-Description:    //ÔË¶¯ÖĞĞŞ¸ÄPWM 20170503ÒÔÉÏ¹Ì¼şÖ§³Ö
-Input:          //¿¨Á´½Óhandle  
-				base_axis	²å²¹Ö÷Öá±àºÅ
-				pwm_num		PWM¿Ú±àºÅ
-				pwm_duty	Õ¼¿Õ±È0-1
-				pwm_freq	ÆµÂÊ Ó²¼şPWM 1M £¬ Èí¼şPWM  2k 
+Description:    //è¿åŠ¨ä¸­ä¿®æ”¹PWM 20170503ä»¥ä¸Šå›ºä»¶æ”¯æŒ
+Input:          //å¡é“¾æ¥handle  
+				base_axis	æ’è¡¥ä¸»è½´ç¼–å·
+				pwm_num		PWMå£ç¼–å·
+				pwm_duty	å ç©ºæ¯”0-1
+				pwm_freq	é¢‘ç‡ ç¡¬ä»¶PWM 1M ï¼Œ è½¯ä»¶PWM  2k 
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MovePwm(ZMC_HANDLE handle,uint32 base_axis,uint32 pwm_num,float pwm_duty,float pwm_freq)
 {
@@ -9157,7 +9157,7 @@ int32  ZAux_Direct_MovePwm(ZMC_HANDLE handle,uint32 base_axis,uint32 pwm_num,flo
 
 	sprintf(cmdbuff, "MOVE_PWM(%d,%f,%f) axis(%d)",pwm_num,pwm_duty,pwm_freq,base_axis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,2048);
 	if(ERR_OK != iresult)
@@ -9169,14 +9169,14 @@ int32  ZAux_Direct_MovePwm(ZMC_HANDLE handle,uint32 base_axis,uint32 pwm_num,flo
 }
 
 /*************************************************************
-Description:    //ÔË¶¯ÖĞÍ¬²½ÆäËûÖáµÄÔË¶¯,. 20170503ÒÔÉÏ¹Ì¼şÖ§³Ö
-Input:          //¿¨Á´½Óhandle
-				base_axis ÔË¶¯Ö÷Öá
-				iaxis	  Í¬²½ÖáºÅ
-				fdist	  Í¬²½ÖáÔË¶¯¾àÀë
-				ifsp	  ÊÇ·ñÊ¹ÓÃSPÔË¶¯
+Description:    //è¿åŠ¨ä¸­åŒæ­¥å…¶ä»–è½´çš„è¿åŠ¨,. 20170503ä»¥ä¸Šå›ºä»¶æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				base_axis è¿åŠ¨ä¸»è½´
+				iaxis	  åŒæ­¥è½´å·
+				fdist	  åŒæ­¥è½´è¿åŠ¨è·ç¦»
+				ifsp	  æ˜¯å¦ä½¿ç”¨SPè¿åŠ¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveSynmove(ZMC_HANDLE handle,uint32 base_axis,uint32 iaxis,float fdist,uint32 ifsp)
 {
@@ -9192,7 +9192,7 @@ int32  ZAux_Direct_MoveSynmove(ZMC_HANDLE handle,uint32 base_axis,uint32 iaxis,f
 
 	sprintf(cmdbuff, "MOVE_SYNMOVE(%d,%f,%d) axis(%d)",iaxis,fdist,ifsp,base_axis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,2048);
 	if(ERR_OK != iresult)
@@ -9204,14 +9204,14 @@ int32  ZAux_Direct_MoveSynmove(ZMC_HANDLE handle,uint32 base_axis,uint32 iaxis,f
 }
 
 /*************************************************************
-Description:    //ÔË¶¯ÖĞ´¥·¢ÆäËûÖáµÄÔË¶¯. 20170503ÒÔÉÏ¹Ì¼şÖ§³Ö
-Input:          //¿¨Á´½Óhandle
-				base_axis ÔË¶¯Ö÷Öá
-				iaxis	  ´¥·¢ÖáÖáºÅ£¨²»ÄÜÎªµ±Ç°Öá£©
-				fdist	  ´¥·¢ÖáÔË¶¯¾àÀë
-				ifsp	  ÊÇ·ñÊ¹ÓÃSPÔË¶¯
+Description:    //è¿åŠ¨ä¸­è§¦å‘å…¶ä»–è½´çš„è¿åŠ¨. 20170503ä»¥ä¸Šå›ºä»¶æ”¯æŒ
+Input:          //å¡é“¾æ¥handle
+				base_axis è¿åŠ¨ä¸»è½´
+				iaxis	  è§¦å‘è½´è½´å·ï¼ˆä¸èƒ½ä¸ºå½“å‰è½´ï¼‰
+				fdist	  è§¦å‘è½´è¿åŠ¨è·ç¦»
+				ifsp	  æ˜¯å¦ä½¿ç”¨SPè¿åŠ¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveASynmove(ZMC_HANDLE handle,uint32 base_axis,uint32 iaxis,float fdist,uint32 ifsp)
 {
@@ -9227,7 +9227,7 @@ int32  ZAux_Direct_MoveASynmove(ZMC_HANDLE handle,uint32 base_axis,uint32 iaxis,
 
 	sprintf(cmdbuff, "MOVE_ASYNMOVE(%d,%f,%d) axis(%d)",iaxis,fdist,ifsp,base_axis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,2048);
 	if(ERR_OK != iresult)
@@ -9239,13 +9239,13 @@ int32  ZAux_Direct_MoveASynmove(ZMC_HANDLE handle,uint32 base_axis,uint32 iaxis,
 }
 
 /*************************************************************
-Description:    //ÔË¶¯ÖĞĞŞ¸ÄTABLE
-Input:          //¿¨Á´½Óhandle  
-				base_axis	²å²¹Ö÷Öá±àºÅ
-				table_num	TABLE±àºÅ
-				fvalue		ĞŞ¸ÄÖµ
+Description:    //è¿åŠ¨ä¸­ä¿®æ”¹TABLE
+Input:          //å¡é“¾æ¥handle  
+				base_axis	æ’è¡¥ä¸»è½´ç¼–å·
+				table_num	TABLEç¼–å·
+				fvalue		ä¿®æ”¹å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveTable(ZMC_HANDLE handle,uint32 base_axis,uint32 table_num,float fvalue)
 {
@@ -9261,7 +9261,7 @@ int32  ZAux_Direct_MoveTable(ZMC_HANDLE handle,uint32 base_axis,uint32 table_num
 
 	sprintf(cmdbuff, "MOVE_TABLE(%d,%f) axis(%d)",table_num,fvalue,base_axis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,2048);
 	if(ERR_OK != iresult)
@@ -9273,15 +9273,15 @@ int32  ZAux_Direct_MoveTable(ZMC_HANDLE handle,uint32 base_axis,uint32 table_num
 }
 
 /*************************************************************
-Description:    //BASEÖáÔË¶¯»º³å¼ÓÈëÒ»¸ö¿É±äµÄÑÓÊ±  ¹Ì¼ş150802ÒÔÉÏ°æ±¾£¬ »òXPLC160405ÒÔÉÏ°æ±¾Ö§³Ö¡£
-Input:          //¿¨Á´½Óhandle  
-				base_axis	²å²¹Ö÷Öá±àºÅ
-				paraname	²ÎÊıÃû×Ö·û´® DPOS MPOS IN AIN VPSPEED MSPEED MODBUS_REG MODBUS_IEEE MODBUS_BIT NVRAM VECT_BUFFED  REMAIN 
-				inum		²ÎÊı±àºÅ»òÖáºÅ
-				Cmp_mode	±È½ÏÌõ¼ş 1 >=   0=  -1<=  ¶ÔINµÈBITÀàĞÍ²ÎÊıÎŞĞ§¡£
-				fvalue		ĞŞ¸ÄÖµ
+Description:    //BASEè½´è¿åŠ¨ç¼“å†²åŠ å…¥ä¸€ä¸ªå¯å˜çš„å»¶æ—¶  å›ºä»¶150802ä»¥ä¸Šç‰ˆæœ¬ï¼Œ æˆ–XPLC160405ä»¥ä¸Šç‰ˆæœ¬æ”¯æŒã€‚
+Input:          //å¡é“¾æ¥handle  
+				base_axis	æ’è¡¥ä¸»è½´ç¼–å·
+				paraname	å‚æ•°åå­—ç¬¦ä¸² DPOS MPOS IN AIN VPSPEED MSPEED MODBUS_REG MODBUS_IEEE MODBUS_BIT NVRAM VECT_BUFFED  REMAIN 
+				inum		å‚æ•°ç¼–å·æˆ–è½´å·
+				Cmp_mode	æ¯”è¾ƒæ¡ä»¶ 1 >=   0=  -1<=  å¯¹INç­‰BITç±»å‹å‚æ•°æ— æ•ˆã€‚
+				fvalue		ä¿®æ”¹å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveWait(ZMC_HANDLE handle,uint32 base_axis,char * paraname,int inum,int Cmp_mode,float fvalue)
 {
@@ -9297,7 +9297,7 @@ int32  ZAux_Direct_MoveWait(ZMC_HANDLE handle,uint32 base_axis,char * paraname,i
 
 	sprintf(cmdbuff, "MOVE_Wait(%s,%d,%d,%f) axis(%d)",paraname,inum,Cmp_mode,fvalue,base_axis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,2048);
 	if(ERR_OK != iresult)
@@ -9309,14 +9309,14 @@ int32  ZAux_Direct_MoveWait(ZMC_HANDLE handle,uint32 base_axis,char * paraname,i
 }
 
 /*************************************************************
-Description:    //BASEÖáÔË¶¯»º³å¼ÓÈëÒ»¸öTASKÈÎÎñ µ±ÈÎÎñÒÑ¾­Æô¶¯Ê±£¬»á±¨´í£¬µ«²»Ó°Ïì³ÌĞòÖ´ĞĞ¡£
-Input:          //¿¨Á´½Óhandle			
-				base_axis	²å²¹Ö÷Öá±àºÅ
-				tasknum   	ÈÎÎñ±àºÅ 
-				labelname		BASÖĞÈ«¾Öº¯ÊıÃû»òÕß±êºÅ
+Description:    //BASEè½´è¿åŠ¨ç¼“å†²åŠ å…¥ä¸€ä¸ªTASKä»»åŠ¡ å½“ä»»åŠ¡å·²ç»å¯åŠ¨æ—¶ï¼Œä¼šæŠ¥é”™ï¼Œä½†ä¸å½±å“ç¨‹åºæ‰§è¡Œã€‚
+Input:          //å¡é“¾æ¥handle			
+				base_axis	æ’è¡¥ä¸»è½´ç¼–å·
+				tasknum   	ä»»åŠ¡ç¼–å· 
+				labelname		BASä¸­å…¨å±€å‡½æ•°åæˆ–è€…æ ‡å·
 
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MoveTask(ZMC_HANDLE handle,uint32 base_axis,uint32 tasknum,char * labelname)
 {
@@ -9332,7 +9332,7 @@ int32  ZAux_Direct_MoveTask(ZMC_HANDLE handle,uint32 base_axis,uint32 tasknum,ch
 
 	sprintf(cmdbuff, "MOVE_TASK(%d,%s) axis(%d)",tasknum,labelname,base_axis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,2048);
 	if(ERR_OK != iresult)
@@ -9344,16 +9344,16 @@ int32  ZAux_Direct_MoveTask(ZMC_HANDLE handle,uint32 base_axis,uint32 tasknum,ch
 }
 
 /*************************************************************
-Description:    //Î»ÖÃ±È½ÏPSWITCH
-Input:          //¿¨Á´½Óhandle
-				//±È½ÏÆ÷±àºÅ num 0-15
-				//±È½ÏÆ÷Ê¹ÄÜ enable 0/1
-				//±È½ÏµÄÖáºÅ axisnum
-				//Êä³ö¿Ú±àºÅ outnum
-				//Êä³ö×´Ì¬	outstate 0/1
-				//±È½ÏÆğÊ¼Î»ÖÃ	setpos
-				//Êä³ö¸´Î»Î»ÖÃ	resetpos
-Return:         //´íÎóÂë
+Description:    //ä½ç½®æ¯”è¾ƒPSWITCH
+Input:          //å¡é“¾æ¥handle
+				//æ¯”è¾ƒå™¨ç¼–å· num 0-15
+				//æ¯”è¾ƒå™¨ä½¿èƒ½ enable 0/1
+				//æ¯”è¾ƒçš„è½´å· axisnum
+				//è¾“å‡ºå£ç¼–å· outnum
+				//è¾“å‡ºçŠ¶æ€	outstate 0/1
+				//æ¯”è¾ƒèµ·å§‹ä½ç½®	setpos
+				//è¾“å‡ºå¤ä½ä½ç½®	resetpos
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_Pswitch(ZMC_HANDLE handle, int num, int enable, int axisnum, int outnum, int  outstate, float setpos,float resetpos)
 {
@@ -9363,22 +9363,22 @@ int32  ZAux_Direct_Pswitch(ZMC_HANDLE handle, int num, int enable, int axisnum, 
 	}	
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "PSWITCH(%d,%d,%d,%d,%d,%f,%f)", num,enable,axisnum,outnum,outstate,setpos,resetpos);
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZAux_DirectCommand(handle, cmdbuff, NULL, 0);
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 }
 
 /*************************************************************
-Description:    //Ó²¼şÎ»ÖÃ±È½ÏÊä³ö 4ÏµÁĞ²úÆ·Âö³åÖáÓë±àÂëÆ÷ÖáÖ§³ÖÓ²¼ş±È½ÏÊä³ö
-Input:          //¿¨Á´½Óhandle
-				//Ä£Ê½	 mode 1-Æô¶¯±È½ÏÆ÷, 2- Í£Ö¹²¢É¾³ıÃ»Íê³ÉµÄ±È½Ïµã.
-				//·½Ïò direction 0-×ø±ê¸ºÏò,  1- ×ø±êÕıÏò  
-				//Ô¤Áô Reserve   Ô¤Áô
-				//TABLEÆğÊ¼µã Tablestart  µÚÒ»¸ö±È½Ïµã×ø±êËùÔÚTABLE±àºÅ
-				//TABLE½áÊøµã tableend ×îºóÒ»¸ö±È½Ïµã×ø±êËùÔÚTABLE±àºÅ
-Return:         //´íÎóÂë
+Description:    //ç¡¬ä»¶ä½ç½®æ¯”è¾ƒè¾“å‡º 4ç³»åˆ—äº§å“è„‰å†²è½´ä¸ç¼–ç å™¨è½´æ”¯æŒç¡¬ä»¶æ¯”è¾ƒè¾“å‡º
+Input:          //å¡é“¾æ¥handle
+				//æ¨¡å¼	 mode 1-å¯åŠ¨æ¯”è¾ƒå™¨, 2- åœæ­¢å¹¶åˆ é™¤æ²¡å®Œæˆçš„æ¯”è¾ƒç‚¹.
+				//æ–¹å‘ direction 0-åæ ‡è´Ÿå‘,  1- åæ ‡æ­£å‘  
+				//é¢„ç•™ Reserve   é¢„ç•™
+				//TABLEèµ·å§‹ç‚¹ Tablestart  ç¬¬ä¸€ä¸ªæ¯”è¾ƒç‚¹åæ ‡æ‰€åœ¨TABLEç¼–å·
+				//TABLEç»“æŸç‚¹ tableend æœ€åä¸€ä¸ªæ¯”è¾ƒç‚¹åæ ‡æ‰€åœ¨TABLEç¼–å·
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_HwPswitch(ZMC_HANDLE handle,int Axisnum,int Mode, int Direction, int Reserve, int Tablestart, int  Tableend)
 {
@@ -9388,20 +9388,20 @@ int32  ZAux_Direct_HwPswitch(ZMC_HANDLE handle,int Axisnum,int Mode, int Directi
 	}	
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "HW_PSWITCH(%d,%d,%d,%d,%d) AXIS(%d)", Mode, Direction, Reserve, Tablestart, Tableend,Axisnum);
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZAux_DirectCommand(handle, cmdbuff, NULL, 0);
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 }
 
 
 /*************************************************************
-Description:    //Ó²¼şÎ»ÖÃ±È½ÏÊä³öÊ£Óà»º³å»ñÈ¡ 4ÏµÁĞ²úÆ·Âö³åÖáÓë±àÂëÆ÷ÖáÖ§³ÖÓ²¼ş±È½ÏÊä³ö
-Input:          //¿¨Á´½Óhandle
-				//Ä£Ê½	 axisnum				ÖáºÅ
-output:			//Î»ÖÃ±È½ÏÊä³öÊ£Óà»º³åÊı		buff
-Return:         //´íÎóÂë
+Description:    //ç¡¬ä»¶ä½ç½®æ¯”è¾ƒè¾“å‡ºå‰©ä½™ç¼“å†²è·å– 4ç³»åˆ—äº§å“è„‰å†²è½´ä¸ç¼–ç å™¨è½´æ”¯æŒç¡¬ä»¶æ¯”è¾ƒè¾“å‡º
+Input:          //å¡é“¾æ¥handle
+				//æ¨¡å¼	 axisnum				è½´å·
+output:			//ä½ç½®æ¯”è¾ƒè¾“å‡ºå‰©ä½™ç¼“å†²æ•°		buff
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetHwPswitchBuff(ZMC_HANDLE handle,int axisnum,int * buff)
 {
@@ -9412,9 +9412,9 @@ int32  ZAux_Direct_GetHwPswitchBuff(ZMC_HANDLE handle,int axisnum,int * buff)
 	int32 iresult;
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?HW_PSWITCH(%d)", axisnum);
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult =  ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	iresult =  ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	if(ERR_OK != iresult)
@@ -9435,33 +9435,33 @@ int32  ZAux_Direct_GetHwPswitchBuff(ZMC_HANDLE handle,int axisnum,int * buff)
 }
 
 /*************************************************************
-Description:    //Ó²¼ş¶¨Ê±Æ÷ÓÃÓÚÓ²¼ş±È½ÏÊä³öºóÒ»¶ÎÊ±¼äºó»¹Ô­µçÆ½ 4ÏµÁĞ²úÆ·Ö§³Ö
-Input:          //¿¨Á´½Ó	handle  
-				//Ä£Ê½			mode		0Í£Ö¹,  2-Æô¶¯			
-				//ÖÜÆÚÊ±¼ä	   cyclonetime  usµ¥Î»
-				//ÓĞĞ§Ê±¼ä	   optime		usµ¥Î»
-				//ÖØ¸´´ÎÊı	   reptimes
-				//Êä³öÈ±Ê¡×´Ì¬ opstate		Êä³ö¿Ú±äÎª·Ç´Ë×´Ì¬ºó¿ªÊ¼¼ÆÊ±
-				// Êä³ö¿Ú±àºÅ  opnum		±ØĞëÄÜÓ²¼ş±È½ÏÊä³öµÄ¿Ú
-Return:         //´íÎóÂë
+Description:    //ç¡¬ä»¶å®šæ—¶å™¨ç”¨äºç¡¬ä»¶æ¯”è¾ƒè¾“å‡ºåä¸€æ®µæ—¶é—´åè¿˜åŸç”µå¹³ 4ç³»åˆ—äº§å“æ”¯æŒ
+Input:          //å¡é“¾æ¥	handle  
+				//æ¨¡å¼			mode		0åœæ­¢,  2-å¯åŠ¨			
+				//å‘¨æœŸæ—¶é—´	   cyclonetime  uså•ä½
+				//æœ‰æ•ˆæ—¶é—´	   optime		uså•ä½
+				//é‡å¤æ¬¡æ•°	   reptimes
+				//è¾“å‡ºç¼ºçœçŠ¶æ€ opstate		è¾“å‡ºå£å˜ä¸ºéæ­¤çŠ¶æ€åå¼€å§‹è®¡æ—¶
+				// è¾“å‡ºå£ç¼–å·  opnum		å¿…é¡»èƒ½ç¡¬ä»¶æ¯”è¾ƒè¾“å‡ºçš„å£
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_HwTimer(ZMC_HANDLE handle,int mode,int cyclonetime,int optime,int reptimes,int opstate,int  opnum )
 {
 	
 	char  cmdbuff[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "HW_TIMER(%d,%d,%d,%d,%d,%d)",mode,cyclonetime,optime,reptimes,opstate,opnum);
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZAux_DirectCommand(handle, cmdbuff, NULL, 0);
 	return ZAux_Execute(handle, cmdbuff, NULL,0);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÖáÍ£Ö¹Ô­Òò
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»Ø×´Ì¬£¬¶ÔÓ¦AXISSTATUSÅĞ¶Ï¶ÔÓ¦Î»
-Return:         //´íÎóÂë
+Description:    //è¯»å–è½´åœæ­¢åŸå› 
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›çŠ¶æ€ï¼Œå¯¹åº”AXISSTATUSåˆ¤æ–­å¯¹åº”ä½
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetAxisStopReason(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -9475,10 +9475,10 @@ int32  ZAux_Direct_GetAxisStopReason(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 	
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?AXIS_STOPREASON(%d)", iaxis);
 	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -9499,12 +9499,12 @@ int32  ZAux_Direct_GetAxisStopReason(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //¸¡µãĞÍ¶ÁÈ«²¿Öá²ÎÊı×´Ì¬
-Input:          //¿¨Á´½Óhandle 
-				sParam Öá²ÎÊıÃû³Æ×Ö·û´®
-				imaxaxis ÖáÊıÁ¿
-Output:         pfValue  ·µ»ØµÄÖá²ÎÊıÁĞ±í
-Return:         //´íÎóÂë
+Description:    //æµ®ç‚¹å‹è¯»å…¨éƒ¨è½´å‚æ•°çŠ¶æ€
+Input:          //å¡é“¾æ¥handle 
+				sParam è½´å‚æ•°åç§°å­—ç¬¦ä¸²
+				imaxaxis è½´æ•°é‡
+Output:         pfValue  è¿”å›çš„è½´å‚æ•°åˆ—è¡¨
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetAllAxisPara(ZMC_HANDLE handle,const char *sParam,int imaxaxis,float * pfValue)
 {
@@ -9521,7 +9521,7 @@ int32  ZAux_Direct_GetAllAxisPara(ZMC_HANDLE handle,const char *sParam,int imaxa
 	strcpy(cmdbuff, "?*");
 	strcat(cmdbuff, sParam);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
 	{
@@ -9544,14 +9544,14 @@ int32  ZAux_Direct_GetAllAxisPara(ZMC_HANDLE handle,const char *sParam,int imaxa
 }
 
 /*************************************************************
-Description:    //¸¡µãĞÍ¶ÁÈ«²¿Öá²ÎÊı×´Ì¬  IdleStatus-ÔË¶¯×´Ì¬ DposStatus-ÃüÁî×ø±ê  MposStatus-·´À¡×ø±ê  AxisStatus-Öá×´Ì¬
-Input:          //¿¨Á´½Óhandle 
-				imaxaxis ÖáÊıÁ¿
-Output:         IdleStatus ÔË¶¯×´Ì¬
-				DposStatus ÃüÁî×ø±ê
-				MposStatus ·´À¡×ø±ê
-				AxisStatus Öá×´Ì¬
-Return:         //´íÎóÂë
+Description:    //æµ®ç‚¹å‹è¯»å…¨éƒ¨è½´å‚æ•°çŠ¶æ€  IdleStatus-è¿åŠ¨çŠ¶æ€ DposStatus-å‘½ä»¤åæ ‡  MposStatus-åé¦ˆåæ ‡  AxisStatus-è½´çŠ¶æ€
+Input:          //å¡é“¾æ¥handle 
+				imaxaxis è½´æ•°é‡
+Output:         IdleStatus è¿åŠ¨çŠ¶æ€
+				DposStatus å‘½ä»¤åæ ‡
+				MposStatus åé¦ˆåæ ‡
+				AxisStatus è½´çŠ¶æ€
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetAllAxisInfo(ZMC_HANDLE handle,int imaxaxis,int * IdleStatus,float * DposStatus,float * MposStatus,int * AxisStatus)
 {
@@ -9578,14 +9578,14 @@ int32  ZAux_Direct_GetAllAxisInfo(ZMC_HANDLE handle,int imaxaxis,int * IdleStatu
 }
 
 /*************************************************************
-Description:    //ÉèÖÃBASIC×Ô¶¨ÒåÈ«¾ÖÊı×é  
-Input:          //¿¨Á´½Óhandle  
-				arrayname Êı×éÃû³Æ
-				arraystart Êı×éÆğÊ¼ÔªËØ
-				numes		ÔªËØÊıÁ¿
-				pfValue     ÉèÖÃÖµ
+Description:    //è®¾ç½®BASICè‡ªå®šä¹‰å…¨å±€æ•°ç»„  
+Input:          //å¡é“¾æ¥handle  
+				arrayname æ•°ç»„åç§°
+				arraystart æ•°ç»„èµ·å§‹å…ƒç´ 
+				numes		å…ƒç´ æ•°é‡
+				pfValue     è®¾ç½®å€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetUserArray(ZMC_HANDLE handle,char * arrayname ,int arraystart, int numes, float *pfValue)
 {
@@ -9604,7 +9604,7 @@ int32  ZAux_Direct_SetUserArray(ZMC_HANDLE handle,char * arrayname ,int arraysta
 	{
 		//
 		sprintf(cmdbuff, "%s(%d) =  %f ",arrayname ,(i + arraystart) , pfValue[i]);
-		//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+		//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 		iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 		if(ERR_OK != iresult)
 		{
@@ -9618,13 +9618,13 @@ int32  ZAux_Direct_SetUserArray(ZMC_HANDLE handle,char * arrayname ,int arraysta
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÉèÖÃBASIC×Ô¶¨ÒåÈ«¾ÖÊı×é , ¿ÉÒÔÒ»´Î¶ÁÈ¡¶à¸ö
-Input:          //¿¨Á´½Óhandle  
-				arrayname Êı×éÃû³Æ
-				arraystart Êı×éÆğÊ¼ÔªËØ
-				numes		ÔªËØÊıÁ¿
-Output:         //pfValue  ¶à¸öÊ±±ØĞë·ÖÅä¿Õ¼ä.
-Return:         //´íÎóÂë
+Description:    //è¯»å–è®¾ç½®BASICè‡ªå®šä¹‰å…¨å±€æ•°ç»„ , å¯ä»¥ä¸€æ¬¡è¯»å–å¤šä¸ª
+Input:          //å¡é“¾æ¥handle  
+				arrayname æ•°ç»„åç§°
+				arraystart æ•°ç»„èµ·å§‹å…ƒç´ 
+				numes		å…ƒç´ æ•°é‡
+Output:         //pfValue  å¤šä¸ªæ—¶å¿…é¡»åˆ†é…ç©ºé—´.
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetUserArray(ZMC_HANDLE handle,char * arrayname ,int arraystart, int numes, float *pfValue)
 {
@@ -9642,14 +9642,14 @@ int32  ZAux_Direct_GetUserArray(ZMC_HANDLE handle,char * arrayname ,int arraysta
 	isend = 0;
 	while(1)
 	{
-		//Ò»´Î·¢ËÍ¸öÊı30¸ö
+		//ä¸€æ¬¡å‘é€ä¸ªæ•°30ä¸ª
 		icur = numes - isend;
 		if(icur > 30)
 		{
 			icur = 30;
 		}
 
-		//Éú³ÉÃüÁî
+		//ç”Ÿæˆå‘½ä»¤
 		strcpy(cmdbuff, "?*");
 
 		//
@@ -9657,7 +9657,7 @@ int32  ZAux_Direct_GetUserArray(ZMC_HANDLE handle,char * arrayname ,int arraysta
 		strcat(cmdbuff, tempbuff);
 
 
-		//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+		//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 		iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 		//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 		if(ERR_OK != iresult)
@@ -9689,12 +9689,12 @@ int32  ZAux_Direct_GetUserArray(ZMC_HANDLE handle,char * arrayname ,int arraysta
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ×Ô¶¨Òå±äÁ¿, 
-Input:          //¿¨Á´½Óhandle  
-				varname ±äÁ¿Ãû³Æ×Ö·û´®
-				pfValue	Éè¶¨Öµ
+Description:    //è®¾ç½®è‡ªå®šä¹‰å˜é‡, 
+Input:          //å¡é“¾æ¥handle  
+				varname å˜é‡åç§°å­—ç¬¦ä¸²
+				pfValue	è®¾å®šå€¼
 Output:         //  
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetUserVar(ZMC_HANDLE handle,char * varname , float pfValue)
 {
@@ -9706,7 +9706,7 @@ int32  ZAux_Direct_SetUserVar(ZMC_HANDLE handle,char * varname , float pfValue)
 	sprintf(cmdbuff, "%s = %f",varname,pfValue);
 
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	if(ERR_OK != iresult)
@@ -9718,11 +9718,11 @@ int32  ZAux_Direct_SetUserVar(ZMC_HANDLE handle,char * varname , float pfValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡×Ô¶¨ÒåÈ«¾Ö±äÁ¿, 
-Input:          //¿¨Á´½Óhandle  
-				varname ±äÁ¿Ãû³Æ×Ö·û´®
-Output:         //pfValue  ¶à¸öÊ±±ØĞë·ÖÅä¿Õ¼ä.
-Return:         //´íÎóÂë
+Description:    //è¯»å–è‡ªå®šä¹‰å…¨å±€å˜é‡, 
+Input:          //å¡é“¾æ¥handle  
+				varname å˜é‡åç§°å­—ç¬¦ä¸²
+Output:         //pfValue  å¤šä¸ªæ—¶å¿…é¡»åˆ†é…ç©ºé—´.
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetUserVar(ZMC_HANDLE handle,char * varname , float *pfValue)
 {
@@ -9739,7 +9739,7 @@ int32  ZAux_Direct_GetUserVar(ZMC_HANDLE handle,char * varname , float *pfValue)
 	sprintf(cmdbuff, "?%s",varname);
 
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	if(ERR_OK != iresult)
@@ -9761,10 +9761,10 @@ int32  ZAux_Direct_GetUserVar(ZMC_HANDLE handle,char * varname , float *pfValue)
 
 
 /*************************************************************
-Description:    //Óë¿ØÖÆÆ÷½¨Á¢Á´½Ó
-Input:          //PCI¿¨ºÅ£¬ ¿¨ºÅ´Ó0¿ªÊ¼£¬Êµ¼ÊÁ¬½ÓÎªPCI¿¨ºÅ+1(¼æÈİ´«Í³PCI¿¨¹æÔò)
-Output:         //¿¨Á´½Óhandle
-Return:         //´íÎóÂë
+Description:    //ä¸æ§åˆ¶å™¨å»ºç«‹é“¾æ¥
+Input:          //PCIå¡å·ï¼Œ å¡å·ä»0å¼€å§‹ï¼Œå®é™…è¿æ¥ä¸ºPCIå¡å·+1(å…¼å®¹ä¼ ç»ŸPCIå¡è§„åˆ™)
+Output:         //å¡é“¾æ¥handle
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_OpenPci(uint32 cardnum, ZMC_HANDLE * phandle)
 {
@@ -9777,9 +9777,9 @@ int32  ZAux_OpenPci(uint32 cardnum, ZMC_HANDLE * phandle)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡PCIµÄ¿ØÖÆ¿¨¸öÊı
+Description:    //è¯»å–PCIçš„æ§åˆ¶å¡ä¸ªæ•°
 Input:          //
-Return:         //¼ì²éµÄ×î´óPCI¿¨¸öÊı
+Return:         //æ£€æŸ¥çš„æœ€å¤§PCIå¡ä¸ªæ•°
 *************************************************************/
 int32  ZAux_GetMaxPciCards()
 {
@@ -9787,12 +9787,12 @@ int32  ZAux_GetMaxPciCards()
 }
 
 /*************************************************************
-Description:    //»ñÈ¡¿ØÖÆÆ÷¿¨ĞÅÏ¢
-Input:          //¿¨Á´½Óhandle  
-Output:         SoftType ¿ØÖÆÆ÷ĞÍºÅÀàĞÍ
-				SoftVersion ¿ØÖÆÆ÷Èí¼ş°æ±¾£¨¹Ì¼ş°æ±¾£©
-				ControllerId	¿ØÖÆÆ÷Î¨Ò»ID
-Return:         //´íÎóÂë
+Description:    //è·å–æ§åˆ¶å™¨å¡ä¿¡æ¯
+Input:          //å¡é“¾æ¥handle  
+Output:         SoftType æ§åˆ¶å™¨å‹å·ç±»å‹
+				SoftVersion æ§åˆ¶å™¨è½¯ä»¶ç‰ˆæœ¬ï¼ˆå›ºä»¶ç‰ˆæœ¬ï¼‰
+				ControllerId	æ§åˆ¶å™¨å”¯ä¸€ID
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_GetControllerInfo(ZMC_HANDLE handle ,char * SoftType ,char * SoftVersion ,char *  ControllerId)
 {
@@ -9800,7 +9800,7 @@ int32  ZAux_GetControllerInfo(ZMC_HANDLE handle ,char * SoftType ,char * SoftVer
 	int32 iresult;
 	char  cmdbuffAck[2048];
 
-	//Èí¼ş°æ±¾ ?CONTROL SoftType   
+	//è½¯ä»¶ç‰ˆæœ¬ ?CONTROL SoftType   
 	iresult = ZAux_Execute(handle, "?CONTROL", cmdbuffAck,2048);
 	if(ERR_OK != iresult)
 	{
@@ -9829,7 +9829,7 @@ int32  ZAux_GetControllerInfo(ZMC_HANDLE handle ,char * SoftType ,char * SoftVer
 	//
 	sscanf(cmdbuffAck, "%s",SoftVersion);
 
-	//¿ØÖÆÆ÷ID  ?SERIAL_NUMBER
+	//æ§åˆ¶å™¨ID  ?SERIAL_NUMBER
 	iresult = ZAux_Execute(handle, "?SERIAL_NUMBER", cmdbuffAck,2048);
 	if(ERR_OK != iresult)
 	{
@@ -9847,18 +9847,18 @@ int32  ZAux_GetControllerInfo(ZMC_HANDLE handle ,char * SoftType ,char * SoftVer
 }
 
 
-/**************************************************×ÜÏßÏà¹Øº¯Êı***********************************************
-´ó²¿·Öº¯ÊıÖ»Ö§³ÖExecute·½Ê½·¢ËÍ  
-Ìí¼Ó×ÜÏß½ÚµãĞÅÏ¢¶ÁÈ¡
-×ÜÏß»ØÁã£¬¼°»ØÁã×´Ì¬ÅĞ¶ÏµÈ
+/**************************************************æ€»çº¿ç›¸å…³å‡½æ•°***********************************************
+å¤§éƒ¨åˆ†å‡½æ•°åªæ”¯æŒExecuteæ–¹å¼å‘é€  
+æ·»åŠ æ€»çº¿èŠ‚ç‚¹ä¿¡æ¯è¯»å–
+æ€»çº¿å›é›¶ï¼ŒåŠå›é›¶çŠ¶æ€åˆ¤æ–­ç­‰
 ***************************************************************************************************************/
 
 /*************************************************************
-Description:    //¶ÁÈ¡¿¨²ÛÉÏ½ÚµãÊıÁ¿
-Input:          //¿¨Á´½Óhandle 
-:				 //slot ²ÛÎ»ºÅÈ±Ê¡0
-Output:         //piValue ·µ»ØÉ¨Ãè³É¹¦½ÚµãÊıÁ¿
-Return:         //´íÎóÂë
+Description:    //è¯»å–å¡æ§½ä¸ŠèŠ‚ç‚¹æ•°é‡
+Input:          //å¡é“¾æ¥handle 
+:				 //slot æ§½ä½å·ç¼ºçœ0
+Output:         //piValue è¿”å›æ‰«ææˆåŠŸèŠ‚ç‚¹æ•°é‡
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_GetNodeNum(ZMC_HANDLE handle,int slot,int *piValue)
 {
@@ -9872,10 +9872,10 @@ int32  ZAux_BusCmd_GetNodeNum(ZMC_HANDLE handle,int slot,int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?NODE_COUNT(%d)", slot);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -9896,13 +9896,13 @@ int32  ZAux_BusCmd_GetNodeNum(ZMC_HANDLE handle,int slot,int *piValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡½ÚµãÉÏµÄĞÅÏ¢
-Input:          //¿¨Á´½Óhandle 
-				slot	²ÛÎ»ºÅ
-				node	½Úµã±àºÅ
-				sel		ĞÅÏ¢±àºÅ	0-³§ÉÌ±àºÅ1-Éè±¸±àºÅ 2-Éè±¸°æ±¾ 3-±ğÃû 10-IN¸öÊı 11-OUT¸öÊı 
-Output:         //piValue ·µ»ØĞÅÏ¢
-Return:         //´íÎóÂë
+Description:    //è¯»å–èŠ‚ç‚¹ä¸Šçš„ä¿¡æ¯
+Input:          //å¡é“¾æ¥handle 
+				slot	æ§½ä½å·
+				node	èŠ‚ç‚¹ç¼–å·
+				sel		ä¿¡æ¯ç¼–å·	0-å‚å•†ç¼–å·1-è®¾å¤‡ç¼–å· 2-è®¾å¤‡ç‰ˆæœ¬ 3-åˆ«å 10-INä¸ªæ•° 11-OUTä¸ªæ•° 
+Output:         //piValue è¿”å›ä¿¡æ¯
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_GetNodeInfo(ZMC_HANDLE handle,int slot,int node,int sel ,int *piValue)
 {
@@ -9916,10 +9916,10 @@ int32  ZAux_BusCmd_GetNodeInfo(ZMC_HANDLE handle,int slot,int node,int sel ,int 
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?NODE_INFO(%d,%d,%d)", slot,node,sel);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -9938,14 +9938,14 @@ int32  ZAux_BusCmd_GetNodeInfo(ZMC_HANDLE handle,int slot,int node,int sel ,int 
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡½Úµã×ÜÏß×´Ì¬
-Input:          //¿¨Á´½Óhandle  
-				slot ²ÛÎ»ºÅÈ±Ê¡0
-				node ½Úµã±àºÅ
-Output:         //nodestatus °´Î»´¦Àí bit0-½ÚµãÊÇ·ñ´æÔÚ  bit1-Í¨Ñ¶×´Ì¬   bit2-½Úµã×´Ì¬
-ÖµÎª1Ê±£¬bit0Îª1£¬bit1ºÍbit2Îª0£¬Éè±¸Í¨Ñ¶Õı³£
-ÖµÎª3Ê±£¬bit0ºÍbit1Îª1£¬bit2Îª0£¬Éè±¸Í¨Ñ¶³ö´í
-Return:         //´íÎóÂë
+Description:    //è¯»å–èŠ‚ç‚¹æ€»çº¿çŠ¶æ€
+Input:          //å¡é“¾æ¥handle  
+				slot æ§½ä½å·ç¼ºçœ0
+				node èŠ‚ç‚¹ç¼–å·
+Output:         //nodestatus æŒ‰ä½å¤„ç† bit0-èŠ‚ç‚¹æ˜¯å¦å­˜åœ¨  bit1-é€šè®¯çŠ¶æ€   bit2-èŠ‚ç‚¹çŠ¶æ€
+å€¼ä¸º1æ—¶ï¼Œbit0ä¸º1ï¼Œbit1å’Œbit2ä¸º0ï¼Œè®¾å¤‡é€šè®¯æ­£å¸¸
+å€¼ä¸º3æ—¶ï¼Œbit0å’Œbit1ä¸º1ï¼Œbit2ä¸º0ï¼Œè®¾å¤‡é€šè®¯å‡ºé”™
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_GetNodeStatus(ZMC_HANDLE handle,uint32 slot,uint32 node,uint32 * nodestatus)
 {
@@ -9959,9 +9959,9 @@ int32  ZAux_BusCmd_GetNodeStatus(ZMC_HANDLE handle,uint32 slot,uint32 node,uint3
 	{
 		return  ERR_AUX_PARAERR;
 	}
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?NODE_STATUS(%d,%d)", slot,node);
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -9980,15 +9980,15 @@ int32  ZAux_BusCmd_GetNodeStatus(ZMC_HANDLE handle,uint32 slot,uint32 node,uint3
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡½ÚµãSDO²ÎÊıĞÅÏ¢
-Input:          //¿¨Á´½Óhandle  
-				slot	²ÛÎ»ºÅ È±Ê¡0
-				node	½Úµã±àºÅ
-				index	¶ÔÏó×Öµä±àºÅ£¨×¢Òâº¯ÊıÎª10½øÖÆÊı¾İ£©
-				subindex	×Ó±àºÅ	£¨×¢Òâº¯ÊıÎª10½øÖÆÊı¾İ£©
-				type	Êı¾İÀàĞÍ  1-bool 2-int8 3-int16 4-int32 5-uint8 6-uint16 7-uint32
-Output:         //value ¶ÁÈ¡µÄÊı¾İÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–èŠ‚ç‚¹SDOå‚æ•°ä¿¡æ¯
+Input:          //å¡é“¾æ¥handle  
+				slot	æ§½ä½å· ç¼ºçœ0
+				node	èŠ‚ç‚¹ç¼–å·
+				index	å¯¹è±¡å­—å…¸ç¼–å·ï¼ˆæ³¨æ„å‡½æ•°ä¸º10è¿›åˆ¶æ•°æ®ï¼‰
+				subindex	å­ç¼–å·	ï¼ˆæ³¨æ„å‡½æ•°ä¸º10è¿›åˆ¶æ•°æ®ï¼‰
+				type	æ•°æ®ç±»å‹  1-bool 2-int8 3-int16 4-int32 5-uint8 6-uint16 7-uint32
+Output:         //value è¯»å–çš„æ•°æ®å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_SDORead(ZMC_HANDLE handle,uint32 slot,uint32 node,uint32 index,uint32 subindex ,uint32 type ,int32 * value)
 {
@@ -10003,10 +10003,10 @@ int32  ZAux_BusCmd_SDORead(ZMC_HANDLE handle,uint32 slot,uint32 node,uint32 inde
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "SDO_READ(%d,%d,%d,%d,%d,0)",slot, node,index,subindex,type);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(0 != strlen(cmdbuffAck))
@@ -10030,15 +10030,15 @@ int32  ZAux_BusCmd_SDORead(ZMC_HANDLE handle,uint32 slot,uint32 node,uint32 inde
 }
 
 /*************************************************************
-Description:    //Ğ´½ÚµãSDO²ÎÊıĞÅÏ¢
-Input:          //¿¨Á´½Óhandle  
-				slot	²ÛÎ»ºÅ È±Ê¡0
-				node	½Úµã±àºÅ
-				index	¶ÔÏó×Öµä±àºÅ£¨×¢Òâº¯ÊıÎª10½øÖÆÊı¾İ£©
-				subindex	×Ó±àºÅ	£¨×¢Òâº¯ÊıÎª10½øÖÆÊı¾İ£©
-				type	Êı¾İÀàĞÍ  1-bool 2-int8 3-int16 4-int32 5-uint8 6-uint16 7-uint32
-				value	Éè¶¨µÄÊı¾İÖµ
-Return:         //´íÎóÂë
+Description:    //å†™èŠ‚ç‚¹SDOå‚æ•°ä¿¡æ¯
+Input:          //å¡é“¾æ¥handle  
+				slot	æ§½ä½å· ç¼ºçœ0
+				node	èŠ‚ç‚¹ç¼–å·
+				index	å¯¹è±¡å­—å…¸ç¼–å·ï¼ˆæ³¨æ„å‡½æ•°ä¸º10è¿›åˆ¶æ•°æ®ï¼‰
+				subindex	å­ç¼–å·	ï¼ˆæ³¨æ„å‡½æ•°ä¸º10è¿›åˆ¶æ•°æ®ï¼‰
+				type	æ•°æ®ç±»å‹  1-bool 2-int8 3-int16 4-int32 5-uint8 6-uint16 7-uint32
+				value	è®¾å®šçš„æ•°æ®å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_SDOWrite(ZMC_HANDLE handle,uint32 slot,uint32 node,uint32 index,uint32 subindex ,uint32 type ,int32  value)
 {
@@ -10053,10 +10053,10 @@ int32  ZAux_BusCmd_SDOWrite(ZMC_HANDLE handle,uint32 slot,uint32 node,uint32 ind
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff,"SDO_WRITE(%d,%d,%d,%d,%d,%d)",slot, node,index,subindex,type,value);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(0 != strlen(cmdbuffAck))
@@ -10068,15 +10068,15 @@ int32  ZAux_BusCmd_SDOWrite(ZMC_HANDLE handle,uint32 slot,uint32 node,uint32 ind
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡ÖáSDO²ÎÊıĞÅÏ¢
-Input:          //¿¨Á´½Óhandle  
-				slot	²ÛÎ»ºÅ È±Ê¡0
-				node	½Úµã±àºÅ
-				index	¶ÔÏó×Öµä±àºÅ£¨×¢Òâº¯ÊıÎª10½øÖÆÊı¾İ£©
-				subindex	×Ó±àºÅ	£¨×¢Òâº¯ÊıÎª10½øÖÆÊı¾İ£©
-				type	Êı¾İÀàĞÍ  1-bool 2-int8 3-int16 4-int32 5-uint8 6-uint16 7-uint32
-Output:         //value ¶ÁÈ¡µÄÊı¾İÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–è½´SDOå‚æ•°ä¿¡æ¯
+Input:          //å¡é“¾æ¥handle  
+				slot	æ§½ä½å· ç¼ºçœ0
+				node	èŠ‚ç‚¹ç¼–å·
+				index	å¯¹è±¡å­—å…¸ç¼–å·ï¼ˆæ³¨æ„å‡½æ•°ä¸º10è¿›åˆ¶æ•°æ®ï¼‰
+				subindex	å­ç¼–å·	ï¼ˆæ³¨æ„å‡½æ•°ä¸º10è¿›åˆ¶æ•°æ®ï¼‰
+				type	æ•°æ®ç±»å‹  1-bool 2-int8 3-int16 4-int32 5-uint8 6-uint16 7-uint32
+Output:         //value è¯»å–çš„æ•°æ®å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_SDOReadAxis(ZMC_HANDLE handle,uint32 iaxis,uint32 index,uint32 subindex ,uint32 type ,int32 * value)
 {
@@ -10091,10 +10091,10 @@ int32  ZAux_BusCmd_SDOReadAxis(ZMC_HANDLE handle,uint32 iaxis,uint32 index,uint3
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "SDO_READ_AXIS(%d,%d,%d,%d,0)",iaxis,index,subindex,type);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(0 != strlen(cmdbuffAck))
@@ -10118,15 +10118,15 @@ int32  ZAux_BusCmd_SDOReadAxis(ZMC_HANDLE handle,uint32 iaxis,uint32 index,uint3
 }
 
 /*************************************************************
-Description:    //Ğ´ÖáSDO²ÎÊıĞÅÏ¢
-Input:          //¿¨Á´½Óhandle  
-				slot	²ÛÎ»ºÅ È±Ê¡0
-				node	½Úµã±àºÅ
-				index	¶ÔÏó×Öµä±àºÅ£¨×¢Òâº¯ÊıÎª10½øÖÆÊı¾İ£©
-				subindex	×Ó±àºÅ	£¨×¢Òâº¯ÊıÎª10½øÖÆÊı¾İ£©
-				type	Êı¾İÀàĞÍ  1-bool 2-int8 3-int16 4-int32 5-uint8 6-uint16 7-uint32
-				value	Éè¶¨µÄÊı¾İÖµ
-Return:         //´íÎóÂë
+Description:    //å†™è½´SDOå‚æ•°ä¿¡æ¯
+Input:          //å¡é“¾æ¥handle  
+				slot	æ§½ä½å· ç¼ºçœ0
+				node	èŠ‚ç‚¹ç¼–å·
+				index	å¯¹è±¡å­—å…¸ç¼–å·ï¼ˆæ³¨æ„å‡½æ•°ä¸º10è¿›åˆ¶æ•°æ®ï¼‰
+				subindex	å­ç¼–å·	ï¼ˆæ³¨æ„å‡½æ•°ä¸º10è¿›åˆ¶æ•°æ®ï¼‰
+				type	æ•°æ®ç±»å‹  1-bool 2-int8 3-int16 4-int32 5-uint8 6-uint16 7-uint32
+				value	è®¾å®šçš„æ•°æ®å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_SDOWriteAxis(ZMC_HANDLE handle,uint32 iaxis,uint32 index,uint32 subindex ,uint32 type ,int32  value)
 {
@@ -10141,10 +10141,10 @@ int32  ZAux_BusCmd_SDOWriteAxis(ZMC_HANDLE handle,uint32 iaxis,uint32 index,uint
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff,"SDO_WRITE_AXIS(%d,%d,%d,%d,%d)",iaxis,index,subindex,type,value);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(0 != strlen(cmdbuffAck))
@@ -10157,12 +10157,12 @@ int32  ZAux_BusCmd_SDOWriteAxis(ZMC_HANDLE handle,uint32 iaxis,uint32 index,uint
 
 
 /*************************************************************
-Description:    //Rtex¶ÁÈ¡²ÎÊıĞÅÏ¢
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-				ipara	²ÎÊı·ÖÀà*256 + ²ÎÊı±àºÅ  Pr7.11-ipara = 7*256+11
-Output:         //value ¶ÁÈ¡µÄÊı¾İÖµ
-Return:         //´íÎóÂë
+Description:    //Rtexè¯»å–å‚æ•°ä¿¡æ¯
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+				ipara	å‚æ•°åˆ†ç±»*256 + å‚æ•°ç¼–å·  Pr7.11-ipara = 7*256+11
+Output:         //value è¯»å–çš„æ•°æ®å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_RtexRead(ZMC_HANDLE handle,uint32 iaxis ,uint32 ipara ,float * value)
 {
@@ -10177,10 +10177,10 @@ int32  ZAux_BusCmd_RtexRead(ZMC_HANDLE handle,uint32 iaxis ,uint32 ipara ,float 
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "BASE(%d)\r\nDRIVE_READ(%d,0)",iaxis,ipara);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -10202,12 +10202,12 @@ int32  ZAux_BusCmd_RtexRead(ZMC_HANDLE handle,uint32 iaxis ,uint32 ipara ,float 
 }
 
 /*************************************************************
-Description:    //RtexĞ´²ÎÊıĞÅÏ¢
-Input:          //¿¨Á´½Óhandle  
-				iaxis	ÖáºÅ
-				ipara	²ÎÊı·ÖÀà*256 + ²ÎÊı±àºÅ  Pr7.11-ipara = 7*256+11
-				value	Éè¶¨µÄÊı¾İÖµ
-Return:         //´íÎóÂë
+Description:    //Rtexå†™å‚æ•°ä¿¡æ¯
+Input:          //å¡é“¾æ¥handle  
+				iaxis	è½´å·
+				ipara	å‚æ•°åˆ†ç±»*256 + å‚æ•°ç¼–å·  Pr7.11-ipara = 7*256+11
+				value	è®¾å®šçš„æ•°æ®å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_RtexWrite(ZMC_HANDLE handle,uint32 iaxis ,uint32 ipara,float  value)
 {
@@ -10222,10 +10222,10 @@ int32  ZAux_BusCmd_RtexWrite(ZMC_HANDLE handle,uint32 iaxis ,uint32 ipara,float 
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff,"BASE(%d)\r\nDRIVE_WRITE(%d,%f)",iaxis, ipara,value);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,0);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(0 != strlen(cmdbuffAck))
@@ -10236,12 +10236,12 @@ int32  ZAux_BusCmd_RtexWrite(ZMC_HANDLE handle,uint32 iaxis ,uint32 ipara,float 
 }
 
 /*************************************************************
-Description:    //ÉèÖÃ»ØÁãÆ«ÒÆ¾àÀë
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				fValue Æ«ÒÆ¾àÀë
+Description:    //è®¾ç½®å›é›¶åç§»è·ç¦»
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				fValue åç§»è·ç¦»
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_SetDatumOffpos(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -10254,19 +10254,19 @@ int32  ZAux_BusCmd_SetDatumOffpos(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "DATUM_OFFSET(%d)=%f", iaxis, fValue);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡»ØÁãÆ«ÒÆ¾àÀë
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //fValue ·´À¡µÄÆ«ÒÆ¾àÀë
-Return:         //´íÎóÂë
+Description:    //è¯»å–å›é›¶åç§»è·ç¦»
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //fValue åé¦ˆçš„åç§»è·ç¦»
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_GetDatumOffpos(ZMC_HANDLE handle, int iaxis, float *fValue)
 {
@@ -10279,10 +10279,10 @@ int32  ZAux_BusCmd_GetDatumOffpos(ZMC_HANDLE handle, int iaxis, float *fValue)
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?DATUM_OFFSET(%d)", iaxis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -10302,11 +10302,11 @@ int32  ZAux_BusCmd_GetDatumOffpos(ZMC_HANDLE handle, int iaxis, float *fValue)
 }
 
 /*************************************************************
-Description:    //×ÜÏßÇı¶¯Æ÷»ØÁã
-Input:          //¿¨Á´½Óhandle  
-				homemode »ØÁãÄ£Ê½£¬²é¿´Çı¶¯Æ÷ÊÖ²á
+Description:    //æ€»çº¿é©±åŠ¨å™¨å›é›¶
+Input:          //å¡é“¾æ¥handle  
+				homemode å›é›¶æ¨¡å¼ï¼ŒæŸ¥çœ‹é©±åŠ¨å™¨æ‰‹å†Œ
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_Datum(ZMC_HANDLE handle,uint32 iaxis,uint32  homemode)
 {
@@ -10324,7 +10324,7 @@ int32  ZAux_BusCmd_Datum(ZMC_HANDLE handle,uint32 iaxis,uint32  homemode)
 	sprintf(cmdbuff, "AXIS_STOPREASON(%d) = 0\r\nDATUM(21,%d) AXIS(%d)",iaxis,homemode,iaxis);
 
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,0);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,0);
 	if(ERR_OK != iresult)
@@ -10336,11 +10336,11 @@ int32  ZAux_BusCmd_Datum(ZMC_HANDLE handle,uint32 iaxis,uint32  homemode)
 }
 
 /*************************************************************
-Description:    //Çı¶¯Æ÷»ØÁãÍê³É×´Ì¬
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //homestatus »ØÁãÍê³É±êÖ¾ 0-»ØÁãÒì³£ 1»ØÁã³É¹¦
-Return:         //´íÎóÂë
+Description:    //é©±åŠ¨å™¨å›é›¶å®ŒæˆçŠ¶æ€
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //homestatus å›é›¶å®Œæˆæ ‡å¿— 0-å›é›¶å¼‚å¸¸ 1å›é›¶æˆåŠŸ
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_GetHomeStatus(ZMC_HANDLE handle,uint32 iaxis,uint32 * homestatus)
 {
@@ -10367,25 +10367,25 @@ int32  ZAux_BusCmd_GetHomeStatus(ZMC_HANDLE handle,uint32 iaxis,uint32 * homesta
 	int stopstatus = temparray[2];
 
 	
-	if((idlestatus == -1) && ((tempstatus >> 12	) & 1) == 1 && stopstatus == 0)		//Í£Ö¹ÁË
+	if((idlestatus == -1) && ((tempstatus >> 12	) & 1) == 1 && stopstatus == 0)		//åœæ­¢äº†
 	{
-		*homestatus = 1;	//»ØÁãÍê³É	
+		*homestatus = 1;	//å›é›¶å®Œæˆ	
 	}
 	else
 	{
-		*homestatus = 0;	//»ØÁãÎ´³É¹¦
+		*homestatus = 0;	//å›é›¶æœªæˆåŠŸ
 	}
 	return ERR_OK;
 }
 
 
 /*************************************************************
-Description:    //ÉèÖÃÇå³ı×ÜÏßËÅ·ş±¨¾¯
-Input:          //¿¨Á´½Óhandle 
-				iaxis ÖáºÅ
-				mode Ä£Ê½ 0-Çå³ıµ±Ç°¸æ¾¯  1-Çå³ıÀúÊ·¸æ¾¯  2-Çå³ıÍâ²¿ÊäÈë¸æ¾¯
+Description:    //è®¾ç½®æ¸…é™¤æ€»çº¿ä¼ºæœæŠ¥è­¦
+Input:          //å¡é“¾æ¥handle 
+				iaxis è½´å·
+				mode æ¨¡å¼ 0-æ¸…é™¤å½“å‰å‘Šè­¦  1-æ¸…é™¤å†å²å‘Šè­¦  2-æ¸…é™¤å¤–éƒ¨è¾“å…¥å‘Šè­¦
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_DriveClear(ZMC_HANDLE handle,uint32 iaxis,uint32  mode)
 {
@@ -10402,7 +10402,7 @@ int32  ZAux_BusCmd_DriveClear(ZMC_HANDLE handle,uint32 iaxis,uint32  mode)
 
 	sprintf(cmdbuff, "BASE(%d)\r\nDRIVE_CLEAR(%d)\r\nDATUM(0)",iaxis,mode);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,0);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck,0);
 	if(ERR_OK != iresult)
@@ -10421,11 +10421,11 @@ int32  ZAux_BusCmd_DriveClear(ZMC_HANDLE handle,uint32 iaxis,uint32  mode)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ±Ç°×ÜÏßÇı¶¯µ±Ç°Á¦¾Ø	ĞèÒªÉèÖÃ¶ÔÓ¦µÄDRIVE_PROFILEÀàĞÍ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue µ±Ç°×ª¾Ø
-Return:         //´íÎóÂë
+Description:    //è¯»å–å½“å‰æ€»çº¿é©±åŠ¨å½“å‰åŠ›çŸ©	éœ€è¦è®¾ç½®å¯¹åº”çš„DRIVE_PROFILEç±»å‹
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue å½“å‰è½¬çŸ©
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_GetDriveTorque(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -10440,10 +10440,10 @@ int32  ZAux_BusCmd_GetDriveTorque(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?DRIVE_TORQUE(%d)", iaxis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -10463,12 +10463,12 @@ int32  ZAux_BusCmd_GetDriveTorque(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃµ±Ç°×ÜÏßÇı¶¯×î´ó×ª¾Ø  ĞèÒªÉèÖÃ¶ÔÓ¦µÄDRIVE_PROFILEÀàĞÍ
-Input:          //¿¨Á´½Óhandle		
-				iaxis ÖáºÅ
-				piValue ×î´ó×ª¾ØÏŞÖÆ
+Description:    //è®¾ç½®å½“å‰æ€»çº¿é©±åŠ¨æœ€å¤§è½¬çŸ©  éœ€è¦è®¾ç½®å¯¹åº”çš„DRIVE_PROFILEç±»å‹
+Input:          //å¡é“¾æ¥handle		
+				iaxis è½´å·
+				piValue æœ€å¤§è½¬çŸ©é™åˆ¶
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_SetMaxDriveTorque(ZMC_HANDLE handle, int iaxis, int piValue)
 {
@@ -10478,21 +10478,21 @@ int32  ZAux_BusCmd_SetMaxDriveTorque(ZMC_HANDLE handle, int iaxis, int piValue)
 	{
 		return  ERR_AUX_PARAERR;
 	}
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "DRIVE_TORQUEMAX(%d)=%d", iaxis, piValue);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck,0);
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 
 /*************************************************************
-Description:    //¶ÁÈ¡µ±Ç°×ÜÏßÇı¶¯×î´ó×ª¾Ø  ĞèÒªÉèÖÃ¶ÔÓ¦µÄDRIVE_PROFILEÀàĞÍ
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //piValue ·µ»ØµÄ×î´ó×ª¾Ø
-Return:         //´íÎóÂë
+Description:    //è¯»å–å½“å‰æ€»çº¿é©±åŠ¨æœ€å¤§è½¬çŸ©  éœ€è¦è®¾ç½®å¯¹åº”çš„DRIVE_PROFILEç±»å‹
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //piValue è¿”å›çš„æœ€å¤§è½¬çŸ©
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_GetMaxDriveTorque(ZMC_HANDLE handle, int iaxis, int *piValue)
 {
@@ -10506,10 +10506,10 @@ int32  ZAux_BusCmd_GetMaxDriveTorque(ZMC_HANDLE handle, int iaxis, int *piValue)
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?DRIVE_TORQUEMAX(%d)", iaxis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -10529,12 +10529,12 @@ int32  ZAux_BusCmd_GetMaxDriveTorque(ZMC_HANDLE handle, int iaxis, int *piValue)
 }
 
 /*************************************************************
-Description:    //ÉèÖÃÄ£ÄâÁ¿Êä³ö Á¦¾Ø¡¢ËÙ¶ÈÄ£Ê½ÏÂ¿ÉÒÔ  ×ÜÏßÇı¶¯ĞèÒªÉèÖÃ¶ÔÓ¦DRIVE_PROFILEÀàĞÍ ÓëATYPE
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-				Ä£ÄâÁ¿ Êä³öÖµ
+Description:    //è®¾ç½®æ¨¡æ‹Ÿé‡è¾“å‡º åŠ›çŸ©ã€é€Ÿåº¦æ¨¡å¼ä¸‹å¯ä»¥  æ€»çº¿é©±åŠ¨éœ€è¦è®¾ç½®å¯¹åº”DRIVE_PROFILEç±»å‹ ä¸ATYPE
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+				æ¨¡æ‹Ÿé‡ è¾“å‡ºå€¼
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetDAC(ZMC_HANDLE handle, int iaxis, float fValue)
 {
@@ -10547,20 +10547,20 @@ int32  ZAux_Direct_SetDAC(ZMC_HANDLE handle, int iaxis, float fValue)
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "DAC(%d)=%f", iaxis, fValue);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck, 2048);
 	//return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡Ä£ÄâÁ¿Êä³ö Á¦¾Ø¡¢ËÙ¶ÈÄ£Ê½ÏÂ¿ÉÒÔ  ×ÜÏßÇı¶¯ĞèÒªÉèÖÃ¶ÔÓ¦DRIVE_PROFILEÀàĞÍ ÓëATYPE
-Input:          //¿¨Á´½Óhandle  
-				iaxis ÖáºÅ
-Output:         //fValue Ä£ÄâÁ¿·µ»ØÖµ
-Return:         //´íÎóÂë
+Description:    //è¯»å–æ¨¡æ‹Ÿé‡è¾“å‡º åŠ›çŸ©ã€é€Ÿåº¦æ¨¡å¼ä¸‹å¯ä»¥  æ€»çº¿é©±åŠ¨éœ€è¦è®¾ç½®å¯¹åº”DRIVE_PROFILEç±»å‹ ä¸ATYPE
+Input:          //å¡é“¾æ¥handle  
+				iaxis è½´å·
+Output:         //fValue æ¨¡æ‹Ÿé‡è¿”å›å€¼
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetDAC(ZMC_HANDLE handle, int iaxis, float *fValue)
 {
@@ -10575,10 +10575,10 @@ int32  ZAux_Direct_GetDAC(ZMC_HANDLE handle, int iaxis, float *fValue)
 		return  ERR_AUX_PARAERR;
 	}
 
-	//Éú³ÉÃüÁî
+	//ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "?DAC(%d)", iaxis);
 
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 	//iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	if(ERR_OK != iresult)
@@ -10598,10 +10598,10 @@ int32  ZAux_Direct_GetDAC(ZMC_HANDLE handle, int iaxis, float *fValue)
 }
 
 /*************************************************************
-Description:    //×ÜÏßÉ¨Ãè³õÊ¼»¯  £¨Ö»Õë¶ÔZmotion tools ¹¤¾ßÈí¼şÅäÖÃ¹ı×ÜÏß²ÎÊı¿ØÖÆÆ÷Ê¹ÓÃÓĞĞ§£©
-Input:          //¿¨Á´½Óhandle  
+Description:    //æ€»çº¿æ‰«æåˆå§‹åŒ–  ï¼ˆåªé’ˆå¯¹Zmotion tools å·¥å…·è½¯ä»¶é…ç½®è¿‡æ€»çº¿å‚æ•°æ§åˆ¶å™¨ä½¿ç”¨æœ‰æ•ˆï¼‰
+Input:          //å¡é“¾æ¥handle  
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_InitBus(ZMC_HANDLE handle)
 {
@@ -10610,10 +10610,10 @@ int32  ZAux_BusCmd_InitBus(ZMC_HANDLE handle)
 
 
 /*************************************************************
-Description:    //»ñÈ¡×ÜÏß³õÊ¼»¯Íê³É×´Ì¬  £¨Ö»Õë¶ÔZmotion tools ¹¤¾ßÈí¼şÅäÖÃ¹ı×ÜÏß²ÎÊı¿ØÖÆÆ÷Ê¹ÓÃÓĞĞ§£©
-Input:          //¿¨Á´½Óhandle  
+Description:    //è·å–æ€»çº¿åˆå§‹åŒ–å®ŒæˆçŠ¶æ€  ï¼ˆåªé’ˆå¯¹Zmotion tools å·¥å…·è½¯ä»¶é…ç½®è¿‡æ€»çº¿å‚æ•°æ§åˆ¶å™¨ä½¿ç”¨æœ‰æ•ˆï¼‰
+Input:          //å¡é“¾æ¥handle  
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_BusCmd_GetInitStatus(ZMC_HANDLE handle,int *piValue)
 {
@@ -10645,10 +10645,10 @@ int32  ZAux_BusCmd_GetInitStatus(ZMC_HANDLE handle,int *piValue)
 }
 
 /*************************************************************
-Description:    //¶ÁÈ¡¶à¸öÊäÈëĞÅºÅ
-Input:          //¿¨Á´½Óhandle  
+Description:    //è¯»å–å¤šä¸ªè¾“å…¥ä¿¡å·
+Input:          //å¡é“¾æ¥handle  
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetInMulti(ZMC_HANDLE handle, int startio , int endio, int32 *piValue)
 {
@@ -10663,7 +10663,7 @@ int32  ZAux_Direct_GetInMulti(ZMC_HANDLE handle, int startio , int endio, int32 
 		return  ERR_AUX_PARAERR;
 	}
 
-	int32 icur,istart,iend;		//Ò»´Î×î¶à32¸ö
+	int32 icur,istart,iend;		//ä¸€æ¬¡æœ€å¤š32ä¸ª
 	icur=0;
 	while(1)
 	{
@@ -10672,10 +10672,10 @@ int32  ZAux_Direct_GetInMulti(ZMC_HANDLE handle, int startio , int endio, int32 
 		{
 			iend = endio;
 		}
-		//Éú³ÉÃüÁî
+		//ç”Ÿæˆå‘½ä»¤
 		sprintf(cmdbuff, "?IN(%d,%d)", startio,iend);
 
-		//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+		//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 		//iresult = ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 		iresult = ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 		if(ERR_OK != iresult)
@@ -10694,7 +10694,7 @@ int32  ZAux_Direct_GetInMulti(ZMC_HANDLE handle, int startio , int endio, int32 
 
 		startio = iend + 1;		
 		icur ++;
-		if(iend == endio)			//¶ÁÈ¡Íê±Ï
+		if(iend == endio)			//è¯»å–å®Œæ¯•
 		{
 			break;
 		}
@@ -10704,10 +10704,10 @@ int32  ZAux_Direct_GetInMulti(ZMC_HANDLE handle, int startio , int endio, int32 
 }
 
 /*************************************************************
-Description:    //ÃüÁîµÄÑÓÊ±µÈ´ıÊ±¼ä
-Input:          //¿¨Á´½Óhandle ºÁÃëÊ±¼ä
+Description:    //å‘½ä»¤çš„å»¶æ—¶ç­‰å¾…æ—¶é—´
+Input:          //å¡é“¾æ¥handle æ¯«ç§’æ—¶é—´
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_SetTimeOut(ZMC_HANDLE  handle, uint32 timems)
 {
@@ -10717,52 +10717,52 @@ int32  ZAux_SetTimeOut(ZMC_HANDLE  handle, uint32 timems)
 
 
 /*************************************************************
-Description:    //Ó²¼şÎ»ÖÃ±È½ÏÊä³ö2 4ÏµÁĞ²úÆ·, 20170513ÒÔÉÏ°æ±¾Ö§³Ö.  ZMC306E/306NÖ§³Ö
-Input:          //¿¨Á´½Ó					handle
-				//Ä£Ê½						mode		
-				//Êä³ö¿Ú±àºÅ				Opnum		4ÏµÁĞ out 0-3ÎªÓ²¼şÎ»ÖÃ±È½ÏÊä³ö
-				//µÚÒ»¸ö±È½ÏµãµÄÊä³ö×´Ì¬	Opstate		0-¹Ø±Õ 1´ò¿ª										
-				//¶à¹¦ÄÜ²ÎÊı				ModePara1	 
-				//¶à¹¦ÄÜ²ÎÊı				ModePara2
-				//¶à¹¦ÄÜ²ÎÊı				ModePara3
-				//¶à¹¦ÄÜ²ÎÊı				ModePara4
+Description:    //ç¡¬ä»¶ä½ç½®æ¯”è¾ƒè¾“å‡º2 4ç³»åˆ—äº§å“, 20170513ä»¥ä¸Šç‰ˆæœ¬æ”¯æŒ.  ZMC306E/306Næ”¯æŒ
+Input:          //å¡é“¾æ¥					handle
+				//æ¨¡å¼						mode		
+				//è¾“å‡ºå£ç¼–å·				Opnum		4ç³»åˆ— out 0-3ä¸ºç¡¬ä»¶ä½ç½®æ¯”è¾ƒè¾“å‡º
+				//ç¬¬ä¸€ä¸ªæ¯”è¾ƒç‚¹çš„è¾“å‡ºçŠ¶æ€	Opstate		0-å…³é—­ 1æ‰“å¼€										
+				//å¤šåŠŸèƒ½å‚æ•°				ModePara1	 
+				//å¤šåŠŸèƒ½å‚æ•°				ModePara2
+				//å¤šåŠŸèƒ½å‚æ•°				ModePara3
+				//å¤šåŠŸèƒ½å‚æ•°				ModePara4
 
-mode 1-Æô¶¯±È½ÏÆ÷, 
-		ModePara1 =  µÚÒ»¸ö±È½Ïµã×ø±êËùÔÚTABLE±àºÅ
-		ModePara2 =	 ×îºóÒ»¸ö±È½Ïµã×ø±êËùÔÚTABLE±àºÅ
-		ModePara3 =  µÚÒ»¸öµãÅĞ¶Ï·½Ïò,  0-×ø±ê¸ºÏò,  1- ×ø±êÕıÏò,  -1-²»Ê¹ÓÃ·½Ïò
-		ModePara4 =	 Ô¤Áô
+mode 1-å¯åŠ¨æ¯”è¾ƒå™¨, 
+		ModePara1 =  ç¬¬ä¸€ä¸ªæ¯”è¾ƒç‚¹åæ ‡æ‰€åœ¨TABLEç¼–å·
+		ModePara2 =	 æœ€åä¸€ä¸ªæ¯”è¾ƒç‚¹åæ ‡æ‰€åœ¨TABLEç¼–å·
+		ModePara3 =  ç¬¬ä¸€ä¸ªç‚¹åˆ¤æ–­æ–¹å‘,  0-åæ ‡è´Ÿå‘,  1- åæ ‡æ­£å‘,  -1-ä¸ä½¿ç”¨æ–¹å‘
+		ModePara4 =	 é¢„ç•™
 
-mode 2- Í£Ö¹²¢É¾³ıÃ»Íê³ÉµÄ±È½Ïµã. 
-		ModePara1 =  Ô¤Áô
-		ModePara2 =	 Ô¤Áô
-		ModePara3 =  Ô¤Áô
-		ModePara4 =	 Ô¤Áô
+mode 2- åœæ­¢å¹¶åˆ é™¤æ²¡å®Œæˆçš„æ¯”è¾ƒç‚¹. 
+		ModePara1 =  é¢„ç•™
+		ModePara2 =	 é¢„ç•™
+		ModePara3 =  é¢„ç•™
+		ModePara4 =	 é¢„ç•™
 
-mode 3- Ê¸Á¿±È½Ï·½Ê½
-		ModePara1 =  µÚÒ»¸ö±È½Ïµã×ø±êËùÔÚTABLE±àºÅ
-		ModePara2 =	 ×îºóÒ»¸ö±È½Ïµã×ø±êËùÔÚTABLE±àºÅ
-		ModePara3 =  Ô¤Áô
-		ModePara4 =	 Ô¤Áô
+mode 3- çŸ¢é‡æ¯”è¾ƒæ–¹å¼
+		ModePara1 =  ç¬¬ä¸€ä¸ªæ¯”è¾ƒç‚¹åæ ‡æ‰€åœ¨TABLEç¼–å·
+		ModePara2 =	 æœ€åä¸€ä¸ªæ¯”è¾ƒç‚¹åæ ‡æ‰€åœ¨TABLEç¼–å·
+		ModePara3 =  é¢„ç•™
+		ModePara4 =	 é¢„ç•™
 
-Mode=4 :Ê¸Á¿±È½Ï·½Ê½, µ¥¸ö±È½Ïµã
-		ModePara1 =  ±È½Ïµã×ø±ê
-		ModePara2 =	 Ô¤Áô
-		ModePara3 =  Ô¤Áô
-		ModePara4 =	 Ô¤Áô
+Mode=4 :çŸ¢é‡æ¯”è¾ƒæ–¹å¼, å•ä¸ªæ¯”è¾ƒç‚¹
+		ModePara1 =  æ¯”è¾ƒç‚¹åæ ‡
+		ModePara2 =	 é¢„ç•™
+		ModePara3 =  é¢„ç•™
+		ModePara4 =	 é¢„ç•™
 
-Mode=5 :Ê¸Á¿±È½Ï·½Ê½, ÖÜÆÚÂö³åÄ£Ê½
-		ModePara1 =  ±È½Ïµã×ø±ê
-		ModePara2 =	 ÖØ¸´ÖÜÆÚ, Ò»¸öÖÜÆÚÄÚ±È½ÏÁ½´Î, ÏÈÊä³öÓĞĞ§×´Ì¬,ÔÙÊä³öÎŞĞ§×´Ì¬.
-		ModePara3 =  ÖÜÆÚ¾àÀë, Ã¿¸ôÕâ¸ö¾àÀëÊä³öOpstate, Êä³öÓĞĞ§×´Ì¬µÄ¾àÀë£¨ModePara4£©ºó»¹Ô­ÎªÎŞĞ§×´Ì¬.
-		ModePara4 =	 Êä³öÓĞĞ§×´Ì¬µÄ¾àÀë,  (ModePara3- ModePara4) ÎªÎŞĞ§×´Ì¬¾àÀë
+Mode=5 :çŸ¢é‡æ¯”è¾ƒæ–¹å¼, å‘¨æœŸè„‰å†²æ¨¡å¼
+		ModePara1 =  æ¯”è¾ƒç‚¹åæ ‡
+		ModePara2 =	 é‡å¤å‘¨æœŸ, ä¸€ä¸ªå‘¨æœŸå†…æ¯”è¾ƒä¸¤æ¬¡, å…ˆè¾“å‡ºæœ‰æ•ˆçŠ¶æ€,å†è¾“å‡ºæ— æ•ˆçŠ¶æ€.
+		ModePara3 =  å‘¨æœŸè·ç¦», æ¯éš”è¿™ä¸ªè·ç¦»è¾“å‡ºOpstate, è¾“å‡ºæœ‰æ•ˆçŠ¶æ€çš„è·ç¦»ï¼ˆModePara4ï¼‰åè¿˜åŸä¸ºæ— æ•ˆçŠ¶æ€.
+		ModePara4 =	 è¾“å‡ºæœ‰æ•ˆçŠ¶æ€çš„è·ç¦»,  (ModePara3- ModePara4) ä¸ºæ— æ•ˆçŠ¶æ€è·ç¦»
 
-Mode=6 :Ê¸Á¿±È½Ï·½Ê½, ÖÜÆÚÄ£Ê½, ÕâÖÖÄ£Ê½Ò»°ãÓëHW_TIMERÒ»ÆğÊ¹ÓÃ.
-		ModePara1 =  ±È½Ïµã×ø±ê
-		ModePara2 =	 ÖØ¸´ÖÜÆÚ, Ò»¸öÖÜÆÚÖ»±È½ÏÒ»´Î
-		ModePara3 =  ÖÜÆÚ¾àÀë, Ã¿¸ôÕâ¸ö¾àÀëÊä³öÒ»´Î
-		ModePara4 =	 Ô¤Áô
-Return:         //´íÎóÂë
+Mode=6 :çŸ¢é‡æ¯”è¾ƒæ–¹å¼, å‘¨æœŸæ¨¡å¼, è¿™ç§æ¨¡å¼ä¸€èˆ¬ä¸HW_TIMERä¸€èµ·ä½¿ç”¨.
+		ModePara1 =  æ¯”è¾ƒç‚¹åæ ‡
+		ModePara2 =	 é‡å¤å‘¨æœŸ, ä¸€ä¸ªå‘¨æœŸåªæ¯”è¾ƒä¸€æ¬¡
+		ModePara3 =  å‘¨æœŸè·ç¦», æ¯éš”è¿™ä¸ªè·ç¦»è¾“å‡ºä¸€æ¬¡
+		ModePara4 =	 é¢„ç•™
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_HwPswitch2(ZMC_HANDLE handle,int Axisnum,int Mode, int Opnum , int Opstate, float ModePara1, float ModePara2,float ModePara3,float ModePara4)
 {
@@ -10772,7 +10772,7 @@ int32  ZAux_Direct_HwPswitch2(ZMC_HANDLE handle,int Axisnum,int Mode, int Opnum 
 	}	
 	char  cmdbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	switch(Mode)
 	{
 		case 1:
@@ -10797,18 +10797,18 @@ int32  ZAux_Direct_HwPswitch2(ZMC_HANDLE handle,int Axisnum,int Mode, int Opnum 
 			return  ERR_AUX_PARAERR;			
 			break;
 	}
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	//return ZAux_DirectCommand(handle, cmdbuff, NULL, 0);
 	return ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 }
 
 /*************************************************************
-Description:    //»ñÈ¡¿ØÖÆÆ÷×î´ó¹æ¸ñÊı
-Input:          //¿¨Á´½Óhandle 
-Output:         //Max_VirtuAxises	 ×î´óĞéÄâÖáÊı
-Output:         //Max_motor			 ×î´óµç»úÊıÁ¿
-Output:         //Max_io			 ×î´óIN,OUT,AD,DAÊıÁ¿				
-Return:         //´íÎóÂë
+Description:    //è·å–æ§åˆ¶å™¨æœ€å¤§è§„æ ¼æ•°
+Input:          //å¡é“¾æ¥handle 
+Output:         //Max_VirtuAxises	 æœ€å¤§è™šæ‹Ÿè½´æ•°
+Output:         //Max_motor			 æœ€å¤§ç”µæœºæ•°é‡
+Output:         //Max_io			 æœ€å¤§IN,OUT,AD,DAæ•°é‡				
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_GetSysSpecification(ZMC_HANDLE  handle, uint16 * Max_VirtuAxises,uint8 * Max_motor,uint8 *Max_io)
 {
@@ -10836,15 +10836,15 @@ int32  ZAux_GetSysSpecification(ZMC_HANDLE  handle, uint16 * Max_VirtuAxises,uin
 }
 
 /*************************************************************
-Description:    //¿ØÖÆÆ÷×Ô¶¯ÉÏ±¨
-Input:          //¿¨Á´½Ó	handle 
-Input:         //»Øµ÷º¯Êı    pcallback		
-		   PZMCAutoUpCallBackº¯Êı¸ñÊ½
-				Input:          //¿¨Á´½Óhandle
-				itypecode: ÉÏ´«ÀàĞÍÂë
-				idatalength: Êı¾İ³¤¶È
-				pdata: Êı¾İÖ¸Õë
-Return:         //´íÎóÂë
+Description:    //æ§åˆ¶å™¨è‡ªåŠ¨ä¸ŠæŠ¥
+Input:          //å¡é“¾æ¥	handle 
+Input:         //å›è°ƒå‡½æ•°    pcallback		
+		   PZMCAutoUpCallBackå‡½æ•°æ ¼å¼
+				Input:          //å¡é“¾æ¥handle
+				itypecode: ä¸Šä¼ ç±»å‹ç 
+				idatalength: æ•°æ®é•¿åº¦
+				pdata: æ•°æ®æŒ‡é’ˆ
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_SetAutoUpCallBack(ZMC_HANDLE handle, PZMCAutoUpCallBack pcallback)
 {
@@ -10853,13 +10853,13 @@ int32  ZAux_SetAutoUpCallBack(ZMC_HANDLE handle, PZMCAutoUpCallBack pcallback)
 
 
 /*************************************************************
-Description:    //IO½Ó¿Ú ÉèÖÃ¶àÂ·Êä³ö
-Input:          //¿¨Á´½Óhandle
-Input:          //IO¿ÚÆğÊ¼±àºÅ  iofirst
-Input:          //IO¿Ú½áÊø±àºÅ  ioend
-Input:          //Êä³ö¿Ú×´Ì¬    istate°´Î»´æ´¢£¬Ò»¸öUINT´æ´¢32¸öÊä³ö¿Ú×´Ì¬
-Output:         //×´Ì¬
-Return:         //´íÎóÂë
+Description:    //IOæ¥å£ è®¾ç½®å¤šè·¯è¾“å‡º
+Input:          //å¡é“¾æ¥handle
+Input:          //IOå£èµ·å§‹ç¼–å·  iofirst
+Input:          //IOå£ç»“æŸç¼–å·  ioend
+Input:          //è¾“å‡ºå£çŠ¶æ€    istateæŒ‰ä½å­˜å‚¨ï¼Œä¸€ä¸ªUINTå­˜å‚¨32ä¸ªè¾“å‡ºå£çŠ¶æ€
+Output:         //çŠ¶æ€
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_SetOutMulti(ZMC_HANDLE handle, uint16 iofirst,uint16 ioend, uint32 * istate)
 {
@@ -10869,7 +10869,7 @@ int32  ZAux_Direct_SetOutMulti(ZMC_HANDLE handle, uint16 iofirst,uint16 ioend, u
 		return  ERR_AUX_PARAERR;
 	}
 
-	int32 icur,startio,iend;		//Ò»´Î×î¶à32¸ö
+	int32 icur,startio,iend;		//ä¸€æ¬¡æœ€å¤š32ä¸ª
 	startio = iofirst;
 	icur=0;
 	while(1)
@@ -10886,7 +10886,7 @@ int32  ZAux_Direct_SetOutMulti(ZMC_HANDLE handle, uint16 iofirst,uint16 ioend, u
 		}
 		startio = iend + 1;		
 		icur ++;
-		if(iend == ioend)			//ÉèÖÃÍê±Ï
+		if(iend == ioend)			//è®¾ç½®å®Œæ¯•
 		{
 			break;
 		}
@@ -10896,13 +10896,13 @@ int32  ZAux_Direct_SetOutMulti(ZMC_HANDLE handle, uint16 iofirst,uint16 ioend, u
 
 
 /*************************************************************
-Description:    //IO½Ó¿Ú ÉèÖÃ¶àÂ·Êä³ö
-Input:          //¿¨Á´½Óhandle
-Input:          //IO¿ÚÆğÊ¼±àºÅ  iofirst
-Input:          //IO¿Ú½áÊø±àºÅ  ioend
-Input:          //Êä³ö¿Ú×´Ì¬    istate°´Î»´æ´¢£¬Ò»¸öUINT´æ´¢32¸öÊä³ö¿Ú×´Ì¬
-Output:         //×´Ì¬
-Return:         //´íÎóÂë
+Description:    //IOæ¥å£ è®¾ç½®å¤šè·¯è¾“å‡º
+Input:          //å¡é“¾æ¥handle
+Input:          //IOå£èµ·å§‹ç¼–å·  iofirst
+Input:          //IOå£ç»“æŸç¼–å·  ioend
+Input:          //è¾“å‡ºå£çŠ¶æ€    istateæŒ‰ä½å­˜å‚¨ï¼Œä¸€ä¸ªUINTå­˜å‚¨32ä¸ªè¾“å‡ºå£çŠ¶æ€
+Output:         //çŠ¶æ€
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_GetOutMulti(ZMC_HANDLE handle, uint16 iofirst,uint16 ioend, uint32 * istate)
 {
@@ -10912,7 +10912,7 @@ int32  ZAux_Direct_GetOutMulti(ZMC_HANDLE handle, uint16 iofirst,uint16 ioend, u
 		return  ERR_AUX_PARAERR;
 	}
 
-	int32 icur,startio,iend;		//Ò»´Î×î¶à32¸ö
+	int32 icur,startio,iend;		//ä¸€æ¬¡æœ€å¤š32ä¸ª
 	startio = iofirst;
 	icur=0;
 	while(1)
@@ -10929,7 +10929,7 @@ int32  ZAux_Direct_GetOutMulti(ZMC_HANDLE handle, uint16 iofirst,uint16 ioend, u
 		}
 		startio = iend + 1;		
 		icur ++;
-		if(iend == ioend)			//ÉèÖÃÍê±Ï
+		if(iend == ioend)			//è®¾ç½®å®Œæ¯•
 		{
 			break;
 		}
@@ -10939,14 +10939,14 @@ int32  ZAux_Direct_GetOutMulti(ZMC_HANDLE handle, uint16 iofirst,uint16 ioend, u
 
 
 /*************************************************************
-Description:    //¶àÌõÏà¶Ô¶àÖáÖ±Ïß²å²¹ 
-Input:          //¿¨Á´½Óhandle
-				iMoveLen			ÌîĞ´µÄÔË¶¯³¤¶È
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				pfDisancelist		¾àÀëÁĞ±í
+Description:    //å¤šæ¡ç›¸å¯¹å¤šè½´ç›´çº¿æ’è¡¥ 
+Input:          //å¡é“¾æ¥handle
+				iMoveLen			å¡«å†™çš„è¿åŠ¨é•¿åº¦
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				pfDisancelist		è·ç¦»åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MultiMove(ZMC_HANDLE handle,int iMoveLen, int imaxaxises, int *piAxislist, float *pfDisancelist)
 {
@@ -10960,16 +10960,16 @@ int32  ZAux_Direct_MultiMove(ZMC_HANDLE handle,int iMoveLen, int imaxaxises, int
 		return  ERR_AUX_PARAERR;
 	}
 
-	//ÏÈ¶ÁÈ¡Ê£ÓàÖ±Ïß»º³å
+	//å…ˆè¯»å–å‰©ä½™ç›´çº¿ç¼“å†²
 	int iBuffLen = 0;
 	iresult = ZAux_Direct_GetRemain_LineBuffer(handle,piAxislist[0],&iBuffLen);
 	if(iBuffLen <= iMoveLen)
 	{
-		return 1002;			//»º³å²»¹»
+		return 1002;			//ç¼“å†²ä¸å¤Ÿ
 	}
 
 
-	//Éú³ÉÃüÁîBASEÃüÁî
+	//ç”Ÿæˆå‘½ä»¤BASEå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	for(i = 0; i< imaxaxises-1; i++)
 	{
@@ -10979,10 +10979,10 @@ int32  ZAux_Direct_MultiMove(ZMC_HANDLE handle,int iMoveLen, int imaxaxises, int
 	}
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
 	strcat(cmdbuff, tempbuff);
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 
-	//Éú³ÉÔË¶¯ÃüÁî
+	//ç”Ÿæˆè¿åŠ¨å‘½ä»¤
 	for(j=0;j<iMoveLen;j++)
 	{
 		strcat(cmdbuff, "MOVE(");
@@ -10999,12 +10999,12 @@ int32  ZAux_Direct_MultiMove(ZMC_HANDLE handle,int iMoveLen, int imaxaxises, int
 		strcat(cmdbuff, tempbuff);
 	}
 
-	int ilen = strlen(cmdbuff);				//»ñÈ¡ÃüÁî³¤¶È
+	int ilen = strlen(cmdbuff);				//è·å–å‘½ä»¤é•¿åº¦
 	if(ilen > 1000)
 	{
 		return  20002;
 	}
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 
 }
@@ -11012,14 +11012,14 @@ int32  ZAux_Direct_MultiMove(ZMC_HANDLE handle,int iMoveLen, int imaxaxises, int
 
 
 /*************************************************************
-Description:    //¶àÌõÏà¶Ô¶àÖáÖ±Ïß²å²¹ 
-Input:          //¿¨Á´½Óhandle
-				iMoveLen			ÌîĞ´µÄÔË¶¯³¤¶È
-				imaxaxises			²ÎÓëÔË¶¯×ÜÖáÊı
-				piAxislist			ÖáºÅÁĞ±í
-				pfDisancelist		¾àÀëÁĞ±í
+Description:    //å¤šæ¡ç›¸å¯¹å¤šè½´ç›´çº¿æ’è¡¥ 
+Input:          //å¡é“¾æ¥handle
+				iMoveLen			å¡«å†™çš„è¿åŠ¨é•¿åº¦
+				imaxaxises			å‚ä¸è¿åŠ¨æ€»è½´æ•°
+				piAxislist			è½´å·åˆ—è¡¨
+				pfDisancelist		è·ç¦»åˆ—è¡¨
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_MultiMoveAbs(ZMC_HANDLE handle,int iMoveLen, int imaxaxises, int *piAxislist, float *pfDisancelist)
 {
@@ -11033,16 +11033,16 @@ int32  ZAux_Direct_MultiMoveAbs(ZMC_HANDLE handle,int iMoveLen, int imaxaxises, 
 		return  ERR_AUX_PARAERR;
 	}
 
-	//ÏÈ¶ÁÈ¡Ê£ÓàÖ±Ïß»º³å
+	//å…ˆè¯»å–å‰©ä½™ç›´çº¿ç¼“å†²
 	int iBuffLen = 0;
 	iresult = ZAux_Direct_GetRemain_LineBuffer(handle,piAxislist[0],&iBuffLen);
 	if(iBuffLen <= iMoveLen)
 	{
-		return 1002;			//»º³å²»¹»
+		return 1002;			//ç¼“å†²ä¸å¤Ÿ
 	}
 
 
-	//Éú³ÉÃüÁîBASEÃüÁî
+	//ç”Ÿæˆå‘½ä»¤BASEå‘½ä»¤
 	strcpy(cmdbuff, "BASE(");
 	for(i = 0; i< imaxaxises-1; i++)
 	{
@@ -11052,10 +11052,10 @@ int32  ZAux_Direct_MultiMoveAbs(ZMC_HANDLE handle,int iMoveLen, int imaxaxises, 
 	}
 	sprintf(tempbuff, "%d)",piAxislist[imaxaxises-1]);
 	strcat(cmdbuff, tempbuff);
-	//»»ĞĞ
+	//æ¢è¡Œ
 	strcat(cmdbuff, "\n");
 
-	//Éú³ÉÔË¶¯ÃüÁî
+	//ç”Ÿæˆè¿åŠ¨å‘½ä»¤
 	for(j=0;j<iMoveLen;j++)
 	{
 		strcat(cmdbuff, "MOVEABS(");
@@ -11073,22 +11073,22 @@ int32  ZAux_Direct_MultiMoveAbs(ZMC_HANDLE handle,int iMoveLen, int imaxaxises, 
 	}
 
 
-	int ilen = strlen(cmdbuff);				//»ñÈ¡ÃüÁî³¤¶È
+	int ilen = strlen(cmdbuff);				//è·å–å‘½ä»¤é•¿åº¦
 	if(ilen > 1000)
 	{
 		return  20002;
 	}
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 }
 
 /*************************************************************
-Description:    //»úĞµÊÖ×ø±êÏµĞı×ª
-Input:          //¿¨Á´½Óhandle
-				iaxis					ÖáºÅ ¹Ø½ÚÖá/ĞéÄâÖá
-				pfRotatePara			Æ½ÒÆĞı×ª²ÎÊı
+Description:    //æœºæ¢°æ‰‹åæ ‡ç³»æ—‹è½¬
+Input:          //å¡é“¾æ¥handle
+				iaxis					è½´å· å…³èŠ‚è½´/è™šæ‹Ÿè½´
+				pfRotatePara			å¹³ç§»æ—‹è½¬å‚æ•°
 Output:         //
-Return:         //´íÎóÂë
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_Direct_FrameRotate(ZMC_HANDLE handle,int iaxis, float *pfRotatePara)
 {
@@ -11096,28 +11096,28 @@ int32  ZAux_Direct_FrameRotate(ZMC_HANDLE handle,int iaxis, float *pfRotatePara)
 	char  cmdbuff[2048];
 	char  tempbuff[2048];
 	char  cmdbuffAck[2048];
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(cmdbuff, "BASE(%d)\n",iaxis);
 			
-    //Éú³ÉÃüÁî
+    //ç”Ÿæˆå‘½ä»¤
 	sprintf(tempbuff, "FRAME_ROTATE(%f,%f,%f,%f,%f,%f)", pfRotatePara[0],pfRotatePara[1],pfRotatePara[2],pfRotatePara[3],pfRotatePara[4], pfRotatePara[5]);
     strcat(cmdbuff, tempbuff);	
-	//µ÷ÓÃÃüÁîÖ´ĞĞº¯Êı
+	//è°ƒç”¨å‘½ä»¤æ‰§è¡Œå‡½æ•°
 	return ZAux_DirectCommand(handle, cmdbuff, cmdbuffAck, 2048);
 	//return ZAux_Execute(handle, cmdbuff, cmdbuffAck,2048);
 }
 
 /*************************************************************
-Description:    //»ñÈ¡CANÀ©Õ¹×ÊÔ´¹æ¸ñ
-Input:          //¿¨Á´½Óhandle 
-Output:         //CanNum			 µ±Ç°Á¬½ÓµÄCAN´ÓÕ¾ÊıÁ¿
-Output:         //CanId_List		 µ±Ç°Á¬½ÓµÄCAN´ÓÕ¾IDÁĞ±í
-Output:         //CanIn_List		 ½ÚµãÊäÈëµãÊıÁ¿
-Output:         //CanOut_List		 ½ÚµãÊä³öµãÊıÁ¿
-Output:         //CanAin_List		 ½ÚµãADÊıÁ¿	
-Output:         //CanAOut_List		 ½ÚµãDAÊıÁ¿	
-Output:         //CanAxis_List		 ½ÚµãÖáÊıÁ¿				
-Return:         //´íÎóÂë
+Description:    //è·å–CANæ‰©å±•èµ„æºè§„æ ¼
+Input:          //å¡é“¾æ¥handle 
+Output:         //CanNum			 å½“å‰è¿æ¥çš„CANä»ç«™æ•°é‡
+Output:         //CanId_List		 å½“å‰è¿æ¥çš„CANä»ç«™IDåˆ—è¡¨
+Output:         //CanIn_List		 èŠ‚ç‚¹è¾“å…¥ç‚¹æ•°é‡
+Output:         //CanOut_List		 èŠ‚ç‚¹è¾“å‡ºç‚¹æ•°é‡
+Output:         //CanAin_List		 èŠ‚ç‚¹ADæ•°é‡	
+Output:         //CanAOut_List		 èŠ‚ç‚¹DAæ•°é‡	
+Output:         //CanAxis_List		 èŠ‚ç‚¹è½´æ•°é‡				
+Return:         //é”™è¯¯ç 
 *************************************************************/
 int32  ZAux_GetCanInfo(ZMC_HANDLE  handle, uint8 * CanNum,uint16 * CanId_List,uint8 *CanIn_List,uint8 *CanOut_List,uint8 *CanAin_List,uint8 *CanAOut_List,uint8 *CanAxis_List)
 {

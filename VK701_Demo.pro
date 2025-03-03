@@ -13,8 +13,6 @@ msvc{
 QMAKE_CXXFLAGS += -utf-8
 }
 
-QMAKE_POST_LINK += make clean
-
 
 SOURCES += \
     main.cpp \
@@ -52,6 +50,7 @@ win32:CONFIG(debug, debug|release) {
     LIBS += -LC:/Users/YMH/anaconda3/libs -lpython310
 }
 
+INCLUDEPATH += $$PWD/build
 
 FORMS += \
     mainwindow.ui \

@@ -291,8 +291,8 @@ void motorpage::DrawMotorParam(int motorID, int paramType)
         }
 
     /// 获取该图表的数据向量
-    QVector<double>& x = xData[MotorMap[motorID]];
-    QVector<double>& y = yData[MotorMap[motorID]];
+    QVector<double>& x = xData[motorID];
+    QVector<double>& y = yData[motorID];
 
     // 如果数据点数量已经达到最大数量，移除最早的数据点
     if (x.size() >= maxDataPoints) {
@@ -301,31 +301,31 @@ void motorpage::DrawMotorParam(int motorID, int paramType)
     }
 
     // 将新数据添加到现有数据的末尾
-    x.append(Xstep[MotorMap[motorID]]);
+    x.append(Xstep[motorID]);
     y.append((double)paramValue);
 
-    if(Xstep[MotorMap[motorID]] == 0)
+    if(Xstep[motorID] == 0)
     {
         x.clear();
         y.clear();
     }
 
     // 更新计数器
-    Xstep[MotorMap[motorID]]++;
+    Xstep[motorID]++;
 
     // 重新添加数据到图表中
-    qcustomplot[MotorMap[motorID]]->graph(0)->setData(x, y);
+    qcustomplot[motorID]->graph(0)->setData(x, y);
 
     // 设置X轴的范围，只显示最近的100个数据点
-    qcustomplot[MotorMap[motorID]]->xAxis->setRange(Xstep[MotorMap[motorID]] - std::min((int)Xstep[MotorMap[motorID]], maxDataPoints), (int)Xstep[MotorMap[motorID]]);
+    qcustomplot[motorID]->xAxis->setRange(Xstep[motorID] - std::min((int)Xstep[motorID], maxDataPoints), (int)Xstep[motorID]);
 
     // 设置Y轴的范围
     double minY = *std::min_element(y.constBegin(), y.constEnd());
     double maxY = *std::max_element(y.constBegin(), y.constEnd());
     double margin = (maxY - minY) * 0.1; // 10% 的边距
-    qcustomplot[MotorMap[motorID]]->yAxis->setRange(minY - margin, maxY + margin);
+    qcustomplot[motorID]->yAxis->setRange(minY - margin, maxY + margin);
     // 重新绘制图表
-    qcustomplot[MotorMap[motorID]]->replot();
+    qcustomplot[motorID]->replot();
 }
 
 void motorpage::debugShowParaAll()
@@ -352,32 +352,42 @@ void motorpage::debugShowParaAll()
 void motorpage::onParamsRead(QVector<float> torqueAllData, QVector<float> speedAllData, QVector<float> positionAllData)
 {
     // 将读取到的参数数据复制到成员变量中
-    std::copy(torqueAllData.begin(), torqueAllData.end(), torqueAll);
-    std::copy(positionAllData.begin(), positionAllData.end(), positionAll);
-    std::copy(speedAllData.begin(), speedAllData.end(), speedAll);
+    for (int i = 0; i < 10; i++) {
+        torqueAll[i] = torqueAllData[i];
+        positionAll[i] = positionAllData[i];
+        speedAll[i] = speedAllData[i];
+    }
     //qDebug() << "copied";
 
     if(AllRecordStart != true)
     {
         return;
     }
+    
+    // 开始事务以提高数据库插入效率
+    dbMotor.transaction();
+    
     // 循环将数据写入数据库
     for (int i = 0; i < fAxisNum; ++i) {
         // 准备插入语句
         QSqlQuery query(dbMotor);
-        query.prepare("INSERT INTO Motordata" + QString::number(MotorMap[i]) + " (RoundID, Current, Velocity, Position) "
+        query.prepare("INSERT INTO Motordata" + QString::number(i) + " (RoundID, Current, Velocity, Position) "
                       "VALUES (:RoundID, :Current, :Velocity, :Position)");
         query.bindValue(":RoundID", currentRoundID);
-        query.bindValue(":Current", torqueAllData[i]); // Current写入到第二列
-        query.bindValue(":Velocity", speedAllData[i]); // Velocity写入到第三列
-        query.bindValue(":Position", positionAllData[i]); // Position写入到第四列
+        query.bindValue(":Current", torqueAllData[MotorMap[i]]); // 使用映射后的索引获取数据
+        query.bindValue(":Velocity", speedAllData[MotorMap[i]]); // 使用映射后的索引获取数据
+        query.bindValue(":Position", positionAllData[MotorMap[i]]); // 使用映射后的索引获取数据
 
         // 执行插入语句
         if (!query.exec()) {
             qDebug() << "Error: unable to execute insert query" << query.lastError().text();
+            dbMotor.rollback(); // 出错时回滚事务
             return;
         }
     }
+    
+    // 提交事务
+    dbMotor.commit();
 }
 
 void motorpage::on_btn_nuke_clicked()

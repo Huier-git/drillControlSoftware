@@ -82,31 +82,26 @@ signals:
 protected:
     void run() override {
         while(true){
-            while (runStart){
-                // 获取循环开始的时间戳
-//                auto startTime = std::chrono::high_resolution_clock::now();
-
-                int ret;
+            if(runStart){
                 QVector<float> torqueAllData(10);
                 QVector<float> speedAllData(10);
                 QVector<float> positionAllData(10);
 
-                ret =  ZAux_Direct_GetAllAxisPara(g_handle, "DRIVE_TORQUE", 10, torqueAllData.data());
-                ret += ZAux_Direct_GetAllAxisPara(g_handle, "MSPEED",       10, speedAllData.data());
-                ret += ZAux_Direct_GetAllAxisPara(g_handle, "MPOS",         10, positionAllData.data());
+                int ret = 0;
+                ret += ZAux_Direct_GetAllAxisPara(g_handle, "DRIVE_TORQUE", 10, torqueAllData.data());
+                ret += ZAux_Direct_GetAllAxisPara(g_handle, "MSPEED", 10, speedAllData.data());
+                ret += ZAux_Direct_GetAllAxisPara(g_handle, "MPOS", 10, positionAllData.data());
 
-//                qDebug() << "Read All Param:" << ret;
-                emit paramsRead(torqueAllData, speedAllData, positionAllData);
+                if (ret == 0) {
+                    emit paramsRead(torqueAllData, speedAllData, positionAllData);
+                } else {
+                    qDebug() << "Error reading parameters, ret =" << ret;
+                }
+                
                 QThread::msleep(100);
-//                // 获取循环结束的时间戳
-//                auto endTime = std::chrono::high_resolution_clock::now();
-
-//                // 计算循环执行的时间（毫秒）
-//                auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
-//                qDebug() << "Loop time:" << duration << "ms";
+            } else {
+                QThread::msleep(100);
             }
-            if(runStart != true)
-                QThread::msleep(100);
         }
     }
 };
