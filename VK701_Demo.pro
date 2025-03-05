@@ -1,6 +1,6 @@
-QT       += core gui printsupport sql serialbus
+QT       += core gui printsupport sql serialbus concurrent
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets 
 
 CONFIG += c++17
 
@@ -24,7 +24,11 @@ SOURCES += \
     src/qcustomplot.cpp	\
     src/vk701page.cpp \
     src/zmotionpage.cpp \
-    src/zmcaux.cpp
+    src/zmcaux.cpp  \
+    src/statemachine.cpp    \
+    src/autodrilling.cpp    \
+    src/drillingstate.cpp   \
+    src/motioncontroller.cpp
 
 
 HEADERS += \
@@ -39,7 +43,11 @@ HEADERS += \
     inc/motorpage.h	\
     inc/vk701page.h    \
     inc/zmotionpage.h   \
-    inc/zmcaux.h
+    inc/zmcaux.h    \
+    inc/statemachine.h  \
+    inc/autodrilling.h    \
+    inc/drillingstate.h\
+    inc/motioncontroller.h
 
 
 win32:INCLUDEPATH += C:/Users/YMH/anaconda3/include
@@ -51,6 +59,8 @@ win32:CONFIG(debug, debug|release) {
 }
 
 INCLUDEPATH += $$PWD/build
+INCLUDEPATH += $$PWD/src
+INCLUDEPATH += $$PWD/inc
 
 FORMS += \
     mainwindow.ui \
