@@ -2,87 +2,131 @@
 #define MOTIONCONTROLLER_H
 
 #include <QObject>
-#include <QVector>
 #include <QMap>
-#include <atomic>
+#include <QVector>
+#include <QString>
 #include <functional>
-#include "inc/zmcaux.h"
-#include "inc/zmotion.h"
+#include <QTimer>
+#include <QMutex>
+#include "zmcaux.h"
+#include "DrillingParameters.h"
 
-// 前向声明
-class QTimer;
+// 预定义 ZMC_HANDLE 类型
+typedef void* ZMC_HANDLE;
 
+// 假设的 ZAux API 函数原型
+extern "C" {
+    int ZAux_Direct_GetAtype(ZMC_HANDLE handle, int axis, int* iValue);
+    int ZAux_Direct_GetAxisEnable(ZMC_HANDLE handle, int axis, int* iValue);
+    int ZAux_Direct_GetDpos(ZMC_HANDLE handle, int axis, float* fValue);
+    int ZAux_Direct_GetMpos(ZMC_HANDLE handle, int axis, float* fValue);
+    int ZAux_Direct_GetSpeed(ZMC_HANDLE handle, int axis, float* fValue);
+    int ZAux_Direct_GetMspeed(ZMC_HANDLE handle, int axis, float* fValue);
+    int ZAux_Direct_GetUnits(ZMC_HANDLE handle, int axis, float* fValue);
+    int ZAux_Direct_GetAccel(ZMC_HANDLE handle, int axis, float* fValue);
+    int ZAux_Direct_GetDecel(ZMC_HANDLE handle, int axis, float* fValue);
+    int ZAux_Direct_GetDAC(ZMC_HANDLE handle, int axis, float* fValue);
+}
+
+/**
+ * @brief 运动控制器类，封装与运动控制卡的通信
+ */
 class MotionController : public QObject
 {
     Q_OBJECT
 
 public:
+    // 定义回调函数类型，用于通知电机状态变化
+    typedef std::function<void(int motorID, const QMap<QString, float>&)> MotionCallback;
+
     explicit MotionController(QObject *parent = nullptr);
-    ~MotionController();
+    virtual ~MotionController();
 
-    // 连接与初始化
-    bool connectController(const QString &ipAddress);
-    void disconnectController();
-    bool initializeBus();
-    bool isConnected() const { return m_handle != NULL; }
-    bool isInitialized() const { return m_initialized; }
+    // 连接和初始化
+    bool initialize(const QString &ipAddress = "192.168.0.11", bool debugMode = false);
+    void release();
+    bool isConnected() const;
+    bool isDebugMode() const;
 
-    // 基本参数获取
-    float getAxisNum() const { return m_axisNum; }
-    int getNodeNum() const { return m_nodeNum; }
-    
     // 电机参数操作
     bool getMotorParameters(int motorID, QMap<QString, float> &params);
     bool setMotorParameter(int motorID, const QString &paramName, float value);
+
+    // 电机运动控制
     bool moveMotorAbsolute(int motorID, float position);
     bool moveMotorRelative(int motorID, float distance);
-    bool stopMotor(int motorID, int stopMode = 2);
+    bool stopMotor(int motorID, int stopMode = 0);
     bool enableMotor(int motorID, bool enable);
     bool clearAlarm(int motorID);
     bool setZeroPosition(int motorID);
-    
+
     // 全局操作
     bool pauseAllMotors();
     bool resumeAllMotors();
-    bool stopAllMotors(int stopMode = 2);
-    
-    // 获取映射表
-    const QVector<int>& getMotorMap() const { return m_motorMap; }
-    void updateMotorMap(const QVector<int>& newMap);
-    
-    // 执行命令
-    bool executeCommand(const QString &command, QString &response);
+    bool stopAllMotors(int stopMode = 0);
 
-    // 添加回调注册接口
-    using MotionCallback = std::function<void(const QMap<QString, float>&)>;
+    // 电机状态回调注册
     void registerMotionCallback(int motorID, MotionCallback callback);
     void unregisterMotionCallback(int motorID);
+    
+    // 更新电机状态
+    void updateMotorStatus(int motorID);
+    void updateAllMotorStatus();
+    
+    // 获取电机名称
+    QString getMotorName(int motorID) const;
 
 signals:
     void connectionChanged(bool connected);
-    void initializationChanged(bool initialized);
-    void motorParametersUpdated(int motorID, const QMap<QString, float> &params);
-    void allMotorParametersUpdated(const QVector<QMap<QString, float>> &allParams);
     void commandResponse(const QString &response);
+    void motorStatusChanged(int motorID, const QMap<QString, float> &params);
     void errorOccurred(const QString &errorMessage);
 
-public slots:
-    void updateAllMotorParameters();
+private slots:
+    // 定时更新电机状态
+    void onUpdateTimerTimeout();
+
+protected:
+    // 记录错误日志
+    void logError(const QString &operation, int errorCode);
+    
+    // 初始化电机名称映射
+    void initializeMotorNames();
+    
+    // 命令执行
+    int executeCommand(const char* command, char* response, uint32_t responseLength);
+    
+    // 简化的命令执行，主要用于调试模式
+    bool executeCommand(const QString& cmdStr);
+    
+    // 日志辅助函数
+    void logCommand(const QString& command);
+    void logResponse(const QString& response);
 
 private:
+    // ZMC控制器句柄
     ZMC_HANDLE m_handle;
-    bool m_initialized;
-    float m_axisNum;
-    int m_nodeNum;
-    QVector<int> m_motorMap;
-    QTimer *m_updateTimer;
     
-    // 辅助方法
-    bool checkConnection();
-    void logError(const QString &operation, int errorCode);
+    // 连接状态
+    bool m_connected;
+    
+    // 互斥锁，用于保护控制器操作
+    QMutex m_mutex;
+    
+    // 电机回调函数映射
+    QMap<int, MotionCallback> m_callbacks;
+    
+    // 电机名称映射
+    QMap<int, QString> m_motorNames;
+    
+    // 定时器，用于定期更新电机状态
+    QTimer m_updateTimer;
 
-    QMap<int, MotionCallback> m_motionCallbacks;
-    void updateMotorStatus(int motorID);
+    // 调试模式
+    bool m_debugMode;
+
+    // 为调试模式生成模拟的电机参数
+    QMap<QString, float> generateDebugMotorParameters(int motorID);
 };
 
-#endif // MOTIONCONTROLLER_H 
+#endif // MOTIONCONTROLLER_H

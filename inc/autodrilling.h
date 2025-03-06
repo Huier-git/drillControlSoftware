@@ -97,6 +97,19 @@ public:
     double getDeltaTool() const { return m_deltaTool; }
     double getDeltaPipe() const { return m_deltaPipe; }
     double getDeltaDrill() const { return m_deltaDrill; }
+    
+    // 获取速度参数
+    double getV1() const { return m_v1; } // 钻进速度
+    double getV2() const { return m_v2; } // 对接速度
+    double getV3() const { return m_v3; } // 空行程速度
+    
+    // 获取组件状态机
+    std::shared_ptr<ComponentStateMachine> getStorageUnit() const { return m_storageUnit; }
+    std::shared_ptr<ComponentStateMachine> getRobotArm() const { return m_robotArm; }
+    std::shared_ptr<ComponentStateMachine> getDrillingMechanism() const { return m_drillingMechanism; }
+    std::shared_ptr<ComponentStateMachine> getPenetrationMechanism() const { return m_penetrationMechanism; }
+    std::shared_ptr<ComponentStateMachine> getClampMechanism() const { return m_clampMechanism; }
+    std::shared_ptr<ComponentStateMachine> getConnectionMechanism() const { return m_connectionMechanism; }
 
     // 状态机状态名称常量
     static const QString STATE_SYSTEM_STARTUP;
@@ -225,15 +238,19 @@ public:
     int getExtension() const;
     int getClamp() const;
     
+    // 新增：获取伸缩位置值
+    int getExtensionPosition() const { return m_extensionPosition; }
+    
     // 电机ID常量
     static const int ROTATION_MOTOR_ID;
     static const int EXTENSION_MOTOR_ID;
     static const int CLAMP_MOTOR_ID;
     
 private:
-    int m_rotationPosition; // 0=对准钻进机构, 1=对准存储单元
-    int m_extension;        // 0=缩回, 1=伸出
-    int m_clamp;            // 0=未夹持, 1=夹紧
+    int m_rotationPosition;    // 0=对准钻进机构, 1=对准存储单元
+    int m_extension;           // 0=缩回, 1=伸出
+    int m_clamp;              // 0=未夹持, 1=夹紧
+    int m_extensionPosition;   // 伸缩位置值
 };
 
 /**
@@ -308,6 +325,8 @@ public:
     
     // 移动到指定位置
     bool moveToPosition(Position position);
+    // 新增：带速度参数的移动方法
+    bool moveToPosition(int position, double speed);
     
     // 按增量移动
     bool moveByIncrement(double increment);
