@@ -106,35 +106,53 @@ void FirstToolInstallationState::update()
     }
     
     switch (step) {
-        case 0: // 1. 机械手移动到存储区
+        case 0: // 1. 机械手移动到存储区 - 开始旋转
             m_machine->emit currentStepChanged("机械手移动到存储区");
             robotArm->setRotationPosition(90); // 旋转到存储区位置
-            penetration->moveToPosition(PenetrationMechanismStateMachine::POSITION_B1); // 进给机构移动到工作位置
             step++;
             break;
             
-        case 1: // 2. 机械手夹持钻具
+        case 1: // 1. 机械手移动到存储区 - 等待旋转完成并开始进给
             if (robotArm->getRotationPosition() == 90) {
-                robotArm->setExtension(200); // 伸出
+                penetration->moveToPosition(PenetrationMechanismStateMachine::POSITION_B1); // 工作位置
                 step++;
             }
             break;
             
-        case 2:
+        case 2: // 1. 机械手移动到存储区 - 等待进给完成
+            if (penetration->getCurrentPosition() == PenetrationMechanismStateMachine::POSITION_B1) {
+                m_machine->emit currentStepChanged("机械手准备夹持钻具");
+                step++;
+            }
+            break;
+            
+        case 3: // 2. 机械手夹持钻具 - 开始伸出
+            robotArm->setExtension(200); // 伸出
+            step++;
+            break;
+            
+        case 4: // 2. 机械手夹持钻具 - 等待伸出完成并开始夹紧
             if (robotArm->getExtension() == 200) {
                 robotArm->setClamp(100); // 完全夹紧
                 step++;
             }
             break;
             
-        case 3:
+        case 5: // 2. 机械手夹持钻具 - 等待夹紧完成并开始收回
             if (robotArm->getClamp() == 100) {
                 robotArm->setExtension(0); // 回收
                 step++;
             }
             break;
             
-        case 4: // 3. 机械手移动到钻台
+        case 6: // 2. 机械手夹持钻具 - 等待收回完成
+            if (robotArm->getExtension() == 0) {
+                m_machine->emit currentStepChanged("机械手已夹持钻具");
+                step++;
+            }
+            break;
+            
+        case 7: // 3. 机械手移动到钻台
             if (robotArm->getExtension() == 0) {
                 m_machine->emit currentStepChanged("机械手移动到钻台");
                 robotArm->setRotationPosition(0); // 旋转到钻台位置
@@ -142,14 +160,14 @@ void FirstToolInstallationState::update()
             }
             break;
             
-        case 5:
+        case 8:
             if (robotArm->getRotationPosition() == 0) {
                 robotArm->setExtension(250); // 对准钻台
                 step++;
             }
             break;
             
-        case 6: // 4. 进给机构移动
+        case 9: // 4. 进给机构移动
             if (robotArm->getExtension() == 250) {
                 m_machine->emit currentStepChanged("进给机构移动到钻具安装起始位置");
                 penetration->moveToPosition(PenetrationMechanismStateMachine::POSITION_A1); // 钻具安装起始位置
@@ -157,7 +175,7 @@ void FirstToolInstallationState::update()
             }
             break;
             
-        case 7: // 5. 执行连接操作
+        case 10: // 5. 执行连接操作
             if (penetration->getCurrentPosition() == PenetrationMechanismStateMachine::POSITION_A1) {
                 m_machine->emit currentStepChanged("执行连接操作");
                 drilling->setRotationSpeed(60); // 低速对接旋转
@@ -165,21 +183,21 @@ void FirstToolInstallationState::update()
             }
             break;
             
-        case 8:
+        case 11:
             if (drilling->getRotationSpeed() == 60) {
                 penetration->moveToPosition(PenetrationMechanismStateMachine::POSITION_B1); // 对接速度缓慢下移
                 step++;
             }
             break;
             
-        case 9:
+        case 12:
             if (penetration->getCurrentPosition() == PenetrationMechanismStateMachine::POSITION_B1) {
                 drilling->setRotationSpeed(0); // 停止旋转
                 step++;
             }
             break;
             
-        case 10: // 6. 对接机构
+        case 13: // 6. 对接机构
             if (drilling->getRotationSpeed() == 0) {
                 m_machine->emit currentStepChanged("对接机构伸出");
                 connection->setConnectionState(true); // 对接机构伸出
@@ -187,7 +205,7 @@ void FirstToolInstallationState::update()
             }
             break;
             
-        case 11: // 7. 机械手松开
+        case 14: // 7. 机械手松开
             if (connection->isExtended()) {
                 m_machine->emit currentStepChanged("机械手松开");
                 robotArm->setClamp(0); // 完全松开
@@ -195,14 +213,14 @@ void FirstToolInstallationState::update()
             }
             break;
             
-        case 12:
+        case 15:
             if (robotArm->getClamp() == 0) {
                 robotArm->setExtension(0); // 完全收回
                 step++;
             }
             break;
             
-        case 13: // 完成首根钻具安装
+        case 16: // 完成首根钻具安装
             if (robotArm->getExtension() == 0) {
                 m_machine->emit currentStepChanged("首根钻具安装完成");
                 // 重置步骤计数器，为下一次使用做准备
@@ -246,16 +264,16 @@ void FirstDrillingState::update()
     }
     
     switch (step) {
-        case 0: // 1. 钻进电机、冲击电机和进给机构同时启动
+        case 0: // 1. 启动钻进和冲击
             m_machine->emit currentStepChanged("启动钻进和冲击");
             drilling->setRotationSpeed(120); // 工作转速
             drilling->setPercussionFrequency(10); // 工作频率
             step++;
             break;
             
-        case 1:
+        case 1: // 等待钻进和冲击启动完成
             if (drilling->getRotationSpeed() == 120 && drilling->getPercussionFrequency() == 10) {
-                m_machine->emit currentStepChanged("进给机构下降");
+                m_machine->emit currentStepChanged("开始进给");
                 penetration->moveToPosition(PenetrationMechanismStateMachine::POSITION_A); // 钻进速度下降到工作位置
                 step++;
             }
@@ -290,29 +308,24 @@ void FirstDrillingState::update()
             }
             break;
             
-        case 6: // 6. 执行断开操作
+        case 6: // 6. 执行断开操作 - 同时启动旋转和进给
             if (!connection->isExtended()) {
                 m_machine->emit currentStepChanged("执行断开操作");
                 drilling->setRotationSpeed(-60); // 低速反向旋转
-                step++;
-            }
-            break;
-            
-        case 7:
-            if (drilling->getRotationSpeed() == -60) {
                 penetration->moveToPosition(PenetrationMechanismStateMachine::POSITION_A1); // 对接速度缓慢上移
                 step++;
             }
             break;
             
-        case 8:
-            if (penetration->getCurrentPosition() == PenetrationMechanismStateMachine::POSITION_A1) {
+        case 7: // 等待断开操作完成
+            if (penetration->getCurrentPosition() == PenetrationMechanismStateMachine::POSITION_A1 && 
+                drilling->getRotationSpeed() == -60) {
                 drilling->setRotationSpeed(0); // 停止旋转
                 step++;
             }
             break;
             
-        case 9: // 7. 进给机构上升
+        case 8: // 7. 进给机构上升
             if (drilling->getRotationSpeed() == 0) {
                 m_machine->emit currentStepChanged("进给机构上升");
                 penetration->moveToPosition(PenetrationMechanismStateMachine::POSITION_D); // 空行程速度上升
@@ -320,7 +333,7 @@ void FirstDrillingState::update()
             }
             break;
             
-        case 10: // 完成首次钻进
+        case 9: // 完成首次钻进
             if (penetration->getCurrentPosition() == PenetrationMechanismStateMachine::POSITION_D) {
                 m_machine->emit currentStepChanged("首次钻进完成");
                 // 重置步骤计数器，为下一次使用做准备
@@ -370,6 +383,11 @@ void PipeInstallationLoopState::update()
     
     switch (step) {
         case 0: // 1. 机械手取钻管 - 旋转到存储区
+            // 计算当前要取的钻管位置：从位置1开始（位置0存放钻具）
+            if (!storageUnit->rotateToPosition(pipeCount + 1)) {
+                qDebug() << "错误：存储单元旋转失败";
+                return;
+            }
             m_machine->emit currentStepChanged("机械手移动到存储区");
             robotArm->setRotationPosition(90); // 旋转到存储区位置
             step++;
@@ -567,7 +585,7 @@ void PipeInstallationLoopState::update()
                 m_machine->emit currentStepChanged("钻管安装循环完成");
                 
                 // 检查是否需要继续安装钻管或切换到拆卸模式
-                if (pipeCount < 5) { // 假设最多安装5根钻管
+                if (pipeCount < ACTIVE_PIPE_COUNT) { // 使用ACTIVE_PIPE_COUNT宏控制钻管数量
                     // 重置步骤计数器，继续安装下一根钻管
                     step = 0;
                 } else {
@@ -747,8 +765,8 @@ void PipeRemovalLoopState::update()
         case 17: // 9. 存储机构旋转到空位
             if (drilling->getRotationSpeed() == 0) {
                 m_machine->emit currentStepChanged("存储机构旋转到空位");
-                // 计算存储位置：假设总共有14个位置，从0开始，当前钻管数为pipeCount
-                int storagePosition = StorageUnitStateMachine::MAX_POSITIONS - pipeCount;
+                // 计算存储位置：当前钻管数就是要存放的位置（从1开始，0号位置留给钻具）
+                int storagePosition = pipeCount;
                 storageUnit->rotateToPosition(storagePosition);
                 step++;
             }
@@ -957,15 +975,14 @@ void FirstToolRecoveryState::update()
         case 13: // 7. 存储机构旋转到空位
             if (drilling->getRotationSpeed() == 0) {
                 m_machine->emit currentStepChanged("存储机构旋转到空位");
-                // 计算存储位置：假设总共有14个位置，从0开始，当前钻管数为0（首根钻具）
-                int storagePosition = StorageUnitStateMachine::MAX_POSITIONS;
-                storageUnit->rotateToPosition(storagePosition);
+                // 首根钻具存放在0号位置
+                storageUnit->rotateToPosition(0);
                 step++;
             }
             break;
             
         case 14: // 8. 机械手回收
-            if (storageUnit->getCurrentPosition() == StorageUnitStateMachine::MAX_POSITIONS) {
+            if (storageUnit->getCurrentPosition() == 0) {
                 m_machine->emit currentStepChanged("机械手回收钻具");
                 robotArm->setExtension(0); // 缩回
                 step++;

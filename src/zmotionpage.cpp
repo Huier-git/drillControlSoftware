@@ -11,135 +11,141 @@ zmotionpage::zmotionpage(QWidget *parent)
     , ui(new Ui::zmotionpage)
     , m_autoModeThread(nullptr)
     , m_isAutoModeRunning(false)
+    , m_rotationMotorID(2)    // 摇臂旋转电机ID为2
+    , m_extentMotorID(3)      // 摇臂伸缩电机ID为3
+    , m_clampMotorID(4)       // 钻杆夹紧电机ID为4
+    , m_rotationOffset(0.0f)
+    , m_extentOffset(0.0f)
+    , m_robotArmStatusTimer(nullptr)
+    , m_penetrationMotorID(3)
+    , m_penetrationSpeed(PENETRATION_DEFAULT_SPEED)
+    , m_penetrationTargetDepth(0.0)
+    , m_penetrationOffset(0.0)
+    , m_storageCurrentPosition(0)  // 初始化为第一个位置
+    , m_storageOffset(0.0f)        // 初始化零点偏移量
+    , m_rotationSpeed(DEFAULT_ROTATION_SPEED)  // 初始化旋转速度
+    , m_percussionFrequency(DEFAULT_PERCUSSION_FREQ)  // 初始化冲击频率
+    , m_isRotating(false)          // 初始化为未旋转状态
+    , m_isPercussing(false)        // 初始化为未冲击状态
+    , initflag(false)
 {
+    // 首先设置UI
     ui->setupUi(this);
 
-    initflag = false;                                               //初始化标志位
-    ui->btn_BusInit->setEnabled(false);                             //关闭初始化按钮
-    //===基础信息刷新定时器===
-    basicInfoTimer = new QTimer(this);                              //创建基础信息刷新的定时器，定时器在Businit后开始
-    connect(basicInfoTimer, &QTimer::timeout, this, &zmotionpage::basicInfoRefresh);
-    //===高级信息刷新定时器===
-    advanceInfoTimer = new QTimer(this);                            //创建高级信息刷新的定时器
-    connect(advanceInfoTimer, &QTimer::timeout, this, &zmotionpage::advanceInfoRefreash);
-    connect(ui->CB_AutoUpdate, &QCheckBox::stateChanged, [=](int state) {
-        if (state == Qt::Checked) {
-            advanceInfoTimer->start(1000);                           // 启动定时器
-        } else {
-            advanceInfoTimer->stop();                               // 停止定时器
-        }
-    });
-    //===表格信息刷新定时器===
-    //当处于Edit模式的时候需要暂停
+    // 创建运动控制器实例
+    m_motionController = new MotionController(this);
+
+    // 创建并初始化定时器
+    basicInfoTimer = new QTimer(this);
+    advanceInfoTimer = new QTimer(this);
     realtimeParmTimer = new QTimer(this);
-    connect(realtimeParmTimer, &QTimer::timeout, this, &zmotionpage::RefreshTableRealTimeContent);
-    connect(ui->cb_motorRtRefrsh, &QCheckBox::stateChanged, [=](int state){
-        if (state == Qt::Checked) {
-            realtimeParmTimer->start(500);  // 启动定时器
-            qDebug()<<"3";
-        } else {
-            realtimeParmTimer->stop();      // 停止定时器
-            qDebug()<<"4";
+
+    // 连接定时器信号
+    if (basicInfoTimer) {
+        connect(basicInfoTimer, &QTimer::timeout, this, &zmotionpage::basicInfoRefresh);
+    }
+    
+    if (advanceInfoTimer) {
+        connect(advanceInfoTimer, &QTimer::timeout, this, &zmotionpage::advanceInfoRefreash);
+    }
+
+    if (realtimeParmTimer) {
+        connect(realtimeParmTimer, &QTimer::timeout, this, &zmotionpage::RefreshTableRealTimeContent);
+    }
+
+    // 初始化 Modbus 处理器
+    mdbProcessor = new mdbprocess(this);
+    if (mdbProcessor) {
+        connect(mdbProcessor, &mdbprocess::dataReceived, this, &zmotionpage::handleReceivedData);
+    }
+
+    // 初始化机械手状态更新定时器
+    m_robotArmStatusTimer = new QTimer(this);
+    if (m_robotArmStatusTimer) {
+        connect(m_robotArmStatusTimer, &QTimer::timeout, this, [this]() {
+            updateRotationAngle();
+            updateExtentLength();
+            updateClampStatus();
+            updatePenetrationDepth();
+            updateStorageStatus();
+            updateRotationStatus();
+            updatePercussionStatus();
+        });
+        m_robotArmStatusTimer->start(500);
+    }
+
+    // 初始化UI组件
+    initializeUI();
+
+    // 初始化模式选择
+    initModeSelection();
+
+    // 设置初始状态
+    ui->btn_BusInit->setEnabled(false);
+    ui->cb_modeManual->setChecked(true);
+
+    // 连接其他信号槽
+    connectSignalsAndSlots();
+}
+
+void zmotionpage::connectSignalsAndSlots()
+{
+    // 连接自动更新复选框
+    connect(ui->CB_AutoUpdate, &QCheckBox::stateChanged, [this](int state) {
+        if (advanceInfoTimer) {
+            if (state == Qt::Checked) {
+                advanceInfoTimer->start(1000);
+            } else {
+                advanceInfoTimer->stop();
+            }
         }
     });
-    //===高级信息手动刷新按钮===
-    connect(ui->Btn_Update, &QPushButton::clicked, this, &zmotionpage::advanceInfoRefreash);        // 普通参数刷新按钮
-    connect(ui->Btn_Update, &QPushButton::clicked, [=](){
-        if(ui->CB_AxisNum->count() == fAxisNum)
+
+    // 连接实时参数刷新复选框
+    connect(ui->cb_motorRtRefrsh, &QCheckBox::stateChanged, [this](int state) {
+        if (realtimeParmTimer) {
+            if (state == Qt::Checked) {
+                realtimeParmTimer->start(500);
+            } else {
+                realtimeParmTimer->stop();
+            }
+        }
+    });
+
+    // 连接更新按钮
+    connect(ui->Btn_Update, &QPushButton::clicked, this, &zmotionpage::advanceInfoRefreash);
+    connect(ui->Btn_Update, &QPushButton::clicked, [this]() {
+        if (ui->CB_AxisNum->count() == fAxisNum)
             return;
         ui->CB_AxisNum->clear();
-        for(int i = 0; i < fAxisNum; ++i)                                           // 更新combox里的轴
-        {
+        for(int i = 0; i < fAxisNum; ++i) {
             ui->CB_AxisNum->addItem(QString::number(i));
         }
     });
-    //===手动刷新电机表格===
-    connect(ui->btn_motorParmUpdate, &QPushButton::clicked, [=]{    // 电机参数表格刷新按钮
-        initMotorTable();//初始化表格
-        RefreshTableContent();//刷新表格的内容
-    });
-    //===开启电机表格编辑模式===
-    connect(ui->cb_motorParmEdit, &QCheckBox::stateChanged, [=](int state) {                        // 开启编辑的checkbox
-        if (state == Qt::Checked) {
-            ui->btn_motorParmUpdate->setEnabled(false);
-            //ui->cb_motorRtRefrsh->setChecked(false);
-            //ui->cb_motorRtRefrsh->setCheckable(false);
-            //PauseAllAxis();                                                                                 // 编辑模式下暂停所有轴的运动
-            connect(ui->tb_motor, &QTableWidget::cellDoubleClicked, this,&zmotionpage::unmodifyMotorTable);
-            connect(ui->tb_motor, &QTableWidget::itemChanged, this, &zmotionpage::modifyMotorTable);        // 开启找出编辑的内容
-            //disconnect(ui->btn_moveResume, &QPushButton::clicked, this, &zmotionpage::ResumeAllAxis);       // 编辑模式下不能直接恢复运动
-        } else {
-            ui->btn_motorParmUpdate->setEnabled(true);
-            //ui->cb_motorRtRefrsh->setCheckable(true);
-            disconnect(ui->tb_motor, &QTableWidget::cellDoubleClicked, this,&zmotionpage::unmodifyMotorTable);
-            disconnect(ui->tb_motor, &QTableWidget::itemChanged, this, &zmotionpage::modifyMotorTable);     // 关闭找出编辑的内容
-            //connect(ui->btn_moveResume, &QPushButton::clicked, this, &zmotionpage::ResumeAllAxis);          // 退出编辑模式后允许恢复运动
-            initMotorTable();       //结束后自动刷新一下表格
-            RefreshTableContent();
-        }
-    });
-    //===手动暂停轴的运动===
-    connect(ui->btn_movePause, &QPushButton::clicked, this, [=]{
-        char  cmdbuff[2048];
-        char  cmdbuffAck[2048];
-        //生成命令
-        sprintf(cmdbuff, "MOVE_PAUSE");
-        //调用命令执行函数
-        if(ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0)
-        {
-            qDebug()<< "Pause All!";
-        }
-    });
-    //===手动恢复轴的运动===
-    connect(ui->btn_moveResume, &QPushButton::clicked, this, [=]{
-        char  cmdbuff[2048];
-        char  cmdbuffAck[2048];
-        //生成命令
-        sprintf(cmdbuff, "MOVE_RESUME");
-        //调用命令执行函数
-        if(ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0)
-        {
-            qDebug()<< "Resume All!";
-        }
-    });
-    //===EtherCAT序号重新映射===
-    connect(ui->btn_MapMotor, &QPushButton::clicked, this, [=](){
-        for(int i = 0; i < 10; i++)
-        {
-            MotorMap[i] = MotorMapbuckup[i];
-        }
-        if(fAxisNum == 1)
-        {
-            MotorMap[0] = 0;
-        }
-        else if(fAxisNum >= 2)
-        {
-            MotorMap[0] = fAxisNum - 1;
-            MotorMap[1] = fAxisNum - 2;
-        }
-        ShowMotorMap();
-    });
 
-    //===自动模式和手动模式的选框的初始化
-    connect(ui->cb_modeAuto, &QCheckBox::toggled, [this](bool checked) {
-        if (checked) {
-            ui->cb_modeManual->setChecked(false);
-        }
-    });
+    // 连接机械手控制相关的信号和槽
+    connect(ui->btn_rotation_reset, &QPushButton::clicked, this, &zmotionpage::on_btn_rotation_reset_clicked);
+    connect(ui->btn_drill_position, &QPushButton::clicked, this, &zmotionpage::on_btn_drill_position_clicked);
+    connect(ui->btn_storage_position, &QPushButton::clicked, this, &zmotionpage::on_btn_storage_position_clicked);
+    connect(ui->le_set_rotation_angle, &QLineEdit::editingFinished, this, &zmotionpage::on_le_set_rotation_angle_editingFinished);
 
-    connect(ui->cb_modeManual, &QCheckBox::toggled, [this](bool checked) {
-        if (checked) {
-            ui->cb_modeAuto->setChecked(false);
-        }
-    });
-    // 设置cb_modeManual为默认选中
-    ui->cb_modeManual->setChecked(true);
-    // 确定按钮绑定函数
-    connect(ui->btn_modeConfirm, &QPushButton::clicked, this, &zmotionpage::runningMode);
+    // 连接钻管存储机构控制按钮
+    connect(ui->btn_storage_backward, &QPushButton::clicked, this, &zmotionpage::on_btn_storage_backward_clicked);
+    connect(ui->btn_storage_forward, &QPushButton::clicked, this, &zmotionpage::on_btn_storage_forward_clicked);
 
-    mdbProcessor = new mdbprocess(this);
-    connect(mdbProcessor, &mdbprocess::dataReceived, this, &zmotionpage::handleReceivedData);
+    // 连接旋转和冲击控制按钮
+    connect(ui->btn_rotation, &QPushButton::clicked, this, &zmotionpage::on_btn_rotation_clicked);
+    connect(ui->btn_rotation_stop, &QPushButton::clicked, this, &zmotionpage::on_btn_rotation_stop_clicked);
+    connect(ui->btn_percussion, &QPushButton::clicked, this, &zmotionpage::on_btn_percussion_clicked);
+    connect(ui->btn_percussion_stop, &QPushButton::clicked, this, &zmotionpage::on_btn_percussion_stop_clicked);
+    connect(ui->le_rotation, &QLineEdit::editingFinished, this, &zmotionpage::on_le_rotation_editingFinished);
+    connect(ui->le_percussion, &QLineEdit::editingFinished, this, &zmotionpage::on_le_percussion_editingFinished);
 
+    // 其他信号槽连接...
+    // 连接夹爪控制信号
+    connect(ui->btn_downclamp_open, &QPushButton::clicked, this, &zmotionpage::on_btn_downclamp_open_clicked);
+    connect(ui->btn_downclamp_close, &QPushButton::clicked, this, &zmotionpage::on_btn_downclamp_close_clicked);
+    connect(ui->le_downclamp_DAC, &QLineEdit::editingFinished, this, &zmotionpage::on_le_downclamp_DAC_editingFinished);
 }
 
 zmotionpage::~zmotionpage()
@@ -287,6 +293,11 @@ void zmotionpage::on_btn_IP_Scan_clicked()
  */
 void zmotionpage::on_btn_IP_Connect_clicked()
 {
+    if (!m_motionController) {
+        ui->tb_cmdWindow->append("错误：运动控制器未初始化");
+        return;
+    }
+
     int32 iresult;
     QString str = ui->cb_IP_List->currentText();                    // 获取当前选中的IP地址
     QByteArray ba = str.toLatin1();                                 // 转换为 char* 格式
@@ -298,7 +309,7 @@ void zmotionpage::on_btn_IP_Connect_clicked()
        ipaddress = ip.toLatin1().data();
        qDebug() << ipaddress;
     }
-    //char *ipaddress = "192.168.1.222";
+
     if(g_handle != NULL)                                            // 如果控制器已经连接，则关闭当前连接
     {
         ZAux_Close(g_handle);
@@ -309,18 +320,22 @@ void zmotionpage::on_btn_IP_Connect_clicked()
         realtimeParmTimer->stop();
         ui->btn_IP_Connect->setText("Connect");
         ui->btn_BusInit->setEnabled(false);
+        m_motionController->setControllerHandle(NULL);  // 断开 MotionController 的连接
         return;
     }
+
     iresult = ZAux_OpenEth(ipaddress, &g_handle);                   // 与控制器建立连接
     if (iresult == ERR_OK)                                          // 连接成功 ERR_OK
     {
         qDebug() << "[C] Controller connected.";
         ui->btn_BusInit->setEnabled(true);                          // 连接成功，可以初始化，解锁BusInit按钮
         ui->btn_IP_Connect->setText("Disconnect");
+        m_motionController->setControllerHandle(g_handle);  // 设置控制器句柄
     }
     else                                                            // 连接失败
     {
         qDebug() << "[C] Controller connection failed.";
+        ui->tb_cmdWindow->append("错误：控制器连接失败");
     }
 }
 
@@ -1007,19 +1022,12 @@ void AutoModeThread::run()
 {
     while (!m_stopFlag.load())
     {
-        qDebug() << "自动模式线程启动";
+        QString msg = "自动模式线程启动";
+        qDebug() << msg;
+        emit messageLogged(msg);
 
         // 示例：请求显示电机映射
         emit requestShowMotorMap();
-
-//        ZAux_Direct_SetAxisEnable(g_handle,MotorMap[0],1);
-//        sleep(10);
-//        ZAux_Direct_SetAxisEnable(g_handle,MotorMap[1],1);
-//        sleep(10);
-//        ZAux_Direct_SetAxisEnable(g_handle,MotorMap[3],1);
-//        sleep(10);
-//        ZAux_Direct_SetAxisEnable(g_handle,MotorMap[4],1);
-
 
         // Motor 4 上升到最高点
         if (ZAux_Direct_SetSpeed(g_handle, MotorMap[3], MOTOR_4_UP_SPEED) != 0 ||
@@ -1208,12 +1216,13 @@ void zmotionpage::startAutoMode()
         // 连接 AutoModeThread 的信号到 zmotionpage 的槽或 lambda
         connect(m_autoModeThread, &AutoModeThread::requestConfirmation, this, &zmotionpage::handleConfirmation);
         connect(m_autoModeThread, &AutoModeThread::operationCompleted, this, &zmotionpage::onAutoModeCompleted);
-        connect(m_autoModeThread, &AutoModeThread::requestShowMotorMap, this, [this]()
-                {
-                    // 实现显示电机映射的逻辑
-                    ui->tb_cmdWindow->append("显示电机映射");
-                    ShowMotorMap();
-                });
+        connect(m_autoModeThread, &AutoModeThread::requestShowMotorMap, this, [this]() {
+            ui->tb_cmdWindow->append("显示电机映射");
+            ShowMotorMap();
+        });
+        connect(m_autoModeThread, &AutoModeThread::messageLogged, this, [this](const QString& message) {
+            ui->tb_cmdWindow->append(message);
+        });
     }
 
     if (!m_isAutoModeRunning)
@@ -1344,3 +1353,1400 @@ void zmotionpage::on_btn_pipeConnect_clicked()
 //     mdbProcessor->WriteValue(0, 1, 16, {0x0000, 0x0000});
 // }
 
+// ===== 模式切换相关函数实现 =====
+
+/**
+ * @brief 初始化模式选择按钮组
+ */
+void zmotionpage::initModeSelection()
+{
+    // 创建按钮组，确保三个模式按钮互斥
+    QButtonGroup* modeGroup = new QButtonGroup(this);
+    modeGroup->addButton(ui->rb_manual_mode);
+    modeGroup->addButton(ui->rb_automatic_mode);
+    modeGroup->addButton(ui->rb_semi_mode);
+    
+    // 默认选择手动模式
+    ui->rb_manual_mode->setChecked(true);
+    
+    // 连接确认按钮信号
+    connect(ui->btn_mode_confirm, &QPushButton::clicked, this, &zmotionpage::onModeConfirm);
+}
+
+/**
+ * @brief 模式确认按钮点击处理
+ */
+void zmotionpage::onModeConfirm()
+{
+    if (ui->rb_manual_mode->isChecked()) {
+        runManualMode();
+    } else if (ui->rb_automatic_mode->isChecked()) {
+        runAutomaticMode();
+    } else if (ui->rb_semi_mode->isChecked()) {
+        runSemiAutomaticMode();
+    }
+}
+
+/**
+ * @brief 手动模式实现
+ */
+void zmotionpage::runManualMode()
+{
+    ui->tb_cmdWindow_2->append("[模式] 切换到手动模式");
+    // 启用所有手动控制按钮
+    enableManualControls(true);
+    // 停止自动和半自动模式的运行
+    stopAutoMode();
+    stopSemiAutoMode();
+    
+    qDebug() << "手动模式已启动";
+}
+
+/**
+ * @brief 全自动模式实现
+ */
+void zmotionpage::runAutomaticMode()
+{
+    ui->tb_cmdWindow_2->append("[模式] 切换到全自动模式");
+    // 禁用所有手动控制按钮
+    enableManualControls(false);
+    // 停止其他模式
+    stopSemiAutoMode();
+    
+    qDebug() << "全自动模式已启动";
+    
+    // 启动自动模式线程
+    startAutoMode();
+}
+
+/**
+ * @brief 半自动模式实现
+ */
+void zmotionpage::runSemiAutomaticMode()
+{
+    ui->tb_cmdWindow_2->append("[模式] 切换到半自动模式");
+    // 禁用所有手动控制按钮，除了急停按钮
+    enableManualControls(false);
+    ui->btn_rapidStop->setEnabled(true); // 保持急停按钮可用
+    
+    // 停止全自动模式
+    stopAutoMode();
+    
+    qDebug() << "半自动模式已启动";
+}
+
+/**
+ * @brief 启用/禁用手动控制按钮
+ */
+void zmotionpage::enableManualControls(bool enable)
+{
+    // 基本控制按钮
+    ui->Btn_Enable->setEnabled(enable);
+    ui->Btn_ClearAlm->setEnabled(enable);
+    ui->Btn_StopMove->setEnabled(enable);
+    ui->btn_rapidStop->setEnabled(enable);
+    
+    // 机械手旋转控制按钮
+    ui->btn_rotation_reset->setEnabled(enable);
+    ui->btn_drill_position->setEnabled(enable);
+    ui->btn_storage_position->setEnabled(enable);
+    ui->le_set_rotation_angle->setEnabled(enable);
+    
+    // 机械手伸缩控制按钮
+    ui->btn_robotarm_reset->setEnabled(enable);
+    ui->btn_robotarm_extent->setEnabled(enable);
+    ui->btn_robotarm_retract->setEnabled(enable);
+    ui->le_set_extent_length->setEnabled(enable);
+    
+    // 机械手夹爪控制按钮
+    ui->btn_robotarm_clamp_open->setEnabled(enable);
+    ui->btn_robotarm_clamp_close->setEnabled(enable);
+    
+    // 进给控制按钮
+    ui->btn_penetration_start->setEnabled(enable);
+    ui->btn_penetration_cancel->setEnabled(enable);
+    ui->le_penetration_target->setEnabled(enable);    // 目标深度输入框
+    ui->le_penetration_speed->setEnabled(enable);  // 速度输入框
+    
+    // 钻管存储机构控制
+    ui->btn_storage_backward->setEnabled(enable);
+    ui->btn_storage_forward->setEnabled(enable);
+    
+    // 旋转和冲击控制
+    ui->btn_rotation->setEnabled(enable);
+    ui->btn_rotation_stop->setEnabled(enable);
+    ui->btn_percussion->setEnabled(enable);
+    ui->btn_percussion_stop->setEnabled(enable);
+    ui->le_rotation->setEnabled(enable);
+    ui->le_percussion->setEnabled(enable);
+    // 夹爪控制
+    ui->btn_downclamp_open->setEnabled(enable);
+    ui->btn_downclamp_close->setEnabled(enable);
+    ui->le_downclamp_DAC->setEnabled(enable);
+}
+
+/**
+ * @brief 停止半自动模式
+ */
+void zmotionpage::stopSemiAutoMode()
+{
+    // TODO: 实现停止半自动模式的逻辑
+    qDebug() << "半自动模式已停止";
+}
+
+// ===== 机械手控制相关函数实现 =====
+
+/**
+ * @brief 更新旋转角度显示
+ */
+void zmotionpage::updateRotationAngle()
+{
+    if (m_motionController && m_motionController->isConnected()) {
+        // 获取当前旋转角度
+        float currentAngle = m_motionController->getCurrentPosition(m_rotationMotorID);
+        
+        // 显示绝对角度（不受重置影响）
+        ui->le_rotation_angle->setText(QString::number(currentAngle, 'f', 2));
+        QString msg = QString("[旋转] 当前角度: %1").arg(currentAngle);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+/**
+ * @brief 重置旋转起点
+ */
+void zmotionpage::on_btn_rotation_reset_clicked()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 设置当前位置为零点
+    if (m_motionController->setZeroPosition(m_rotationMotorID)) {
+        m_rotationOffset = m_motionController->getCurrentPosition(m_rotationMotorID);
+        QString msg = QString("[旋转] 已重置起点，当前位置设为零点");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+/**
+ * @brief 移动到钻机位置（0度）
+ */
+void zmotionpage::on_btn_drill_position_clicked()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 设置运动参数
+    m_motionController->setMotorParameter(m_rotationMotorID, "Speed", ROBOTARM_ROTATION_SPEED);
+    m_motionController->setMotorParameter(m_rotationMotorID, "Acc", ROBOTARM_ROTATION_ACCEL);
+    m_motionController->setMotorParameter(m_rotationMotorID, "Dec", ROBOTARM_ROTATION_DECEL);
+
+    // 计算目标位置（考虑偏移量）
+    float targetPosition = ROBOTARM_DRILL_POSITION_ANGLE - m_rotationOffset;
+    
+    // 移动到钻机位置
+    if (m_motionController->moveMotorAbsolute(m_rotationMotorID, targetPosition)) {
+        QString msg = QString("[旋转] 移动到钻机位置 (目标角度: %1)").arg(ROBOTARM_DRILL_POSITION_ANGLE);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+/**
+ * @brief 移动到存储位置（90度）
+ */
+void zmotionpage::on_btn_storage_position_clicked()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 设置运动参数
+    m_motionController->setMotorParameter(m_rotationMotorID, "Speed", ROBOTARM_ROTATION_SPEED);
+    m_motionController->setMotorParameter(m_rotationMotorID, "Acc", ROBOTARM_ROTATION_ACCEL);
+    m_motionController->setMotorParameter(m_rotationMotorID, "Dec", ROBOTARM_ROTATION_DECEL);
+
+    // 计算目标位置（考虑偏移量）
+    float targetPosition = ROBOTARM_STORAGE_POSITION_ANGLE - m_rotationOffset;
+    
+    // 移动到存储位置
+    if (m_motionController->moveMotorAbsolute(m_rotationMotorID, targetPosition)) {
+        QString msg = QString("[旋转] 移动到存储位置 (目标角度: %1)").arg(ROBOTARM_STORAGE_POSITION_ANGLE);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+/**
+ * @brief 设置自定义旋转角度
+ */
+void zmotionpage::on_le_set_rotation_angle_editingFinished()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 获取用户输入的目标角度
+    bool ok;
+    float targetAngle = ui->le_set_rotation_angle->text().toFloat(&ok);
+    if (!ok) {
+        ui->tb_cmdWindow_2->append("错误: 无效的角度值");
+        return;
+    }
+
+    // 设置运动参数
+    m_motionController->setMotorParameter(m_rotationMotorID, "Speed", ROBOTARM_ROTATION_SPEED);
+    m_motionController->setMotorParameter(m_rotationMotorID, "Acc", ROBOTARM_ROTATION_ACCEL);
+    m_motionController->setMotorParameter(m_rotationMotorID, "Dec", ROBOTARM_ROTATION_DECEL);
+
+    // 计算目标位置（考虑偏移量）
+    float targetPosition = targetAngle - m_rotationOffset;
+    
+    // 移动到目标位置
+    if (m_motionController->moveMotorAbsolute(m_rotationMotorID, targetPosition)) {
+        QString msg = QString("[旋转] 移动到指定角度 (目标: %1)").arg(targetAngle);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+/**
+ * @brief 更新伸出长度显示
+ */
+void zmotionpage::updateExtentLength()
+{
+    if (m_motionController && m_motionController->isConnected()) {
+        // 获取当前伸出长度
+        float currentLength = m_motionController->getCurrentPosition(m_extentMotorID);
+        
+        // 显示绝对长度（不受重置影响）
+        ui->le_extent_length->setText(QString::number(currentLength, 'f', 2));
+        QString msg = QString("[伸缩] 当前长度: %1").arg(currentLength);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+/**
+ * @brief 重置伸出起点
+ */
+void zmotionpage::on_btn_robotarm_reset_clicked()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 设置当前位置为零点
+    if (m_motionController->setZeroPosition(m_extentMotorID)) {
+        m_extentOffset = m_motionController->getCurrentPosition(m_extentMotorID);
+        QString msg = QString("[伸缩] 已重置起点，当前位置设为零点");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+/**
+ * @brief 控制机械手伸出
+ */
+void zmotionpage::on_btn_robotarm_extent_clicked()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 设置运动参数
+    m_motionController->setMotorParameter(m_extentMotorID, "Speed", ROBOTARM_EXTENT_SPEED);
+    m_motionController->setMotorParameter(m_extentMotorID, "Acc", ROBOTARM_EXTENT_ACCEL);
+    m_motionController->setMotorParameter(m_extentMotorID, "Dec", ROBOTARM_EXTENT_DECEL);
+
+    // 计算目标位置（考虑偏移量）
+    float targetPosition = ROBOTARM_EXTENT_POSITION - m_extentOffset;
+    
+    // 移动到伸出位置
+    if (m_motionController->moveMotorAbsolute(m_extentMotorID, targetPosition)) {
+        QString msg = QString("[伸缩] 伸出到指定位置 (目标: %1)").arg(ROBOTARM_EXTENT_POSITION);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+/**
+ * @brief 控制机械手回收
+ */
+void zmotionpage::on_btn_robotarm_retract_clicked()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 设置运动参数
+    m_motionController->setMotorParameter(m_extentMotorID, "Speed", ROBOTARM_EXTENT_SPEED);
+    m_motionController->setMotorParameter(m_extentMotorID, "Acc", ROBOTARM_EXTENT_ACCEL);
+    m_motionController->setMotorParameter(m_extentMotorID, "Dec", ROBOTARM_EXTENT_DECEL);
+
+    // 计算目标位置（考虑偏移量）
+    float targetPosition = ROBOTARM_RETRACT_POSITION - m_extentOffset;
+    
+    // 移动到回收位置
+    if (m_motionController->moveMotorAbsolute(m_extentMotorID, targetPosition)) {
+        QString msg = QString("[伸缩] 回收到原位 (目标: %1)").arg(ROBOTARM_RETRACT_POSITION);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+/**
+ * @brief 设置自定义伸出长度
+ */
+void zmotionpage::on_le_set_extent_length_editingFinished()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 获取用户输入的目标长度
+    bool ok;
+    float targetLength = ui->le_set_extent_length->text().toFloat(&ok);
+    if (!ok) {
+        ui->tb_cmdWindow_2->append("错误: 无效的长度值");
+        return;
+    }
+
+    // 设置运动参数
+    m_motionController->setMotorParameter(m_extentMotorID, "Speed", ROBOTARM_EXTENT_SPEED);
+    m_motionController->setMotorParameter(m_extentMotorID, "Acc", ROBOTARM_EXTENT_ACCEL);
+    m_motionController->setMotorParameter(m_extentMotorID, "Dec", ROBOTARM_EXTENT_DECEL);
+
+    // 计算目标位置（考虑偏移量）
+    float targetPosition = targetLength - m_extentOffset;
+    
+    // 移动到目标位置
+    if (m_motionController->moveMotorAbsolute(m_extentMotorID, targetPosition)) {
+        QString msg = QString("[伸缩] 移动到指定长度 (目标: %1)").arg(targetLength);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+/**
+ * @brief 更新夹爪状态显示
+ */
+void zmotionpage::updateClampStatus()
+{
+    if (m_motionController && m_motionController->isConnected()) {
+        // 获取当前夹爪力矩值
+        float currentDAC = 0.0f;
+        QMap<QString, float> params;
+        if (m_motionController->getMotorParameters(m_clampMotorID, params)) {
+            currentDAC = params["DAC"];
+            QString status = (currentDAC > 0) ? "闭合" : "张开";
+            QString msg = QString("[夹爪] 当前状态: %1 (力矩值: %2)").arg(status).arg(currentDAC);
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+        }
+    }
+}
+
+/**
+ * @brief 夹爪张开
+ */
+void zmotionpage::on_btn_robotarm_clamp_open_clicked()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 设置力矩控制模式
+    if (m_motionController->setMotorParameter(m_clampMotorID, "Atype", ROBOTARM_CLAMP_TORQUE_MODE)) {
+        // 设置负力矩值使夹爪张开
+        if (m_motionController->setMotorParameter(m_clampMotorID, "DAC", -ROBOTARM_CLAMP_DEFAULT_DAC)) {
+            QString msg = QString("[夹爪] 张开 (力矩值: %1)").arg(-ROBOTARM_CLAMP_DEFAULT_DAC);
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+        }
+    }
+}
+
+/**
+ * @brief 夹爪闭合
+ */
+void zmotionpage::on_btn_robotarm_clamp_close_clicked()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 设置力矩控制模式
+    if (m_motionController->setMotorParameter(m_clampMotorID, "Atype", ROBOTARM_CLAMP_TORQUE_MODE)) {
+        // 设置正力矩值使夹爪闭合
+        if (m_motionController->setMotorParameter(m_clampMotorID, "DAC", ROBOTARM_CLAMP_DEFAULT_DAC)) {
+            QString msg = QString("[夹爪] 闭合 (力矩值: %1)").arg(ROBOTARM_CLAMP_DEFAULT_DAC);
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+        }
+    }
+}
+
+/**
+ * @brief 更新当前钻进深度显示
+ */
+void zmotionpage::updatePenetrationDepth()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        return;
+    }
+
+    // 获取当前电机位置（脉冲数）
+    float currentPulse = m_motionController->getCurrentPosition(m_penetrationMotorID);
+    
+    // 计算当前深度（毫米）- 将脉冲转换为毫米，考虑最大高度是最高点
+    double currentDepth = PENETRATION_MAX_HEIGHT - (currentPulse / PENETRATION_PULSE_PER_MM);
+    
+    // 更新显示
+    if (ui->le_penetration_depth) {
+        ui->le_penetration_depth->setText(QString::number(currentDepth, 'f', 2));
+    }
+    
+    QString msg = QString("[进给] 当前深度: %1 mm (脉冲位置: %2)").arg(currentDepth, 0, 'f', 2).arg(currentPulse);
+    qDebug() << msg;
+}
+
+/**
+ * @brief 设置目标钻进深度
+ */
+void zmotionpage::on_le_penetration_target_editingFinished()
+{
+    bool ok;
+    double targetDepth = ui->le_penetration_target->text().toDouble(&ok);
+    
+    if (!ok) {
+        QString msg = QString("[进给] 错误: 无效的目标深度值");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        // 恢复原来的值
+        ui->le_penetration_target->setText(QString::number(m_penetrationTargetDepth, 'f', 2));
+        return;
+    }
+    
+    // 检查深度范围（0-最大高度）
+    if (targetDepth < 0 || targetDepth > PENETRATION_MAX_HEIGHT) {
+        QString msg = QString("[进给] 错误: 目标深度超出范围 (0-%1 mm)").arg(PENETRATION_MAX_HEIGHT);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        // 恢复原来的值
+        ui->le_penetration_target->setText(QString::number(m_penetrationTargetDepth, 'f', 2));
+        return;
+    }
+    
+    m_penetrationTargetDepth = targetDepth;
+    QString msg = QString("[进给] 已设置目标深度: %1 mm").arg(targetDepth, 0, 'f', 2);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+}
+
+/**
+ * @brief 设置进给速度
+ */
+void zmotionpage::on_le_penetration_speed_editingFinished()
+{
+    bool ok;
+    float speed = ui->le_penetration_speed->text().toFloat(&ok);
+    
+    if (!ok || speed <= 0) {
+        QString msg = QString("[进给] 错误: 无效的速度值");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        // 恢复原来的值
+        ui->le_penetration_speed->setText(QString::number(m_penetrationSpeed, 'f', 2));
+        return;
+    }
+    
+    m_penetrationSpeed = speed;
+    QString msg = QString("[进给] 已设置进给速度: %1").arg(speed, 0, 'f', 2);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+}
+
+/**
+ * @brief 开始进给到目标深度
+ */
+void zmotionpage::on_btn_penetration_start_clicked()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        QString msg = QString("[进给] 错误: 控制器未连接");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 验证是否处于手动模式
+    if (!ui->rb_manual_mode->isChecked()) {
+        QString msg = QString("[进给] 错误: 只能在手动模式下操作");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 获取当前位置和目标位置（脉冲）
+    float currentPulse = m_motionController->getCurrentPosition(m_penetrationMotorID);
+    
+    // 计算目标位置（脉冲）
+    // 注意：这里需要倒置计算，因为最大高度（1315mm）对应最大脉冲（13100000）
+    double targetPulse = (PENETRATION_MAX_HEIGHT - m_penetrationTargetDepth) * PENETRATION_PULSE_PER_MM;
+    
+    // 设置进给速度和加减速参数
+    m_motionController->setMotorParameter(m_penetrationMotorID, "Speed", m_penetrationSpeed);
+    m_motionController->setMotorParameter(m_penetrationMotorID, "Acc", PENETRATION_DEFAULT_ACCEL);
+    m_motionController->setMotorParameter(m_penetrationMotorID, "Dec", PENETRATION_DEFAULT_DECEL);
+    
+    QString msg = QString("[进给] 开始运动 - 目标深度: %1 mm (当前: %2 mm, 目标脉冲: %3)")
+                    .arg(m_penetrationTargetDepth, 0, 'f', 2)
+                    .arg(PENETRATION_MAX_HEIGHT - (currentPulse / PENETRATION_PULSE_PER_MM), 0, 'f', 2)
+                    .arg(targetPulse);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+    
+    // 执行绝对位置运动
+    if (m_motionController->moveMotorAbsolute(m_penetrationMotorID, targetPulse)) {
+        msg = QString("[进给] 运动已启动");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    } else {
+        msg = QString("[进给] 错误: 启动运动失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+    
+    // 更新当前深度显示
+    updatePenetrationDepth();
+}
+
+/**
+ * @brief 取消进给运动
+ */
+void zmotionpage::on_btn_penetration_cancel_clicked()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        QString msg = QString("[进给] 错误: 控制器未连接");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 停止电机运动（使用平滑停止模式 = 0）
+    if (m_motionController->stopMotor(m_penetrationMotorID, 0)) {
+        QString msg = QString("[进给] 已取消运动");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    } else {
+        QString msg = QString("[进给] 错误: 停止运动失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+    
+    // 更新当前深度显示
+    updatePenetrationDepth();
+}
+
+void zmotionpage::initializeUI()
+{
+    // 初始化进给深度控制
+    if (ui->le_penetration_depth) {
+        ui->le_penetration_depth->setReadOnly(true);
+    }
+    if (ui->le_penetration_target) {
+        ui->le_penetration_target->setText(QString::number(m_penetrationTargetDepth, 'f', 2));
+    }
+    if (ui->le_penetration_speed) {
+        ui->le_penetration_speed->setText(QString::number(m_penetrationSpeed, 'f', 2));
+    }
+
+    // 初始化电机表格
+    connect(ui->btn_motorParmUpdate, &QPushButton::clicked, [this]{
+        initMotorTable();
+        RefreshTableContent();
+    });
+
+    // 初始化电机表格编辑模式
+    connect(ui->cb_motorParmEdit, &QCheckBox::stateChanged, [this](int state) {
+        if (state == Qt::Checked) {
+            ui->btn_motorParmUpdate->setEnabled(false);
+            connect(ui->tb_motor, &QTableWidget::cellDoubleClicked, this, &zmotionpage::unmodifyMotorTable);
+            connect(ui->tb_motor, &QTableWidget::itemChanged, this, &zmotionpage::modifyMotorTable);
+        } else {
+            ui->btn_motorParmUpdate->setEnabled(true);
+            disconnect(ui->tb_motor, &QTableWidget::cellDoubleClicked, this, &zmotionpage::unmodifyMotorTable);
+            disconnect(ui->tb_motor, &QTableWidget::itemChanged, this, &zmotionpage::modifyMotorTable);
+            initMotorTable();
+            RefreshTableContent();
+        }
+    });
+
+    // 初始化运动控制按钮
+    connect(ui->btn_movePause, &QPushButton::clicked, this, [this]{
+        if (g_handle) {
+            char cmdbuff[2048];
+            char cmdbuffAck[2048];
+            sprintf(cmdbuff, "MOVE_PAUSE");
+            if(ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0) {
+                qDebug() << "Pause All!";
+            }
+        }
+    });
+
+    connect(ui->btn_moveResume, &QPushButton::clicked, this, [this]{
+        if (g_handle) {
+            char cmdbuff[2048];
+            char cmdbuffAck[2048];
+            sprintf(cmdbuff, "MOVE_RESUME");
+            if(ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0) {
+                qDebug() << "Resume All!";
+            }
+        }
+    });
+
+    // 初始化EtherCAT映射按钮
+    connect(ui->btn_MapMotor, &QPushButton::clicked, this, [this](){
+        for(int i = 0; i < 10; i++) {
+            MotorMap[i] = MotorMapbuckup[i];
+        }
+        if(fAxisNum == 1) {
+            MotorMap[0] = 0;
+        }
+        else if(fAxisNum >= 2) {
+            MotorMap[0] = fAxisNum - 1;
+            MotorMap[1] = fAxisNum - 2;
+        }
+        ShowMotorMap();
+    });
+
+    // 初始化模式切换按钮
+    connect(ui->cb_modeAuto, &QCheckBox::toggled, [this](bool checked) {
+        if (checked) {
+            ui->cb_modeManual->setChecked(false);
+        }
+    });
+
+    connect(ui->cb_modeManual, &QCheckBox::toggled, [this](bool checked) {
+        if (checked) {
+            ui->cb_modeAuto->setChecked(false);
+        }
+    });
+
+    // 连接模式确认按钮
+    connect(ui->btn_modeConfirm, &QPushButton::clicked, this, &zmotionpage::runningMode);
+
+    // 初始化钻管存储机构状态显示
+    if (ui->le_stroage_status) {
+        ui->le_stroage_status->setReadOnly(true);
+        ui->le_stroage_status->setText(QString("位置 %1 / %2 (%3°)").arg(m_storageCurrentPosition + 1)
+                                                                  .arg(STORAGE_POSITIONS)
+                                                                  .arg(m_storageCurrentPosition * STORAGE_ANGLE_PER_POSITION, 0, 'f', 1));
+    }
+
+    // 初始化旋转和冲击控制
+    if (ui->le_rotation) {
+        ui->le_rotation->setText(QString::number(m_rotationSpeed, 'f', 1));
+    }
+    if (ui->le_percussion) {
+        ui->le_percussion->setText(QString::number(m_percussionFrequency, 'f', 1));
+    }
+
+    // 初始化夹爪相关变量
+    m_downclampDAC = DOWNCLAMP_DEFAULT_DAC;
+    m_isDownclamping = false;
+    
+    // 设置默认力矩值
+    ui->le_downclamp_DAC->setText(QString::number(m_downclampDAC, 'f', 1));
+    
+    // 创建并配置夹爪状态监控定时器
+    m_downclampTimer = new QTimer(this);
+    m_downclampTimer->setInterval(DOWNCLAMP_CHECK_INTERVAL);
+    connect(m_downclampTimer, &QTimer::timeout, this, &zmotionpage::updateDownclampStatus);
+}
+
+// 更新存储机构状态显示
+void zmotionpage::updateStorageStatus()
+{
+    if (!m_motionController || !m_motionController->isConnected()) {
+        return;
+    }
+
+    // 获取当前电机位置
+    float currentPosition = 0.0f;
+    
+    // 使用 ZAux_Direct_GetDpos 获取当前位置
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    sprintf(cmdbuff, "?DPOS(%d)", STORAGE_MOTOR_ID);
+    
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0) {
+        currentPosition = atof(cmdbuffAck);
+        
+        // 计算当前角度（考虑零点偏移）
+        float currentAngle = (currentPosition - m_storageOffset) * 360.0f / PULSES_PER_REVOLUTION;
+        
+        // 规范化角度到0-360范围
+        while (currentAngle < 0) {
+            currentAngle += 360.0f;
+        }
+        while (currentAngle >= 360.0f) {
+            currentAngle -= 360.0f;
+        }
+        
+        // 计算当前位置索引（0-6）
+        m_storageCurrentPosition = qRound(currentAngle / STORAGE_ANGLE_PER_POSITION) % STORAGE_POSITIONS;
+        
+        // 更新UI显示
+        if (ui->le_stroage_status) {
+            ui->le_stroage_status->setText(QString("位置 %1 / %2 (%3°)").arg(m_storageCurrentPosition + 1)
+                                                                      .arg(STORAGE_POSITIONS)
+                                                                      .arg(currentAngle, 0, 'f', 1));
+        }
+    }
+}
+
+// 存储机构向后转位
+void zmotionpage::on_btn_storage_backward_clicked()
+{
+    // 检查是否处于手动模式
+    if (!ui->cb_modeManual->isChecked()) {
+        QString msg = QString("[存储机构] 错误: 只能在手动模式下操作");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 检查控制器连接状态
+    if (!g_handle) {
+        QString msg = QString("[存储机构] 错误: 控制器未连接");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 计算目标位置索引（向后转位）
+    int targetPosition = (m_storageCurrentPosition - 1 + STORAGE_POSITIONS) % STORAGE_POSITIONS;
+    
+    // 计算目标角度
+    float targetAngle = targetPosition * STORAGE_ANGLE_PER_POSITION;
+    
+    // 设置运动参数
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    
+    // 设置速度
+    sprintf(cmdbuff, "SPEED(%d)=%f", STORAGE_MOTOR_ID, STORAGE_SPEED);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[存储机构] 错误: 设置速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 设置加速度
+    sprintf(cmdbuff, "ACCEL(%d)=%f", STORAGE_MOTOR_ID, STORAGE_ACCEL);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[存储机构] 错误: 设置加速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 设置减速度
+    sprintf(cmdbuff, "DECEL(%d)=%f", STORAGE_MOTOR_ID, STORAGE_DECEL);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[存储机构] 错误: 设置减速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 计算目标脉冲位置
+    float targetPulses = m_storageOffset + (targetAngle * PULSES_PER_REVOLUTION / 360.0f);
+    
+    // 执行运动
+    QString msg = QString("[存储机构] 向后转位: 从位置 %1 到位置 %2 (角度: %3°)")
+                      .arg(m_storageCurrentPosition + 1)
+                      .arg(targetPosition + 1)
+                      .arg(targetAngle, 0, 'f', 1);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+    
+    // 使用绝对位置移动命令
+    sprintf(cmdbuff, "MOVEABS(%d)=%f", STORAGE_MOTOR_ID, targetPulses);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString errMsg = QString("[存储机构] 错误: 执行运动失败");
+        qDebug() << errMsg;
+        ui->tb_cmdWindow_2->append(errMsg);
+        return;
+    }
+    
+    // 更新当前位置
+    m_storageCurrentPosition = targetPosition;
+    updateStorageStatus();
+}
+
+// 存储机构向前转位
+void zmotionpage::on_btn_storage_forward_clicked()
+{
+    // 检查是否处于手动模式
+    if (!ui->cb_modeManual->isChecked()) {
+        QString msg = QString("[存储机构] 错误: 只能在手动模式下操作");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 检查控制器连接状态
+    if (!g_handle) {
+        QString msg = QString("[存储机构] 错误: 控制器未连接");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 计算目标位置索引（向前转位）
+    int targetPosition = (m_storageCurrentPosition + 1) % STORAGE_POSITIONS;
+    
+    // 计算目标角度
+    float targetAngle = targetPosition * STORAGE_ANGLE_PER_POSITION;
+    
+    // 设置运动参数
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    
+    // 设置速度
+    sprintf(cmdbuff, "SPEED(%d)=%f", STORAGE_MOTOR_ID, STORAGE_SPEED);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[存储机构] 错误: 设置速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 设置加速度
+    sprintf(cmdbuff, "ACCEL(%d)=%f", STORAGE_MOTOR_ID, STORAGE_ACCEL);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[存储机构] 错误: 设置加速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 设置减速度
+    sprintf(cmdbuff, "DECEL(%d)=%f", STORAGE_MOTOR_ID, STORAGE_DECEL);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[存储机构] 错误: 设置减速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 计算目标脉冲位置
+    float targetPulses = m_storageOffset + (targetAngle * PULSES_PER_REVOLUTION / 360.0f);
+    
+    // 执行运动
+    QString msg = QString("[存储机构] 向前转位: 从位置 %1 到位置 %2 (角度: %3°)")
+                      .arg(m_storageCurrentPosition + 1)
+                      .arg(targetPosition + 1)
+                      .arg(targetAngle, 0, 'f', 1);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+    
+    // 使用绝对位置移动命令
+    sprintf(cmdbuff, "MOVEABS(%d)=%f", STORAGE_MOTOR_ID, targetPulses);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString errMsg = QString("[存储机构] 错误: 执行运动失败");
+        qDebug() << errMsg;
+        ui->tb_cmdWindow_2->append(errMsg);
+        return;
+    }
+    
+    // 更新当前位置
+    m_storageCurrentPosition = targetPosition;
+    updateStorageStatus();
+}
+
+// 更新旋转状态
+void zmotionpage::updateRotationStatus()
+{
+    if (!g_handle) {
+        return;
+    }
+
+    // 获取当前电机状态
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    sprintf(cmdbuff, "?MTYPE(%d)", ROTATION_MOTOR_ID);
+    
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0) {
+        int motionType = atoi(cmdbuffAck);
+        
+        // 如果电机停止但状态为旋转中，则更新状态
+        if (motionType == 0 && m_isRotating) {
+            m_isRotating = false;
+            QString msg = QString("[旋转] 旋转已停止");
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+        }
+    }
+}
+
+// 更新冲击状态
+void zmotionpage::updatePercussionStatus()
+{
+    if (!g_handle) {
+        return;
+    }
+
+    // 获取当前电机状态
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    sprintf(cmdbuff, "?MTYPE(%d)", PERCUSSION_MOTOR_ID);
+    
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0) {
+        int motionType = atoi(cmdbuffAck);
+        
+        // 如果电机停止但状态为冲击中，则更新状态
+        if (motionType == 0 && m_isPercussing) {
+            m_isPercussing = false;
+            QString msg = QString("[冲击] 冲击已停止");
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+        }
+    }
+}
+
+// 设置旋转速度
+void zmotionpage::on_le_rotation_editingFinished()
+{
+    bool ok;
+    float speed = ui->le_rotation->text().toFloat(&ok);
+    
+    if (!ok || speed <= 0) {
+        QString msg = QString("[旋转] 错误: 无效的速度值");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        // 恢复原来的值
+        ui->le_rotation->setText(QString::number(m_rotationSpeed, 'f', 1));
+        return;
+    }
+    
+    m_rotationSpeed = speed;
+    QString msg = QString("[旋转] 已设置旋转速度: %1").arg(speed, 0, 'f', 1);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+    
+    // 如果正在旋转，则更新当前速度
+    if (m_isRotating) {
+        on_btn_rotation_clicked();
+    }
+}
+
+// 设置冲击频率
+void zmotionpage::on_le_percussion_editingFinished()
+{
+    bool ok;
+    float freq = ui->le_percussion->text().toFloat(&ok);
+    
+    if (!ok || freq <= 0) {
+        QString msg = QString("[冲击] 错误: 无效的频率值");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        // 恢复原来的值
+        ui->le_percussion->setText(QString::number(m_percussionFrequency, 'f', 1));
+        return;
+    }
+    
+    m_percussionFrequency = freq;
+    QString msg = QString("[冲击] 已设置冲击频率: %1").arg(freq, 0, 'f', 1);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+    
+    // 如果正在冲击，则更新当前频率
+    if (m_isPercussing) {
+        on_btn_percussion_clicked();
+    }
+}
+
+// 开始旋转
+void zmotionpage::on_btn_rotation_clicked()
+{
+    // 检查是否处于手动模式
+    if (!ui->cb_modeManual->isChecked()) {
+        QString msg = QString("[旋转] 错误: 只能在手动模式下操作");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 检查控制器连接状态
+    if (!g_handle) {
+        QString msg = QString("[旋转] 错误: 控制器未连接");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 设置运动参数
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    
+    // 设置速度
+    sprintf(cmdbuff, "SPEED(%d)=%f", ROTATION_MOTOR_ID, m_rotationSpeed);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[旋转] 错误: 设置速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 设置加速度
+    sprintf(cmdbuff, "ACCEL(%d)=%f", ROTATION_MOTOR_ID, ROTATION_ACCEL);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[旋转] 错误: 设置加速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 设置减速度
+    sprintf(cmdbuff, "DECEL(%d)=%f", ROTATION_MOTOR_ID, ROTATION_DECEL);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[旋转] 错误: 设置减速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 执行连续运动（正向）
+    sprintf(cmdbuff, "FORWARD(%d)", ROTATION_MOTOR_ID);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[旋转] 错误: 启动旋转失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 更新状态
+    m_isRotating = true;
+    QString msg = QString("[旋转] 开始旋转，速度: %1").arg(m_rotationSpeed, 0, 'f', 1);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+}
+
+// 停止旋转
+void zmotionpage::on_btn_rotation_stop_clicked()
+{
+    // 检查控制器连接状态
+    if (!g_handle) {
+        QString msg = QString("[旋转] 错误: 控制器未连接");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 如果不在旋转状态，则不需要停止
+    if (!m_isRotating) {
+        QString msg = QString("[旋转] 当前未在旋转");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 执行停止命令
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    sprintf(cmdbuff, "CANCEL(%d)", ROTATION_MOTOR_ID);
+    
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[旋转] 错误: 停止旋转失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 更新状态
+    m_isRotating = false;
+    QString msg = QString("[旋转] 已停止旋转");
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+}
+
+// 开始冲击
+void zmotionpage::on_btn_percussion_clicked()
+{
+    // 检查是否处于手动模式
+    if (!ui->cb_modeManual->isChecked()) {
+        QString msg = QString("[冲击] 错误: 只能在手动模式下操作");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 检查控制器连接状态
+    if (!g_handle) {
+        QString msg = QString("[冲击] 错误: 控制器未连接");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 设置运动参数
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    
+    // 设置速度（根据频率计算）
+    float speed = m_percussionFrequency * 60.0f; // 将频率(Hz)转换为速度(rpm)
+    sprintf(cmdbuff, "SPEED(%d)=%f", PERCUSSION_MOTOR_ID, speed);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[冲击] 错误: 设置速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 设置加速度
+    sprintf(cmdbuff, "ACCEL(%d)=%f", PERCUSSION_MOTOR_ID, PERCUSSION_ACCEL);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[冲击] 错误: 设置加速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 设置减速度
+    sprintf(cmdbuff, "DECEL(%d)=%f", PERCUSSION_MOTOR_ID, PERCUSSION_DECEL);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[冲击] 错误: 设置减速度失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 执行连续运动（正向）
+    sprintf(cmdbuff, "FORWARD(%d)", PERCUSSION_MOTOR_ID);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[冲击] 错误: 启动冲击失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 更新状态
+    m_isPercussing = true;
+    QString msg = QString("[冲击] 开始冲击，频率: %1 Hz").arg(m_percussionFrequency, 0, 'f', 1);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+}
+
+// 停止冲击
+void zmotionpage::on_btn_percussion_stop_clicked()
+{
+    // 检查控制器连接状态
+    if (!g_handle) {
+        QString msg = QString("[冲击] 错误: 控制器未连接");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 如果不在冲击状态，则不需要停止
+    if (!m_isPercussing) {
+        QString msg = QString("[冲击] 当前未在冲击");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 执行停止命令
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    sprintf(cmdbuff, "CANCEL(%d)", PERCUSSION_MOTOR_ID);
+    
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[冲击] 错误: 停止冲击失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+    
+    // 更新状态
+    m_isPercussing = false;
+    QString msg = QString("[冲击] 已停止冲击");
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+}
+
+// 打开夹爪
+void zmotionpage::on_btn_downclamp_open_clicked()
+{
+    if (!g_handle) {
+        QString msg = QString("[夹爪] 错误: 控制器未连接");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+
+    // 设置力矩模式
+    sprintf(cmdbuff, "ATYPE(%d)=67", DOWNCLAMP_MOTOR_ID);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[夹爪] 错误: 设置力矩模式失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 设置负向力矩（打开方向）
+    sprintf(cmdbuff, "DAC(%d)=%f", DOWNCLAMP_MOTOR_ID, -m_downclampDAC);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[夹爪] 错误: 设置力矩值失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    QString msg = QString("[夹爪] 开始打开 (力矩值: %1)").arg(-m_downclampDAC);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+
+    m_isDownclamping = true;
+    m_downclampTimer->start(); // 开始监控位置变化
+}
+
+// 关闭夹爪
+void zmotionpage::on_btn_downclamp_close_clicked()
+{
+    if (!g_handle) {
+        QString msg = QString("[夹爪] 错误: 控制器未连接");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+
+    // 设置力矩模式
+    sprintf(cmdbuff, "ATYPE(%d)=67", DOWNCLAMP_MOTOR_ID);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[夹爪] 错误: 设置力矩模式失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 设置正向力矩（关闭方向）
+    sprintf(cmdbuff, "DAC(%d)=%f", DOWNCLAMP_MOTOR_ID, m_downclampDAC);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0) {
+        QString msg = QString("[夹爪] 错误: 设置力矩值失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    QString msg = QString("[夹爪] 开始关闭 (力矩值: %1)").arg(m_downclampDAC);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+
+    m_isDownclamping = true;
+    m_downclampTimer->start(); // 开始监控位置变化
+}
+
+// 设置夹爪力矩
+void zmotionpage::on_le_downclamp_DAC_editingFinished()
+{
+    bool ok;
+    float dac = ui->le_downclamp_DAC->text().toFloat(&ok);
+    
+    if (!ok || dac <= 0) {
+        QString msg = QString("[夹爪] 错误: 无效的力矩值");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        // 恢复原来的值
+        ui->le_downclamp_DAC->setText(QString::number(m_downclampDAC, 'f', 1));
+        return;
+    }
+
+    m_downclampDAC = dac;
+    QString msg = QString("[夹爪] 设置力矩值: %1").arg(m_downclampDAC);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+}
+
+// 更新夹爪状态
+void zmotionpage::updateDownclampStatus()
+{
+    if (!g_handle || !m_isDownclamping) {
+        m_downclampTimer->stop();
+        return;
+    }
+
+    static float lastPosition = 0.0f;
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    static QTime startTime = QTime::currentTime();
+
+    // 获取当前位置
+    sprintf(cmdbuff, "MPOS(%d)", DOWNCLAMP_MOTOR_ID);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0) {
+        float currentPosition = atof(cmdbuffAck);
+        
+        // 更新位置显示
+        ui->le_downclamp_status->setText(QString::number(currentPosition, 'f', 2));
+
+        // 检查位置是否变化
+        if (abs(currentPosition - lastPosition) < DOWNCLAMP_POSITION_THRESHOLD) {
+            // 如果位置几乎不变，说明可能到达极限
+            if (startTime.elapsed() > DOWNCLAMP_CHECK_INTERVAL) {
+                // 停止力矩输出
+                sprintf(cmdbuff, "DAC(%d)=0", DOWNCLAMP_MOTOR_ID);
+                ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
+                
+                QString msg = QString("[夹爪] 到达极限位置，停止运动");
+                qDebug() << msg;
+                ui->tb_cmdWindow_2->append(msg);
+                
+                m_isDownclamping = false;
+                m_downclampTimer->stop();
+            }
+        } else {
+            // 位置在变化，重置计时器
+            startTime = QTime::currentTime();
+        }
+        
+        lastPosition = currentPosition;
+    }
+
+    // 检查是否超时
+    if (startTime.elapsed() > DOWNCLAMP_TIMEOUT) {
+        // 超时停止
+        sprintf(cmdbuff, "DAC(%d)=0", DOWNCLAMP_MOTOR_ID);
+        ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
+        
+        QString msg = QString("[夹爪] 运动超时，停止运动");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        
+        m_isDownclamping = false;
+        m_downclampTimer->stop();
+    }
+}

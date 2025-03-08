@@ -7,6 +7,8 @@
 #include <QEventLoop>
 #include <QtConcurrent>
 #include <cstring>
+#include <QElapsedTimer>
+#include <QMutexLocker>
 
 MotionController::MotionController(QObject *parent)
     : QObject(parent)
@@ -363,13 +365,27 @@ bool MotionController::moveMotorAbsolute(int motorID, float position)
     
     // 执行命令
     bool success = executeCommand(cmdStr);
-    if (success) {
-        emit commandResponse(QString("电机%1(%2)移动到绝对位置%3").arg(motorID).arg(getMotorName(motorID)).arg(position));
-    } else {
+    if (!success) {
         emit errorOccurred(QString("移动电机%1到绝对位置%2失败").arg(motorID).arg(position));
+        return false;
     }
     
-    return success;
+    emit commandResponse(QString("电机%1(%2)开始移动到绝对位置%3").arg(motorID).arg(getMotorName(motorID)).arg(position));
+    
+    // 等待运动完成
+    if (!waitForMotionComplete(motorID)) {
+        emit errorOccurred(QString("电机%1(%2)移动到位置%3超时").arg(motorID).arg(getMotorName(motorID)).arg(position));
+        return false;
+    }
+    
+    // 检查是否到达目标位置
+    if (!isAtPosition(motorID, position)) {
+        emit errorOccurred(QString("电机%1(%2)未能精确到达目标位置%3").arg(motorID).arg(getMotorName(motorID)).arg(position));
+        return false;
+    }
+    
+    emit commandResponse(QString("电机%1(%2)已到达目标位置%3").arg(motorID).arg(getMotorName(motorID)).arg(position));
+    return true;
 }
 
 /**
@@ -388,6 +404,10 @@ bool MotionController::moveMotorRelative(int motorID, float distance)
         return false;
     }
     
+    // 获取当前位置
+    float currentPosition = getCurrentPosition(motorID);
+    float targetPosition = currentPosition + distance;
+    
     // 调试模式下模拟操作
     if (m_debugMode) {
         QString motorName = getMotorName(motorID);
@@ -396,10 +416,8 @@ bool MotionController::moveMotorRelative(int motorID, float distance)
         
         // 生成并发送一个电机状态更新
         QMap<QString, float> params = generateDebugMotorParameters(motorID);
-        float currentPos = params["mpos"];
-        float newPos = currentPos + distance;
-        params["dpos"] = newPos;  // 设置目标位置
-        params["mpos"] = newPos;  // 在调试模式下，假设立即达到目标位置
+        params["dpos"] = targetPosition;  // 设置目标位置
+        params["mpos"] = targetPosition;  // 在调试模式下，假设立即达到目标位置
         
         // 更新成功，调用回调函数
         if (m_callbacks.contains(motorID)) {
@@ -415,13 +433,27 @@ bool MotionController::moveMotorRelative(int motorID, float distance)
     
     // 执行命令
     bool success = executeCommand(cmdStr);
-    if (success) {
-        emit commandResponse(QString("电机%1(%2)相对移动%3").arg(motorID).arg(getMotorName(motorID)).arg(distance));
-    } else {
+    if (!success) {
         emit errorOccurred(QString("移动电机%1相对距离%2失败").arg(motorID).arg(distance));
+        return false;
     }
     
-    return success;
+    emit commandResponse(QString("电机%1(%2)开始相对移动%3").arg(motorID).arg(getMotorName(motorID)).arg(distance));
+    
+    // 等待运动完成
+    if (!waitForMotionComplete(motorID)) {
+        emit errorOccurred(QString("电机%1(%2)相对移动%3超时").arg(motorID).arg(getMotorName(motorID)).arg(distance));
+        return false;
+    }
+    
+    // 检查是否到达目标位置
+    if (!isAtPosition(motorID, targetPosition)) {
+        emit errorOccurred(QString("电机%1(%2)未能精确到达目标位置%3").arg(motorID).arg(getMotorName(motorID)).arg(targetPosition));
+        return false;
+    }
+    
+    emit commandResponse(QString("电机%1(%2)已完成相对移动%3").arg(motorID).arg(getMotorName(motorID)).arg(distance));
+    return true;
 }
 
 /**
@@ -894,4 +926,191 @@ void MotionController::initializeMotorNames()
 QString MotionController::getMotorName(int motorID) const
 {
     return m_motorNames.value(motorID, QString());
+}
+
+/**
+ * @brief 等待电机运动完成
+ * @param motorID 电机ID
+ * @param timeout 超时时间（毫秒）
+ * @return 是否成功完成运动
+ */
+bool MotionController::waitForMotionComplete(int motorID, int timeout)
+{
+    QMutexLocker locker(&m_mutex);
+    
+    if (!m_connected) {
+        emit errorOccurred(tr("控制器未连接"));
+        return false;
+    }
+    
+    // 调试模式下直接返回成功
+    if (m_debugMode) {
+        emit commandResponse(tr("调试模式: 电机 %1 (%2) 运动完成").arg(motorID).arg(getMotorName(motorID)));
+        return true;
+    }
+    
+    // 记录开始时间
+    QElapsedTimer timer;
+    timer.start();
+    
+    // 循环检查运动是否完成
+    while (!checkEndMove(motorID)) {
+        // 检查是否超时
+        if (timer.elapsed() > timeout) {
+            emit errorOccurred(tr("等待电机 %1 (%2) 运动完成超时").arg(motorID).arg(getMotorName(motorID)));
+            return false;
+        }
+        
+        // 暂停一小段时间，避免过度占用CPU
+        QThread::msleep(10);
+    }
+    
+    emit commandResponse(tr("电机 %1 (%2) 运动完成").arg(motorID).arg(getMotorName(motorID)));
+    return true;
+}
+
+/**
+ * @brief 检查电机运动是否完成
+ * @param motorID 电机ID
+ * @return 是否完成运动
+ */
+bool MotionController::isMotionComplete(int motorID) const
+{
+    QMutexLocker locker(&m_mutex);
+    
+    if (!m_connected) {
+        return false;
+    }
+    
+    // 调试模式下直接返回true
+    if (m_debugMode) {
+        return true;
+    }
+    
+    return checkEndMove(motorID);
+}
+
+/**
+ * @brief 检查电机是否到达指定位置
+ * @param motorID 电机ID
+ * @param targetPosition 目标位置
+ * @param tolerance 容差范围
+ * @return 是否到达目标位置
+ */
+bool MotionController::isAtPosition(int motorID, float targetPosition, float tolerance) const
+{
+    QMutexLocker locker(&m_mutex);
+    
+    if (!m_connected) {
+        return false;
+    }
+    
+    // 调试模式下直接返回true
+    if (m_debugMode) {
+        return true;
+    }
+    
+    return checkPositionReached(motorID, targetPosition, tolerance);
+}
+
+/**
+ * @brief 获取电机当前位置
+ * @param motorID 电机ID
+ * @return 当前位置
+ */
+float MotionController::getCurrentPosition(int motorID) const
+{
+    QMutexLocker locker(&m_mutex);
+    
+    if (!m_connected) {
+        return 0.0f;
+    }
+    
+    // 调试模式下返回模拟数据
+    if (m_debugMode) {
+        QMap<QString, float> params = const_cast<MotionController*>(this)->generateDebugMotorParameters(motorID);
+        return params["mpos"];
+    }
+    
+    float position = 0.0f;
+    if (ZAux_Direct_GetMpos(m_handle, motorID, &position) != 0) {
+        return 0.0f;
+    }
+    
+    return position;
+}
+
+/**
+ * @brief 获取电机目标位置
+ * @param motorID 电机ID
+ * @return 目标位置
+ */
+float MotionController::getTargetPosition(int motorID) const
+{
+    QMutexLocker locker(&m_mutex);
+    
+    if (!m_connected) {
+        return 0.0f;
+    }
+    
+    // 调试模式下返回模拟数据
+    if (m_debugMode) {
+        QMap<QString, float> params = const_cast<MotionController*>(this)->generateDebugMotorParameters(motorID);
+        return params["dpos"];
+    }
+    
+    float position = 0.0f;
+    if (ZAux_Direct_GetDpos(m_handle, motorID, &position) != 0) {
+        return 0.0f;
+    }
+    
+    return position;
+}
+
+/**
+ * @brief 检查电机运动是否完成（内部辅助函数）
+ * @param motorID 电机ID
+ * @return 是否完成运动
+ */
+bool MotionController::checkEndMove(int motorID) const
+{
+    float endMove = 0.0f;
+    if (ZAux_Direct_GetEndMove(m_handle, motorID, &endMove) != 0) {
+        return false;
+    }
+    return endMove != 0.0f;
+}
+
+/**
+ * @brief 检查电机是否到达指定位置（内部辅助函数）
+ * @param motorID 电机ID
+ * @param targetPosition 目标位置
+ * @param tolerance 容差范围
+ * @return 是否到达目标位置
+ */
+bool MotionController::checkPositionReached(int motorID, float targetPosition, float tolerance) const
+{
+    float currentPosition = 0.0f;
+    if (ZAux_Direct_GetMpos(m_handle, motorID, &currentPosition) != 0) {
+        return false;
+    }
+    
+    return std::abs(currentPosition - targetPosition) <= tolerance;
+}
+
+void MotionController::setControllerHandle(ZMC_HANDLE handle)
+{
+    QMutexLocker locker(&m_mutex);
+    m_handle = handle;
+    m_connected = (handle != NULL);
+    emit connectionChanged(m_connected);
+    
+    if (m_connected) {
+        emit commandResponse("已连接到控制器");
+        // 启动定时器，定期更新电机状态
+        m_updateTimer.start(1000); // 每秒更新一次
+    } else {
+        m_updateTimer.stop();
+        emit commandResponse("已断开与控制器的连接");
+    }
 } 

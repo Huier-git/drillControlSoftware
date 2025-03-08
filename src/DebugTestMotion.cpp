@@ -75,7 +75,7 @@ bool DebugTestMotion::initialize()
         qDebug() << "错误: 状态机未创建";
         return false;
     }
-    
+
     // 设置钻进参数
     // 设置速度参数 - 这些值应该从配置文件中读取
     DrillingParameters::getInstance()->setParameter("速度", "钻进速度", 0.01); // v1
@@ -725,8 +725,8 @@ bool DebugTestMotion::transitionToState(const QString& targetState)
             }
         }
     }
-    
-    return false;
+
+        return false;
 }
 
 // 等待操作完成

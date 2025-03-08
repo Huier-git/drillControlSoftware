@@ -7,7 +7,7 @@
 #include <QString>
 #include <functional>
 #include <QTimer>
-#include <QMutex>
+#include <QRecursiveMutex>
 #include "zmcaux.h"
 #include "DrillingParameters.h"
 
@@ -39,6 +39,12 @@ public:
     // 定义回调函数类型，用于通知电机状态变化
     typedef std::function<void(int motorID, const QMap<QString, float>&)> MotionCallback;
 
+    // 定义位置到达判断的容差范围（默认为0.1单位）
+    static constexpr float POSITION_TOLERANCE = 0.1f;
+    
+    // 定义运动完成检查的超时时间（默认为10秒）
+    static constexpr int MOTION_TIMEOUT = 10000;
+
     explicit MotionController(QObject *parent = nullptr);
     virtual ~MotionController();
 
@@ -47,6 +53,9 @@ public:
     void release();
     bool isConnected() const;
     bool isDebugMode() const;
+    
+    // 设置控制器句柄
+    void setControllerHandle(ZMC_HANDLE handle);
 
     // 电机参数操作
     bool getMotorParameters(int motorID, QMap<QString, float> &params);
@@ -75,6 +84,13 @@ public:
     
     // 获取电机名称
     QString getMotorName(int motorID) const;
+
+    // 运动状态反馈相关方法
+    bool waitForMotionComplete(int motorID, int timeout = MOTION_TIMEOUT);
+    bool isMotionComplete(int motorID) const;
+    bool isAtPosition(int motorID, float targetPosition, float tolerance = POSITION_TOLERANCE) const;
+    float getCurrentPosition(int motorID) const;
+    float getTargetPosition(int motorID) const;
 
 signals:
     void connectionChanged(bool connected);
@@ -111,7 +127,7 @@ private:
     bool m_connected;
     
     // 互斥锁，用于保护控制器操作
-    QMutex m_mutex;
+    mutable QRecursiveMutex m_mutex;
     
     // 电机回调函数映射
     QMap<int, MotionCallback> m_callbacks;
@@ -127,6 +143,10 @@ private:
 
     // 为调试模式生成模拟的电机参数
     QMap<QString, float> generateDebugMotorParameters(int motorID);
+
+    // 运动状态检查辅助函数
+    bool checkEndMove(int motorID) const;
+    bool checkPositionReached(int motorID, float targetPosition, float tolerance) const;
 };
 
 #endif // MOTIONCONTROLLER_H

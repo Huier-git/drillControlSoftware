@@ -64,15 +64,17 @@ bool StateMachine::changeState(const QString& stateName) {
     }
 
     // 退出当前状态
-    if (!m_currentStateName.isEmpty() && m_states.contains(m_currentStateName)) {
-        m_states[m_currentStateName]->exit();
+    if (!oldState.isEmpty() && m_states.contains(oldState)) {
+        m_states[oldState]->exit();
     }
 
     // 更新当前状态
     m_currentStateName = stateName;
     
     // 进入新状态
-    m_states[m_currentStateName]->enter();
+    if (m_states.contains(m_currentStateName)) {
+        m_states[m_currentStateName]->enter();
+    }
 
     // 调用状态切换后的钩子
     afterStateChange(oldState, stateName);
@@ -109,11 +111,20 @@ bool StateMachine::start() {
     // 进入初始状态
     if (!changeState(m_initialStateName)) {
         m_isRunning = false;
+        logError("无法进入初始状态");
         return false;
     }
 
+    // 确保当前状态被正确设置
+    if (m_currentStateName.isEmpty()) {
+        m_currentStateName = m_initialStateName;
+        if (m_states.contains(m_currentStateName)) {
+            m_states[m_currentStateName]->enter();
+        }
+    }
+
     emit machineStarted();
-    logInfo("状态机启动");
+    logInfo(QString("状态机启动，当前状态: %1").arg(m_currentStateName));
     return true;
 }
 
@@ -157,11 +168,18 @@ void StateMachine::resume() {
 
 void StateMachine::reset() {
     stop();
+    
+    // 确保有初始状态
     if (!m_initialStateName.isEmpty()) {
-        start();
+        // 重新启动状态机
+        if (start()) {
+            logInfo(QString("状态机重置成功，当前状态: %1").arg(m_currentStateName));
+        } else {
+            logError("状态机重置失败");
+        }
     }
+    
     emit machineReset();
-    logInfo("状态机重置");
 }
 
 bool StateMachine::isRunning() const {

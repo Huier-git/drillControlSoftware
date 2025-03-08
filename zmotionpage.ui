@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1080</width>
-    <height>780</height>
+    <height>833</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item row="0" column="1">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -995,8 +995,615 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string/>
+       <string>机构控制</string>
       </attribute>
+      <layout class="QGridLayout" name="gridLayout_64">
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_49" stretch="1,2,3">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QGroupBox" name="groupBox_22">
+             <property name="title">
+              <string>手动控制/程序控制</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_37">
+              <item row="0" column="0">
+               <layout class="QHBoxLayout" name="horizontalLayout_45">
+                <item>
+                 <widget class="QRadioButton" name="rb_manual_mode">
+                  <property name="text">
+                   <string>手动</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="rb_semi_mode">
+                  <property name="text">
+                   <string>半自动</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="rb_automatic_mode">
+                  <property name="text">
+                   <string>自动</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_mode_confirm">
+                  <property name="text">
+                   <string>确定</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <widget class="QGroupBox" name="gb_semi">
+                <property name="title">
+                 <string>半自动模式</string>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_36">
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="btn_semi_previous_step">
+                   <property name="text">
+                    <string>上一步</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QPushButton" name="btn_semi_next_step">
+                   <property name="text">
+                    <string>下一步</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QPushButton" name="btn_semi_pause">
+                   <property name="text">
+                    <string>暂停</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0" colspan="2">
+                  <layout class="QHBoxLayout" name="horizontalLayout_27">
+                   <item>
+                    <widget class="QLabel" name="label_55">
+                     <property name="text">
+                      <string>步骤：</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="le_semi_step"/>
+                   </item>
+                  </layout>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QPushButton" name="btn_semi_step_jump">
+                   <property name="text">
+                    <string>跳转</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QGroupBox" name="gb_automatic">
+                <property name="title">
+                 <string>自动模式</string>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_60">
+                 <item row="1" column="1">
+                  <widget class="QPushButton" name="btn_automatic_resume">
+                   <property name="text">
+                    <string>恢复</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QPushButton" name="btn_automatic_pause">
+                   <property name="text">
+                    <string>暂停</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_87">
+                   <property name="text">
+                    <string>当前状态：</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLineEdit" name="le_automatic_status"/>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="gb_roboticarm">
+             <property name="title">
+              <string>机械手控制</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_34">
+              <item row="0" column="0">
+               <layout class="QGridLayout" name="gridLayout_30">
+                <item row="0" column="0" colspan="3">
+                 <layout class="QHBoxLayout" name="horizontalLayout_22">
+                  <item>
+                   <widget class="QLabel" name="label_48">
+                    <property name="text">
+                     <string>当前旋转角：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_rotation_angle"/>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="0" colspan="3">
+                 <layout class="QHBoxLayout" name="horizontalLayout_20">
+                  <item>
+                   <widget class="QLabel" name="label_50">
+                    <property name="text">
+                     <string>设定旋转角：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_set_rotation_angle"/>
+                  </item>
+                 </layout>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="btn_rotation_reset">
+                  <property name="text">
+                   <string>重置起点</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QPushButton" name="btn_drill_position">
+                  <property name="text">
+                   <string>钻机位置</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QPushButton" name="btn_storage_position">
+                  <property name="text">
+                   <string>存储位置</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <layout class="QGridLayout" name="gridLayout_32">
+                <item row="0" column="0" colspan="3">
+                 <layout class="QHBoxLayout" name="horizontalLayout_23">
+                  <item>
+                   <widget class="QLabel" name="label_51">
+                    <property name="text">
+                     <string>当前伸长度：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_extent_length"/>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="0" colspan="3">
+                 <layout class="QHBoxLayout" name="horizontalLayout_24">
+                  <item>
+                   <widget class="QLabel" name="label_52">
+                    <property name="text">
+                     <string>设定伸长度：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_set_extent_length"/>
+                  </item>
+                 </layout>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="btn_robotarm_reset">
+                  <property name="text">
+                   <string>重置起点</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QPushButton" name="btn_robotarm_extent">
+                  <property name="text">
+                   <string>伸出</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QPushButton" name="btn_robotarm_retract">
+                  <property name="text">
+                   <string>回收</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <layout class="QGridLayout" name="gridLayout_33">
+                <item row="0" column="0" colspan="2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_25">
+                  <item>
+                   <widget class="QLabel" name="label_53">
+                    <property name="text">
+                     <string>当前夹位置：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_robotarm_clamp_pos"/>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="0" colspan="2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_26">
+                  <item>
+                   <widget class="QLabel" name="label_54">
+                    <property name="text">
+                     <string>设定夹力度：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_robotarm_clamp_DAC"/>
+                  </item>
+                 </layout>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="btn_robotarm_clamp_open">
+                  <property name="text">
+                   <string>张开</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QPushButton" name="btn_robotarm_clamp_close">
+                  <property name="text">
+                   <string>闭合</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="gridLayout_63">
+           <item row="0" column="0">
+            <widget class="QGroupBox" name="gp_penetration">
+             <property name="title">
+              <string>进给机构深度控制</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_13">
+              <item row="3" column="0">
+               <widget class="QPushButton" name="btn_penetration_start">
+                <property name="text">
+                 <string>开始运动</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QPushButton" name="btn_penetration_cancel">
+                <property name="text">
+                 <string>取消运动</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <item>
+                 <widget class="QLabel" name="label_17">
+                  <property name="text">
+                   <string>目标深度：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="le_penetration_target"/>
+                </item>
+               </layout>
+              </item>
+              <item row="0" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <widget class="QLabel" name="label_14">
+                  <property name="text">
+                   <string>当前深度：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="le_penetration_depth"/>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_10">
+                <item>
+                 <widget class="QLabel" name="label_24">
+                  <property name="text">
+                   <string>预设速度：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="le_penetration_speed"/>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QGroupBox" name="gb_connection">
+             <property name="title">
+              <string>对接机构开合控制</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_12">
+              <item row="0" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <item>
+                 <widget class="QLabel" name="label_18">
+                  <property name="text">
+                   <string>当前状态：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="le_connection_status"/>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_6">
+                <item>
+                 <widget class="QLabel" name="label_20">
+                  <property name="text">
+                   <string>目标力矩：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="le_connection_DAC"/>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <widget class="QPushButton" name="btn_connection_extent">
+                <property name="text">
+                 <string>推出推杆</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QPushButton" name="btn_connection_retract">
+                <property name="text">
+                 <string>收回推杆</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QGroupBox" name="gp_stroage">
+             <property name="title">
+              <string>钻管存储机构控制</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_28">
+              <item row="1" column="1">
+               <widget class="QPushButton" name="btn_storage_backward">
+                <property name="text">
+                 <string>向后转位</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_9">
+                <item>
+                 <widget class="QLabel" name="label_23">
+                  <property name="text">
+                   <string>当前状态：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="le_stroage_status"/>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="btn_storage_forward">
+                <property name="text">
+                 <string>向前转位</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QGroupBox" name="gb_downclamp">
+             <property name="title">
+              <string>下夹紧机构开合控制</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_14">
+              <item row="0" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_7">
+                <item>
+                 <widget class="QLabel" name="label_21">
+                  <property name="text">
+                   <string>当前状态：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="le_downclamp_status"/>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <widget class="QPushButton" name="btn_downclamp_open">
+                <property name="text">
+                 <string>张开夹爪</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_8">
+                <item>
+                 <widget class="QLabel" name="label_22">
+                  <property name="text">
+                   <string>目标力矩：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="le_downclamp_DAC"/>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="1">
+               <widget class="QPushButton" name="btn_downclamp_close">
+                <property name="text">
+                 <string>闭合夹爪</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QGroupBox" name="gb_rotaion_percussion">
+             <property name="title">
+              <string>旋转冲击机构控制</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_29">
+              <item row="0" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_19">
+                <item>
+                 <widget class="QLabel" name="label_47">
+                  <property name="text">
+                   <string>转速：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="le_rotation"/>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_46">
+                <item>
+                 <widget class="QLabel" name="label_88">
+                  <property name="text">
+                   <string>冲击：</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="le_percussion"/>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <widget class="QPushButton" name="btn_rotation">
+                <property name="text">
+                 <string>旋转</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QPushButton" name="btn_rotation_stop">
+                <property name="text">
+                 <string>停止</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QPushButton" name="btn_percussion">
+                <property name="text">
+                 <string>冲击</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QPushButton" name="btn_percussion_stop">
+                <property name="text">
+                 <string>停止</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="gridLayout_62">
+           <item row="0" column="0">
+            <widget class="QGroupBox" name="groupBox_39">
+             <property name="title">
+              <string>待定</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_61">
+              <item row="0" column="0">
+               <widget class="QWidget" name="widget" native="true">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>250</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QGroupBox" name="groupBox_21">
+             <property name="title">
+              <string>状态显示</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_35">
+              <item row="0" column="0">
+               <widget class="QTextEdit" name="tb_cmdWindow_2"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>

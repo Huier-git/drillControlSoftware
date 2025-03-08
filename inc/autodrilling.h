@@ -12,6 +12,10 @@
 // 前向声明
 class MotionController;
 
+// 钻管数量宏定义
+#define MAX_PIPE_COUNT 6       // 最大钻管数量
+#define ACTIVE_PIPE_COUNT 1    // 当前激活的钻管数量
+
 /**
  * @brief 组件状态机基类
  * 所有机构的状态机都继承自此类
@@ -33,9 +37,14 @@ public:
     // 设置运动控制器
     void setMotionController(MotionController* controller);
     
+    // 添加调试模式支持
+    void setDebugMode(bool debug);
+    bool isDebugMode() const;
+    
 protected:
     QString m_componentName;
     MotionController* m_motionController;
+    bool m_isDebugMode;  // 添加调试模式标志
 };
 
 /**
@@ -195,7 +204,7 @@ public:
     bool initialize() override;
     void reset() override;
     
-    // 旋转到指定位置 (0-13)
+    // 旋转到指定位置 (0-6)
     bool rotateToPosition(int position);
     
     // 获取当前位置
@@ -203,7 +212,7 @@ public:
     
     // 电机ID常量
     static const int STORAGE_MOTOR_ID;
-    static const int MAX_POSITIONS = 14; // 存储单元最大位置数
+    static const int MAX_POSITIONS = 7; // 存储单元最大位置数，0号位置存放钻具，1-6存放钻管
     
 private:
     int m_currentPosition;
