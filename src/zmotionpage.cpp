@@ -146,7 +146,7 @@ void zmotionpage::connectSignalsAndSlots()
     // 连接夹爪控制信号
     connect(ui->btn_downclamp_open, &QPushButton::clicked, this, &zmotionpage::on_btn_downclamp_open_clicked);
     connect(ui->btn_downclamp_close, &QPushButton::clicked, this, &zmotionpage::on_btn_downclamp_close_clicked);
-    connect(ui->le_downclamp_DAC, &QLineEdit::editingFinished, this, &zmotionpage::on_le_downclamp_DAC_editingFinished);
+
 }
 
 zmotionpage::~zmotionpage()
@@ -1530,104 +1530,11 @@ void zmotionpage::stopSemiAutoMode()
 
 // ===== 机械手控制相关函数实现 =====
 
-/**
- * @brief 更新旋转角度显示
- */
-void zmotionpage::updateRotationAngle()
-{
-    if (m_motionController && m_motionController->isConnected()) {
-        // 获取当前旋转角度
-        float currentAngle = m_motionController->getCurrentPosition(m_rotationMotorID);
-        
-        // 显示绝对角度（不受重置影响）
-        ui->le_rotation_angle->setText(QString::number(currentAngle, 'f', 2));
-        
-        // 只有在用户明确选择了自动模式时才显示调试信息
-        if (m_robotArmStatusTimer && m_robotArmStatusTimer->isActive()) {
-        QString msg = QString("[旋转] 当前角度: %1").arg(currentAngle);
-        qDebug() << msg;
-        ui->tb_cmdWindow_2->append(msg);
-        }
-    }
-}
-
-/**
- * @brief 重置旋转起点
- */
-void zmotionpage::on_btn_rotation_reset_clicked()
-{
-    if (!m_motionController || !m_motionController->isConnected()) {
-        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
-        return;
-    }
-
-    // 设置当前位置为零点
-    if (m_motionController->setZeroPosition(m_rotationMotorID)) {
-        m_rotationOffset = m_motionController->getCurrentPosition(m_rotationMotorID);
-        QString msg = QString("[旋转] 已重置起点，当前位置设为零点");
-        qDebug() << msg;
-        ui->tb_cmdWindow_2->append(msg);
-    }
-}
-
-/**
- * @brief 移动到钻机位置（0度）
- */
-void zmotionpage::on_btn_drill_position_clicked()
-{
-    if (!m_motionController || !m_motionController->isConnected()) {
-        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
-        return;
-    }
-
-    // 设置运动参数
-    m_motionController->setMotorParameter(m_rotationMotorID, "Speed", ROBOTARM_ROTATION_SPEED);
-    m_motionController->setMotorParameter(m_rotationMotorID, "Acc", ROBOTARM_ROTATION_ACCEL);
-    m_motionController->setMotorParameter(m_rotationMotorID, "Dec", ROBOTARM_ROTATION_DECEL);
-
-    // 计算目标位置（考虑偏移量）
-    float targetPosition = ROBOTARM_DRILL_POSITION_ANGLE - m_rotationOffset;
-    
-    // 移动到钻机位置
-    if (m_motionController->moveMotorAbsolute(m_rotationMotorID, targetPosition)) {
-        QString msg = QString("[旋转] 移动到钻机位置 (目标角度: %1)").arg(ROBOTARM_DRILL_POSITION_ANGLE);
-        qDebug() << msg;
-        ui->tb_cmdWindow_2->append(msg);
-    }
-}
-
-/**
- * @brief 移动到存储位置（90度）
- */
-void zmotionpage::on_btn_storage_position_clicked()
-{
-    if (!m_motionController || !m_motionController->isConnected()) {
-        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
-        return;
-    }
-
-    // 设置运动参数
-    m_motionController->setMotorParameter(m_rotationMotorID, "Speed", ROBOTARM_ROTATION_SPEED);
-    m_motionController->setMotorParameter(m_rotationMotorID, "Acc", ROBOTARM_ROTATION_ACCEL);
-    m_motionController->setMotorParameter(m_rotationMotorID, "Dec", ROBOTARM_ROTATION_DECEL);
-
-    // 计算目标位置（考虑偏移量）
-    float targetPosition = ROBOTARM_STORAGE_POSITION_ANGLE - m_rotationOffset;
-    
-    // 移动到存储位置
-    if (m_motionController->moveMotorAbsolute(m_rotationMotorID, targetPosition)) {
-        QString msg = QString("[旋转] 移动到存储位置 (目标角度: %1)").arg(ROBOTARM_STORAGE_POSITION_ANGLE);
-        qDebug() << msg;
-        ui->tb_cmdWindow_2->append(msg);
-    }
-}
-
-/**
- * @brief 设置自定义旋转角度
- */
+// 设置自定义旋转角度
 void zmotionpage::on_le_set_rotation_angle_editingFinished()
 {
-    if (!m_motionController || !m_motionController->isConnected()) {
+    if (!m_motionController || !m_motionController->isConnected())
+    {
         ui->tb_cmdWindow_2->append("错误: 控制器未连接");
         return;
     }
@@ -1635,125 +1542,22 @@ void zmotionpage::on_le_set_rotation_angle_editingFinished()
     // 获取用户输入的目标角度
     bool ok;
     float targetAngle = ui->le_set_rotation_angle->text().toFloat(&ok);
-    if (!ok) {
+    if (!ok)
+    {
         ui->tb_cmdWindow_2->append("错误: 无效的角度值");
         return;
     }
 
-    // 设置运动参数
-    m_motionController->setMotorParameter(m_rotationMotorID, "Speed", ROBOTARM_ROTATION_SPEED);
-    m_motionController->setMotorParameter(m_rotationMotorID, "Acc", ROBOTARM_ROTATION_ACCEL);
-    m_motionController->setMotorParameter(m_rotationMotorID, "Dec", ROBOTARM_ROTATION_DECEL);
-
-    // 计算目标位置（考虑偏移量）
-    float targetPosition = targetAngle - m_rotationOffset;
-    
-    // 移动到目标位置
-    if (m_motionController->moveMotorAbsolute(m_rotationMotorID, targetPosition)) {
-        QString msg = QString("[旋转] 移动到指定角度 (目标: %1)").arg(targetAngle);
-        qDebug() << msg;
-        ui->tb_cmdWindow_2->append(msg);
-    }
+    QString msg = QString("[旋转] 已设置目标角度: %1°").arg(targetAngle, 0, 'f', 2);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
 }
 
-/**
- * @brief 更新伸出长度显示
- */
-void zmotionpage::updateExtentLength()
-{
-    if (m_motionController && m_motionController->isConnected()) {
-        // 获取当前伸出长度
-        float currentLength = m_motionController->getCurrentPosition(m_extentMotorID);
-        
-        // 显示绝对长度（不受重置影响）
-        ui->le_extent_length->setText(QString::number(currentLength, 'f', 2));
-        
-        // 只有在用户明确选择了自动模式时才显示调试信息
-        if (m_robotArmStatusTimer && m_robotArmStatusTimer->isActive()) {
-        QString msg = QString("[伸缩] 当前长度: %1").arg(currentLength);
-        qDebug() << msg;
-        ui->tb_cmdWindow_2->append(msg);
-        }
-    }
-}
-
-/**
- * @brief 重置伸出起点
- */
-void zmotionpage::on_btn_robotarm_reset_clicked()
-{
-    if (!m_motionController || !m_motionController->isConnected()) {
-        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
-        return;
-    }
-
-    // 设置当前位置为零点
-    if (m_motionController->setZeroPosition(m_extentMotorID)) {
-        m_extentOffset = m_motionController->getCurrentPosition(m_extentMotorID);
-        QString msg = QString("[伸缩] 已重置起点，当前位置设为零点");
-        qDebug() << msg;
-        ui->tb_cmdWindow_2->append(msg);
-    }
-}
-
-/**
- * @brief 控制机械手伸出
- */
-void zmotionpage::on_btn_robotarm_extent_clicked()
-{
-    if (!m_motionController || !m_motionController->isConnected()) {
-        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
-        return;
-    }
-
-    // 设置运动参数
-    m_motionController->setMotorParameter(m_extentMotorID, "Speed", ROBOTARM_EXTENT_SPEED);
-    m_motionController->setMotorParameter(m_extentMotorID, "Acc", ROBOTARM_EXTENT_ACCEL);
-    m_motionController->setMotorParameter(m_extentMotorID, "Dec", ROBOTARM_EXTENT_DECEL);
-
-    // 计算目标位置（考虑偏移量）
-    float targetPosition = ROBOTARM_EXTENT_POSITION - m_extentOffset;
-    
-    // 移动到伸出位置
-    if (m_motionController->moveMotorAbsolute(m_extentMotorID, targetPosition)) {
-        QString msg = QString("[伸缩] 伸出到指定位置 (目标: %1)").arg(ROBOTARM_EXTENT_POSITION);
-        qDebug() << msg;
-        ui->tb_cmdWindow_2->append(msg);
-    }
-}
-
-/**
- * @brief 控制机械手回收
- */
-void zmotionpage::on_btn_robotarm_retract_clicked()
-{
-    if (!m_motionController || !m_motionController->isConnected()) {
-        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
-        return;
-    }
-
-    // 设置运动参数
-    m_motionController->setMotorParameter(m_extentMotorID, "Speed", ROBOTARM_EXTENT_SPEED);
-    m_motionController->setMotorParameter(m_extentMotorID, "Acc", ROBOTARM_EXTENT_ACCEL);
-    m_motionController->setMotorParameter(m_extentMotorID, "Dec", ROBOTARM_EXTENT_DECEL);
-
-    // 计算目标位置（考虑偏移量）
-    float targetPosition = ROBOTARM_RETRACT_POSITION - m_extentOffset;
-    
-    // 移动到回收位置
-    if (m_motionController->moveMotorAbsolute(m_extentMotorID, targetPosition)) {
-        QString msg = QString("[伸缩] 回收到原位 (目标: %1)").arg(ROBOTARM_RETRACT_POSITION);
-        qDebug() << msg;
-        ui->tb_cmdWindow_2->append(msg);
-    }
-}
-
-/**
- * @brief 设置自定义伸出长度
- */
+// 设置自定义伸出长度
 void zmotionpage::on_le_set_extent_length_editingFinished()
 {
-    if (!m_motionController || !m_motionController->isConnected()) {
+    if (!m_motionController || !m_motionController->isConnected())
+    {
         ui->tb_cmdWindow_2->append("错误: 控制器未连接");
         return;
     }
@@ -1761,90 +1565,795 @@ void zmotionpage::on_le_set_extent_length_editingFinished()
     // 获取用户输入的目标长度
     bool ok;
     float targetLength = ui->le_set_extent_length->text().toFloat(&ok);
-    if (!ok) {
+    if (!ok)
+    {
         ui->tb_cmdWindow_2->append("错误: 无效的长度值");
         return;
     }
 
-    // 设置运动参数
-    m_motionController->setMotorParameter(m_extentMotorID, "Speed", ROBOTARM_EXTENT_SPEED);
-    m_motionController->setMotorParameter(m_extentMotorID, "Acc", ROBOTARM_EXTENT_ACCEL);
-    m_motionController->setMotorParameter(m_extentMotorID, "Dec", ROBOTARM_EXTENT_DECEL);
+    QString msg = QString("[伸缩] 已设置目标长度: %1 mm").arg(targetLength, 0, 'f', 2);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+}
+// 重置旋转起点
+void zmotionpage::on_btn_rotation_reset_clicked()
+{
+    if (!g_handle)
+    {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
 
-    // 计算目标位置（考虑偏移量）
-    float targetPosition = targetLength - m_extentOffset;
-    
-    // 移动到目标位置
-    if (m_motionController->moveMotorAbsolute(m_extentMotorID, targetPosition)) {
-        QString msg = QString("[伸缩] 移动到指定长度 (目标: %1)").arg(targetLength);
+    // 明确打印当前使用的电机ID
+    int mappedMotorID = MotorMap[5]; // 机械手旋转电机
+
+    QString debugMsg = QString("[旋转] 使用电机: MotorMap[5] = %1").arg(mappedMotorID);
+    qDebug() << debugMsg;
+    ui->tb_cmdWindow_2->append(debugMsg);
+
+    // 设置当前位置为零点
+    int ret = ZAux_Direct_SetDpos(g_handle, mappedMotorID, 0);
+    if (ret == 0)
+    {
+        // 记录当前位置作为偏移量
+        float currentPos = 0.0f;
+        ZAux_Direct_GetMpos(g_handle, mappedMotorID, &currentPos);
+        m_rotationOffset = currentPos;
+
+        QString msg = QString("[旋转] 已重置起点，当前位置设为零点");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+    else
+    {
+        QString msg = QString("[旋转] 错误: 设置零点失败，错误码: %1").arg(ret);
         qDebug() << msg;
         ui->tb_cmdWindow_2->append(msg);
     }
 }
 
-/**
- * @brief 更新夹爪状态显示
- */
-void zmotionpage::updateClampStatus()
+// 移动到钻机位置（0度）
+void zmotionpage::on_btn_drill_position_clicked()
 {
-    if (m_motionController && m_motionController->isConnected()) {
-        // 获取当前夹爪力矩值
-        float currentDAC = 0.0f;
-        QMap<QString, float> params;
-        if (m_motionController->getMotorParameters(m_clampMotorID, params)) {
-            currentDAC = params["DAC"];
-            QString status = (currentDAC > 0) ? "闭合" : "张开";
+    if (!g_handle)
+    {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 诊断: 记录操作前的电机状态
+    diagnosticPrintAllMotorsState("旋转操作前");
+
+    // 明确打印当前使用的电机ID
+    int mappedMotorID = MotorMap[5]; // 机械手旋转电机
+
+    QString debugMsg = QString("[旋转] 正在使用电机: MotorMap[5] = %1").arg(mappedMotorID);
+    qDebug() << debugMsg;
+    ui->tb_cmdWindow_2->append(debugMsg);
+
+    // 诊断: 确认控制器的BASE设置
+    char cmdbuffBase[2048];
+    char cmdbuffAckBase[2048];
+    sprintf(cmdbuffBase, "?BASE");
+    if (ZAux_DirectCommand(g_handle, cmdbuffBase, cmdbuffAckBase, 2048) == 0)
+    {
+        QString baseMsg = QString("[诊断] 当前BASE设置: %1").arg(cmdbuffAckBase);
+        qDebug() << baseMsg;
+        ui->tb_cmdWindow_2->append(baseMsg);
+    }
+
+    // 设置正确的速度参数
+    qDebug() << "[旋转] 设置电机参数: 速度=" << ROBOTARM_ROTATION_SPEED;
+    ZAux_Direct_SetSpeed(g_handle, mappedMotorID, ROBOTARM_ROTATION_SPEED);
+    ZAux_Direct_SetAccel(g_handle, mappedMotorID, ROBOTARM_ROTATION_ACCEL);
+    ZAux_Direct_SetDecel(g_handle, mappedMotorID, ROBOTARM_ROTATION_DECEL);
+
+    // 诊断: 确认没有使用多轴同步指令
+    sprintf(cmdbuffBase, "BASE(%d)", mappedMotorID);
+    ZAux_DirectCommand(g_handle, cmdbuffBase, cmdbuffAckBase, 2048);
+    ui->tb_cmdWindow_2->append(QString("[诊断] 已设置BASE为单轴: %1").arg(mappedMotorID));
+
+    // 移动到0度位置
+    float targetPosition = 0.0f - m_rotationOffset;
+
+    // 使用绝对移动命令，明确指定只移动一个轴
+    int ret = ZAux_Direct_Single_MoveAbs(g_handle, mappedMotorID, targetPosition);
+
+    if (ret == 0)
+    {
+        QString msg = QString("[旋转] 移动到钻机位置 (0°)，使用电机ID: %1").arg(mappedMotorID);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+
+        // 短暂延时后再次检查电机状态
+        QTimer::singleShot(500, this, [this]()
+                           { diagnosticPrintAllMotorsState("旋转操作后"); });
+    }
+    else
+    {
+        QString msg = QString("[旋转] 错误: 移动失败，错误码: %1").arg(ret);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+// 添加一个辅助诊断函数来打印所有电机状态
+void zmotionpage::diagnosticPrintAllMotorsState(const QString &stage)
+{
+    if (!g_handle)
+        return;
+
+    QString diagMsg = QString("[诊断] %1 电机状态:\n").arg(stage);
+
+    for (int i = 0; i < 8; i++)
+    {
+        float pos = 0.0f, speed = 0.0f;
+        int idle = 0, atype = 0;
+
+        ZAux_Direct_GetMpos(g_handle, MotorMap[i], &pos);
+        ZAux_Direct_GetMspeed(g_handle, MotorMap[i], &speed);
+        ZAux_Direct_GetIfIdle(g_handle, MotorMap[i], &idle);
+        ZAux_Direct_GetAtype(g_handle, MotorMap[i], &atype);
+
+        diagMsg += QString("MotorMap[%1]=%2: 位置=%3, 速度=%4, 运动状态=%5, Atype=%6\n")
+                       .arg(i)
+                       .arg(MotorMap[i])
+                       .arg(pos, 0, 'f', 2)
+                       .arg(speed, 0, 'f', 2)
+                       .arg(idle == 0 ? "运动中" : "停止")
+                       .arg(atype);
+    }
+
+    qDebug() << diagMsg;
+    ui->tb_cmdWindow_2->append(diagMsg);
+
+    // 检查是否有SYNC_MOTION定义
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    sprintf(cmdbuff, "?SYNC_MOTION");
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0)
+    {
+        QString syncMsg = QString("[诊断] SYNC_MOTION设置: %1").arg(cmdbuffAck);
+        qDebug() << syncMsg;
+        ui->tb_cmdWindow_2->append(syncMsg);
+    }
+}
+
+// 移动到存储位置（90度）
+void zmotionpage::on_btn_storage_position_clicked()
+{
+    if (!g_handle)
+    {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 诊断: 记录操作前的电机状态
+    diagnosticPrintAllMotorsState("存储位置操作前");
+
+    // 确认使用的电机ID
+    int mappedMotorID = MotorMap[5]; // 机械手旋转电机
+
+    QString debugMsg = QString("[旋转] 正在使用电机: MotorMap[5] = %1").arg(mappedMotorID);
+    qDebug() << debugMsg;
+    ui->tb_cmdWindow_2->append(debugMsg);
+
+    // 诊断: 确认控制器的BASE设置
+    char cmdbuffBase[2048];
+    char cmdbuffAckBase[2048];
+    sprintf(cmdbuffBase, "?BASE");
+    ZAux_DirectCommand(g_handle, cmdbuffBase, cmdbuffAckBase, 2048);
+    ui->tb_cmdWindow_2->append(QString("[诊断] 当前BASE设置: %1").arg(cmdbuffAckBase));
+
+    // 明确设置BASE为单轴
+    sprintf(cmdbuffBase, "BASE(%d)", mappedMotorID);
+    ZAux_DirectCommand(g_handle, cmdbuffBase, cmdbuffAckBase, 2048);
+    ui->tb_cmdWindow_2->append(QString("[诊断] 已设置BASE为单轴: %1").arg(mappedMotorID));
+
+    // 设置运动参数
+    qDebug() << "[旋转] 设置电机参数: 速度=" << ROBOTARM_ROTATION_SPEED;
+    ZAux_Direct_SetSpeed(g_handle, mappedMotorID, ROBOTARM_ROTATION_SPEED);
+    ZAux_Direct_SetAccel(g_handle, mappedMotorID, ROBOTARM_ROTATION_ACCEL);
+    ZAux_Direct_SetDecel(g_handle, mappedMotorID, ROBOTARM_ROTATION_DECEL);
+
+    // 计算存储位置的脉冲值 (90度对应的脉冲数)
+    float targetPulse = (90.0f / 360.0f) * 294912.0f - m_rotationOffset;
+
+    // 使用绝对移动命令，明确指定只移动一个轴
+    int ret = ZAux_Direct_Single_MoveAbs(g_handle, mappedMotorID, targetPulse);
+
+    if (ret == 0)
+    {
+        QString msg = QString("[旋转] 移动到存储位置 (90°)，使用电机ID: %1").arg(mappedMotorID);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+
+        // 短暂延时后再次检查电机状态
+        QTimer::singleShot(500, this, [this]()
+                           { diagnosticPrintAllMotorsState("存储位置操作后"); });
+    }
+    else
+    {
+        QString msg = QString("[旋转] 错误: 移动失败，错误码: %1").arg(ret);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+// 重置机械手伸出起点
+void zmotionpage::on_btn_robotarm_reset_clicked()
+{
+    if (!g_handle)
+    {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 确认使用的电机ID，并添加调试信息
+    int mappedMotorID = MotorMap[6]; // 机械手移动电机
+
+    QString debugMsg = QString("[伸缩] 使用电机: MotorMap[6] = %1").arg(mappedMotorID);
+    qDebug() << debugMsg;
+    ui->tb_cmdWindow_2->append(debugMsg);
+
+    // 设置当前位置为零点
+    int ret = ZAux_Direct_SetDpos(g_handle, mappedMotorID, 0);
+    if (ret == 0)
+    {
+        // 记录当前位置作为偏移量
+        float currentPos = 0.0f;
+        ZAux_Direct_GetMpos(g_handle, mappedMotorID, &currentPos);
+        m_extentOffset = currentPos;
+
+        QString msg = QString("[伸缩] 已重置起点，当前位置设为零点");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+    else
+    {
+        QString msg = QString("[伸缩] 错误: 设置零点失败，错误码: %1").arg(ret);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+// 伸出机械手
+void zmotionpage::on_btn_robotarm_extent_clicked()
+{
+    if (!g_handle)
+    {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 确认使用的电机ID
+    int mappedMotorID = MotorMap[6]; // 机械手移动电机
+
+    QString debugMsg = QString("[伸缩] 正在使用电机: MotorMap[6] = %1").arg(mappedMotorID);
+    qDebug() << debugMsg;
+    ui->tb_cmdWindow_2->append(debugMsg);
+
+    // 获取目标长度
+    bool ok;
+    float targetLength = ui->le_set_extent_length->text().toFloat(&ok);
+    if (!ok)
+    {
+        ui->tb_cmdWindow_2->append("错误: 请设置有效的伸出长度");
+        return;
+    }
+
+    // 明确设置BASE仅为机械手移动电机
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    sprintf(cmdbuff, "BASE(%d)", mappedMotorID);
+    ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
+
+    QString baseMsg = QString("[伸缩] 设置BASE仅为机械手移动电机: %1").arg(mappedMotorID);
+    qDebug() << baseMsg;
+    ui->tb_cmdWindow_2->append(baseMsg);
+
+    // 确保机械手移动电机处于位置模式
+    ZAux_Direct_SetAtype(g_handle, mappedMotorID, 65); // 设置为位置模式
+    QThread::msleep(10);
+
+    // 设置运动参数 - 确保使用正确的速度
+    qDebug() << "[伸缩] 设置电机参数: 速度=" << ROBOTARM_EXTENT_SPEED;
+    ZAux_Direct_SetSpeed(g_handle, mappedMotorID, ROBOTARM_EXTENT_SPEED);
+    ZAux_Direct_SetAccel(g_handle, mappedMotorID, ROBOTARM_EXTENT_ACCEL);
+    ZAux_Direct_SetDecel(g_handle, mappedMotorID, ROBOTARM_EXTENT_DECEL);
+
+    // 计算目标脉冲位置
+    float targetPulse = (targetLength * 212992.0f) / 91.1035f - m_extentOffset;
+
+    // 打印参数信息
+    QString infoMsg = QString("[伸缩] 目标长度: %1 mm, 脉冲: %2, 偏移: %3")
+                          .arg(targetLength, 0, 'f', 2)
+                          .arg(targetPulse, 0, 'f', 0)
+                          .arg(m_extentOffset, 0, 'f', 0);
+    qDebug() << infoMsg;
+    ui->tb_cmdWindow_2->append(infoMsg);
+
+    // 使用单轴绝对移动命令
+    int ret = ZAux_Direct_Single_MoveAbs(g_handle, mappedMotorID, targetPulse);
+
+    if (ret == 0)
+    {
+        QString msg = QString("[伸缩] 伸出到指定长度: %1 mm (脉冲: %2)")
+                          .arg(targetLength, 0, 'f', 2)
+                          .arg(targetPulse, 0, 'f', 0);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+    else
+    {
+        QString msg = QString("[伸缩] 错误: 移动失败，错误码: %1").arg(ret);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+    }
+}
+
+// 收回机械手
+void zmotionpage::on_btn_robotarm_retract_clicked()
+{
+    if (!g_handle)
+    {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 确认使用的电机ID
+    int mappedMotorID = MotorMap[6]; // 机械手移动电机
+
+    QString debugMsg = QString("[伸缩] 回收操作: 使用电机: MotorMap[6] = %1").arg(mappedMotorID);
+    qDebug() << debugMsg;
+    ui->tb_cmdWindow_2->append(debugMsg);
+
+    // 明确设置BASE仅为机械手移动电机
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    sprintf(cmdbuff, "BASE(%d)", mappedMotorID);
+    ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
+
+    QString baseMsg = QString("[伸缩] 设置BASE仅为机械手移动电机: %1").arg(mappedMotorID);
+    qDebug() << baseMsg;
+    ui->tb_cmdWindow_2->append(baseMsg);
+
+    // 确保机械手移动电机处于位置模式
+    ZAux_Direct_SetAtype(g_handle, mappedMotorID, 65); // 设置为位置模式
+    QThread::msleep(10);
+
+    // 设置运动参数 - 使用高速度参数
+    qDebug() << "[伸缩] 设置电机参数: 速度=" << ROBOTARM_EXTENT_SPEED;
+    ZAux_Direct_SetSpeed(g_handle, mappedMotorID, ROBOTARM_EXTENT_SPEED);
+    ZAux_Direct_SetAccel(g_handle, mappedMotorID, ROBOTARM_EXTENT_ACCEL);
+    ZAux_Direct_SetDecel(g_handle, mappedMotorID, ROBOTARM_EXTENT_DECEL);
+
+    // 移动到零点位置（考虑偏移量）
+    float targetPosition = 0.0f - m_extentOffset;
+
+    // 打印目标信息
+    QString infoMsg = QString("[伸缩] 回收到原点: 目标位置=%1，偏移量=%2")
+                          .arg(targetPosition)
+                          .arg(m_extentOffset);
+    qDebug() << infoMsg;
+    ui->tb_cmdWindow_2->append(infoMsg);
+
+    // 使用单轴绝对移动命令，确保只影响当前电机
+    int ret = ZAux_Direct_Single_MoveAbs(g_handle, mappedMotorID, targetPosition);
+
+    if (ret == 0)
+    {
+        QString msg = QString("[伸缩] 开始回收到原点位置");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+
+        // 短暂延时后打印状态
+        QTimer::singleShot(500, this, [this, mappedMotorID]()
+                           {
+            float pos = 0.0f, speed = 0.0f;
+            ZAux_Direct_GetMpos(g_handle, mappedMotorID, &pos);
+            ZAux_Direct_GetMspeed(g_handle, mappedMotorID, &speed);
             
-            // 只有在自动模式下才输出调试信息
-            if (m_robotArmStatusTimer && m_robotArmStatusTimer->isActive()) {
-            QString msg = QString("[夹爪] 当前状态: %1 (力矩值: %2)").arg(status).arg(currentDAC);
-            qDebug() << msg;
-            ui->tb_cmdWindow_2->append(msg);
-            }
+            QString statusMsg = QString("[伸缩] 回收中: 当前位置=%1, 速度=%2")
+                               .arg(pos)
+                               .arg(speed);
+            qDebug() << statusMsg;
+            ui->tb_cmdWindow_2->append(statusMsg); });
+    }
+    else
+    {
+        QString msg = QString("[伸缩] 错误: 回收操作失败，错误码: %1").arg(ret);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+
+        // 如果API调用失败，尝试使用字符串命令
+        sprintf(cmdbuff, "MOVEABS(%d,%f)", mappedMotorID, targetPosition);
+        if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0)
+        {
+            QString cmdMsg = QString("[伸缩] 使用命令方式开始回收");
+            qDebug() << cmdMsg;
+            ui->tb_cmdWindow_2->append(cmdMsg);
+        }
+        else
+        {
+            QString errMsg = QString("[伸缩] 命令执行失败: %1").arg(cmdbuffAck);
+            qDebug() << errMsg;
+            ui->tb_cmdWindow_2->append(errMsg);
         }
     }
 }
 
-/**
- * @brief 夹爪张开
- */
+// 参考下夹紧电机的实现，优化机械手夹紧电机控制
 void zmotionpage::on_btn_robotarm_clamp_open_clicked()
 {
-    if (!m_motionController || !m_motionController->isConnected()) {
+    if (!g_handle)
+    {
         ui->tb_cmdWindow_2->append("错误: 控制器未连接");
         return;
     }
 
+    // 确认使用的电机ID
+    int mappedMotorID = MotorMap[4]; // 机械手夹紧电机
+
+    QString debugMsg = QString("[机械手夹紧] 使用电机: MotorMap[4] = %1").arg(mappedMotorID);
+    qDebug() << debugMsg;
+    ui->tb_cmdWindow_2->append(debugMsg);
+
     // 设置力矩控制模式
-    if (m_motionController->setMotorParameter(m_clampMotorID, "Atype", ROBOTARM_CLAMP_TORQUE_MODE)) {
-        // 设置负力矩值使夹爪张开
-        if (m_motionController->setMotorParameter(m_clampMotorID, "DAC", -ROBOTARM_CLAMP_DEFAULT_DAC)) {
-            QString msg = QString("[夹爪] 张开 (力矩值: %1)").arg(-ROBOTARM_CLAMP_DEFAULT_DAC);
+    int ret = ZAux_Direct_SetAtype(g_handle, mappedMotorID, 67); // 设置为力矩模式
+    if (ret != 0)
+    {
+        QString msg = QString("[机械手夹紧] 错误: 设置力矩模式失败，错误码: %1").arg(ret);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 设置更强的负力矩值使夹爪张开 (从-30改为-40)
+    float openDac = -40.0f;
+    ret = ZAux_Direct_SetDAC(g_handle, mappedMotorID, openDac);
+    if (ret != 0)
+    {
+        QString msg = QString("[机械手夹紧] 错误: 设置DAC值失败，错误码: %1").arg(ret);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    QString msg = QString("[机械手夹紧] 开始张开 (力矩值: %1)").arg(openDac);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+
+    // 设置状态并启动监控
+    m_isClampOpening = true;
+    m_speedCheckCount = 0;
+
+    // 如果定时器已经运行，先停止
+    if (m_clampMonitorTimer->isActive())
+    {
+        m_clampMonitorTimer->stop();
+    }
+
+    // 启动定时器监控
+    m_clampMonitorTimer->start();
+}
+
+void zmotionpage::on_btn_robotarm_clamp_close_clicked()
+{
+    if (!g_handle)
+    {
+        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+        return;
+    }
+
+    // 确认使用的电机ID，并添加调试信息
+    int mappedMotorID = MotorMap[4]; // 机械手夹紧电机
+
+    QString debugMsg = QString("[机械手夹紧] 使用电机: MotorMap[4] = %1").arg(mappedMotorID);
+    qDebug() << debugMsg;
+    ui->tb_cmdWindow_2->append(debugMsg);
+
+    // 获取用户设定的力矩值
+    bool ok;
+    float dac = ui->le_robotarm_clamp_DAC->text().toFloat(&ok);
+    if (!ok || dac <= 0)
+    {
+        dac = ROBOTARM_CLAMP_DEFAULT_DAC;
+        ui->le_robotarm_clamp_DAC->setText(QString::number(dac, 'f', 1));
+    }
+
+    // 设置力矩控制模式
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+
+    // 设置为力矩模式 (Atype=67)
+    sprintf(cmdbuff, "ATYPE(%d)=67", mappedMotorID);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0)
+    {
+        QString msg = QString("[机械手夹紧] 错误: 设置力矩模式失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 设置正力矩值使夹爪闭合
+    sprintf(cmdbuff, "DAC(%d)=%f", mappedMotorID, dac);
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0)
+    {
+        QString msg = QString("[机械手夹紧] 错误: 设置DAC值失败");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    QString msg = QString("[机械手夹紧] 闭合 (力矩值: %1)").arg(dac);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
+
+    // 设置状态并启动监控
+    m_isClampOpening = false;
+    m_speedCheckCount = 0;
+
+    // 如果定时器已经运行，先停止
+    if (m_clampMonitorTimer->isActive())
+    {
+        m_clampMonitorTimer->stop();
+    }
+
+    // 启动定时器监控
+    m_clampMonitorTimer->start();
+}
+
+// 参考下夹紧电机的监控逻辑实现机械手夹紧监控
+void zmotionpage::monitorClampSpeed()
+{
+    if (!g_handle)
+    {
+        m_clampMonitorTimer->stop();
+        return;
+    }
+
+    // 使用映射后的电机ID
+    int mappedMotorID = MotorMap[4]; // 机械手夹紧电机
+
+    static QElapsedTimer elapsedTimer;
+    static bool timerStarted = false;
+    static int stallCounter = 0;
+    static float lastPosition = 0.0f;
+
+    if (!timerStarted)
+    {
+        elapsedTimer.start();
+        timerStarted = true;
+        stallCounter = 0;
+
+        // 获取初始位置
+        ZAux_Direct_GetMpos(g_handle, mappedMotorID, &lastPosition);
+        qDebug() << "[夹紧监控] 初始位置:" << lastPosition;
+    }
+
+    // 获取当前速度和位置
+    float currentSpeed = 0.0f;
+    float currentPosition = 0.0f;
+
+    ZAux_Direct_GetMspeed(g_handle, mappedMotorID, &currentSpeed);
+    ZAux_Direct_GetMpos(g_handle, mappedMotorID, &currentPosition);
+
+    // 更新UI显示（实时显示角度）
+    if (ui->le_robotarm_clamp_pos)
+    {
+        float angleDegrees = (currentPosition / 212992.0f) * 360.0f;
+        ui->le_robotarm_clamp_pos->setText(QString::number(angleDegrees, 'f', 2));
+    }
+
+    // 详细调试信息
+    float positionDelta = currentPosition - lastPosition;
+    qDebug() << "[夹紧监控] 速度:" << currentSpeed << "位置:" << currentPosition
+             << "变化量:" << positionDelta << "计数:" << stallCounter;
+
+    // 堵转检测：速度很小且位置几乎不变
+    bool isStalled = (std::abs(currentSpeed) < 5.0) && (std::abs(positionDelta) < 20.0);
+
+    if (isStalled)
+    {
+        stallCounter++;
+
+        // 连续3次检测到堵转状态才认为真正堵转
+        if (stallCounter >= 3)
+        {
+            // 停止力矩输出
+            ZAux_Direct_SetDAC(g_handle, mappedMotorID, 0);
+            QThread::msleep(100);
+
+            // 切换到位置模式并保持当前位置
+            ZAux_Direct_SetAtype(g_handle, mappedMotorID, 65);
+            ZAux_Direct_Single_MoveAbs(g_handle, mappedMotorID, currentPosition);
+
+            QString action = m_isClampOpening ? "张开" : "闭合";
+            QString msg = QString("[机械手夹紧] %1检测到堵转，切换到位置模式保持在: %2")
+                              .arg(action)
+                              .arg(currentPosition, 0, 'f', 2);
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+
+            // 停止监控
+            m_clampMonitorTimer->stop();
+            timerStarted = false;
+            return;
+        }
+    }
+    else
+    {
+        // 如果不满足堵转条件，重置计数器
+        stallCounter = 0;
+    }
+
+    // 位置变化大的检测和超时检测
+    const int MAX_POSITION_CHANGE = 500000; // 位置变化阈值
+    const int EXTENDED_TIMEOUT = 15000;     // 延长超时时间到15秒
+
+    bool reachedLimit = std::abs(currentPosition - lastPosition) > MAX_POSITION_CHANGE;
+
+    if (reachedLimit || elapsedTimer.elapsed() > EXTENDED_TIMEOUT)
+    {
+        // 停止力矩输出
+        ZAux_Direct_SetDAC(g_handle, mappedMotorID, 0);
+        QThread::msleep(100);
+
+        // 切换到位置模式并保持当前位置
+        ZAux_Direct_SetAtype(g_handle, mappedMotorID, 65);
+        ZAux_Direct_Single_MoveAbs(g_handle, mappedMotorID, currentPosition);
+
+        QString reason = reachedLimit ? "位置变化过大" : "操作超时";
+        QString msg = QString("[机械手夹紧] %1，切换到位置模式保持当前位置: %2")
+                          .arg(reason)
+                          .arg(currentPosition, 0, 'f', 2);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+
+        // 停止监控
+        m_clampMonitorTimer->stop();
+        timerStarted = false;
+    }
+
+    // 更新上一次位置
+    lastPosition = currentPosition;
+}
+
+// 更新机械手夹紧状态显示
+void zmotionpage::updateClampStatus()
+{
+    if (!g_handle)
+    {
+        return;
+    }
+
+    // 使用映射后的电机ID
+    int mappedMotorID = MotorMap[4]; // 机械手夹紧电机
+
+    // 获取当前夹爪位置
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    sprintf(cmdbuff, "?MPOS(%d)", mappedMotorID);
+
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0)
+    {
+        float currentPosition = atof(cmdbuffAck);
+
+        // 将脉冲数转换为角度
+        float angleDegrees = (currentPosition / 212992.0f) * 360.0f;
+
+        // 显示角度
+        if (ui->le_robotarm_clamp_pos)
+        {
+            ui->le_robotarm_clamp_pos->setText(QString::number(angleDegrees, 'f', 2));
+        }
+
+        // 仅在自动更新模式下输出调试信息
+        if (m_robotArmStatusTimer && m_robotArmStatusTimer->isActive())
+        {
+            QString msg = QString("[夹紧] 当前角度: %1° (脉冲: %2)")
+                              .arg(angleDegrees, 0, 'f', 2)
+                              .arg(currentPosition, 0, 'f', 0);
             qDebug() << msg;
             ui->tb_cmdWindow_2->append(msg);
         }
     }
 }
 
-/**
- * @brief 夹爪闭合
- */
-void zmotionpage::on_btn_robotarm_clamp_close_clicked()
+// 更新旋转角度显示
+void zmotionpage::updateRotationAngle()
 {
-    if (!m_motionController || !m_motionController->isConnected()) {
-        ui->tb_cmdWindow_2->append("错误: 控制器未连接");
+    if (!g_handle)
+    {
         return;
     }
 
-    // 设置力矩控制模式
-    if (m_motionController->setMotorParameter(m_clampMotorID, "Atype", ROBOTARM_CLAMP_TORQUE_MODE)) {
-        // 设置正力矩值使夹爪闭合
-        if (m_motionController->setMotorParameter(m_clampMotorID, "DAC", ROBOTARM_CLAMP_DEFAULT_DAC)) {
-            QString msg = QString("[夹爪] 闭合 (力矩值: %1)").arg(ROBOTARM_CLAMP_DEFAULT_DAC);
+    // 使用映射后的电机ID
+    int mappedMotorID = MotorMap[5]; // 机械手旋转电机
+
+    // 获取当前旋转位置
+    char cmdbuff[2048];
+    char cmdbuffAck[2048];
+    sprintf(cmdbuff, "?MPOS(%d)", mappedMotorID);
+
+    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0)
+    {
+        float currentPosition = atof(cmdbuffAck);
+
+        // 将脉冲数转换为角度
+        float angleDegrees = (currentPosition / 294912.0f) * 360.0f;
+
+        // 显示角度
+        if (ui->le_rotation_angle)
+        {
+            ui->le_rotation_angle->setText(QString::number(angleDegrees, 'f', 2));
+        }
+
+        // 仅在自动更新模式下输出调试信息
+        if (m_robotArmStatusTimer && m_robotArmStatusTimer->isActive())
+        {
+            QString msg = QString("[旋转] 当前角度: %1° (脉冲: %2)")
+                              .arg(angleDegrees, 0, 'f', 2)
+                              .arg(currentPosition, 0, 'f', 0);
             qDebug() << msg;
             ui->tb_cmdWindow_2->append(msg);
         }
     }
+}
+
+// 更新伸出长度显示
+void zmotionpage::updateExtentLength()
+{
+    if (!g_handle)
+    {
+        return;
+    }
+
+    // 使用映射后的电机ID
+    int mappedMotorID = MotorMap[6]; // 机械手移动电机
+
+    // 获取当前位置
+    float currentPosition = 0.0f;
+    int ret = ZAux_Direct_GetMpos(g_handle, mappedMotorID, &currentPosition);
+
+    if (ret == 0)
+    {
+        // 转换为毫米 (手臂一圈212992脉冲对应91.1035mm)
+        float lengthMm = (currentPosition / 212992.0f) * 91.1035f;
+
+        // 更新UI显示
+        if (ui->le_extent_length)
+        {
+            ui->le_extent_length->setText(QString::number(lengthMm, 'f', 2));
+        }
+
+        // 如果在自动更新模式，输出调试信息
+        if (m_robotArmStatusTimer && m_robotArmStatusTimer->isActive())
+        {
+            QString msg = QString("[伸缩] 当前长度: %1 mm (脉冲: %2)")
+                              .arg(lengthMm, 0, 'f', 2)
+                              .arg(currentPosition, 0, 'f', 0);
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+        }
+    }
+    else
+    {
+        qDebug() << "[伸缩] 获取位置失败，错误码:" << ret;
+    }
+}
+
+// 添加一个函数来主动打印当前的电机映射
+void zmotionpage::printMotorMapping()
+{
+    QString mapInfo = "========= 当前电机映射关系 =========\n";
+    for (int i = 0; i < 10; ++i)
+    {
+        mapInfo += QString("MotorMap[%1] = %2\n").arg(i).arg(MotorMap[i]);
+    }
+    qDebug() << mapInfo;
+    ui->tb_cmdWindow_2->append(mapInfo);
 }
 
 /**
@@ -2315,6 +2824,22 @@ void zmotionpage::initializeUI()
     m_downclampTimer = new QTimer(this);
     m_downclampTimer->setInterval(DOWNCLAMP_CHECK_INTERVAL);
     connect(m_downclampTimer, &QTimer::timeout, this, &zmotionpage::updateDownclampStatus);
+
+    // 添加这段代码，打印当前的电机映射关系
+    QString mapInfo = "初始化时的电机映射:\n";
+    for (int i = 0; i < 10; ++i)
+    {
+        mapInfo += QString("MotorMap[%1] = %2\n").arg(i).arg(MotorMap[i]);
+    }
+    qDebug() << mapInfo;
+    ui->tb_cmdWindow_2->append(mapInfo);
+
+    // 初始化夹紧监控定时器
+    m_clampMonitorTimer = new QTimer(this);
+    m_clampMonitorTimer->setInterval(100); // 100ms检查一次
+    connect(m_clampMonitorTimer, &QTimer::timeout, this, &zmotionpage::monitorClampSpeed);
+    m_isClampOpening = false;
+    m_speedCheckCount = 0;
 }
 
 // 更新存储机构状态显示
@@ -2586,31 +3111,39 @@ bool zmotionpage::setStorageMotionParameters(int motorID)
 // 更新旋转状态
 void zmotionpage::updateRotationStatus()
 {
-    if (!g_handle) {
+    if (!g_handle)
+    {
         return;
     }
 
     // 使用映射后的电机ID
-    int mappedMotorID = MotorMap[0];  // 旋转电机: MotorMap[2] = 1
+    int mappedMotorID = MotorMap[0]; // 旋转电机
 
     // 获取当前电机状态
-    char cmdbuff[2048];
-    char cmdbuffAck[2048];
-    sprintf(cmdbuff, "?MTYPE(%d)", mappedMotorID);
-    
-    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0) {
-        int motionType = atoi(cmdbuffAck);
-        
-        // 如果电机停止但状态为旋转中，则更新状态
-        if (motionType == 0 && m_isRotating) {
-            m_isRotating = false;
-            
-            // 只有在自动模式下才输出调试信息
-            if (m_robotArmStatusTimer && m_robotArmStatusTimer->isActive()) {
-            QString msg = QString("[旋转] 旋转已停止");
+    float currentSpeed = 0.0f;
+    ZAux_Direct_GetMspeed(g_handle, mappedMotorID, &currentSpeed);
+
+    // 获取DAC值
+    float currentDAC = 0.0f;
+    ZAux_Direct_GetDAC(g_handle, mappedMotorID, &currentDAC);
+
+    // 如果已经手动停止但状态没更新，不要在这里覆盖状态
+    if (!m_isRotating && std::abs(currentSpeed) < 1.0 && std::abs(currentDAC) < 1.0)
+    {
+        return;
+    }
+
+    // 如果电机实际已停止但状态为旋转中，则更新状态
+    if (m_isRotating && std::abs(currentSpeed) < 1.0 && std::abs(currentDAC) < 1.0)
+    {
+        m_isRotating = false;
+
+        // 只有在自动模式下才输出调试信息
+        if (m_robotArmStatusTimer && m_robotArmStatusTimer->isActive())
+        {
+            QString msg = QString("[旋转] 旋转已停止 (自动检测)");
             qDebug() << msg;
             ui->tb_cmdWindow_2->append(msg);
-            }
         }
     }
 }
@@ -2618,31 +3151,39 @@ void zmotionpage::updateRotationStatus()
 // 更新冲击状态
 void zmotionpage::updatePercussionStatus()
 {
-    if (!g_handle) {
+    if (!g_handle)
+    {
         return;
     }
 
     // 使用映射后的电机ID
-    int mappedMotorID = MotorMap[1];  // 冲击电机: MotorMap[1] = 7
+    int mappedMotorID = MotorMap[1]; // 冲击电机
 
     // 获取当前电机状态
-    char cmdbuff[2048];
-    char cmdbuffAck[2048];
-    sprintf(cmdbuff, "?MTYPE(%d)", mappedMotorID);
-    
-    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0) {
-        int motionType = atoi(cmdbuffAck);
-        
-        // 如果电机停止但状态为冲击中，则更新状态
-        if (motionType == 0 && m_isPercussing) {
-            m_isPercussing = false;
-            
-            // 只有在自动模式下才输出调试信息
-            if (m_robotArmStatusTimer && m_robotArmStatusTimer->isActive()) {
-            QString msg = QString("[冲击] 冲击已停止");
+    float currentSpeed = 0.0f;
+    ZAux_Direct_GetMspeed(g_handle, mappedMotorID, &currentSpeed);
+
+    // 获取DAC值
+    float currentDAC = 0.0f;
+    ZAux_Direct_GetDAC(g_handle, mappedMotorID, &currentDAC);
+
+    // 如果已经手动停止但状态没更新，不要在这里覆盖状态
+    if (!m_isPercussing && std::abs(currentSpeed) < 1.0 && std::abs(currentDAC) < 1.0)
+    {
+        return;
+    }
+
+    // 如果电机实际已停止但状态为冲击中，则更新状态
+    if (m_isPercussing && std::abs(currentSpeed) < 1.0 && std::abs(currentDAC) < 1.0)
+    {
+        m_isPercussing = false;
+
+        // 只有在自动模式下才输出调试信息
+        if (m_robotArmStatusTimer && m_robotArmStatusTimer->isActive())
+        {
+            QString msg = QString("[冲击] 冲击已停止 (自动检测)");
             qDebug() << msg;
             ui->tb_cmdWindow_2->append(msg);
-            }
         }
     }
 }
@@ -2982,24 +3523,43 @@ void zmotionpage::on_btn_downclamp_open_clicked()
         return;
     }
 
+    // 确认使用的电机ID
+    int mappedMotorID = MotorMap[3]; // 下夹紧电机
+
+    // 记录机械手移动电机当前位置
+    int moveMotorID = MotorMap[6]; // 机械手移动电机
+    float moveMotorPos = 0.0f;
+    ZAux_Direct_GetMpos(g_handle, moveMotorID, &moveMotorPos);
+
+    QString posMsg = QString("[夹爪] 操作前机械手移动电机位置: %1").arg(moveMotorPos);
+    qDebug() << posMsg;
+    ui->tb_cmdWindow_2->append(posMsg);
+
+    // 明确设置BASE仅为下夹紧电机
     char cmdbuff[2048];
     char cmdbuffAck[2048];
+    sprintf(cmdbuff, "BASE(%d)", mappedMotorID);
+    ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
 
-    // 设置力矩模式
-    sprintf(cmdbuff, "ATYPE(%d)=67", MotorMap[3]);
-    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0)
+    QString debugMsg = QString("[夹爪] 设置BASE仅为下夹紧电机: %1").arg(mappedMotorID);
+    qDebug() << debugMsg;
+    ui->tb_cmdWindow_2->append(debugMsg);
+
+    // 设置力矩控制模式
+    int ret = ZAux_Direct_SetAtype(g_handle, mappedMotorID, 67); // 设置为力矩模式
+    if (ret != 0)
     {
-        QString msg = QString("[夹爪] 错误: 设置力矩模式失败");
+        QString msg = QString("[夹爪] 错误: 设置力矩模式失败，错误码: %1").arg(ret);
         qDebug() << msg;
         ui->tb_cmdWindow_2->append(msg);
         return;
     }
 
-    // 设置固定的负向力矩值 -30（打开方向）
-    sprintf(cmdbuff, "DAC(%d)=%d", MotorMap[3], -40);
-    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0)
+    // 设置固定的负向力矩值 -40（打开方向）
+    ret = ZAux_Direct_SetDAC(g_handle, mappedMotorID, -40);
+    if (ret != 0)
     {
-        QString msg = QString("[夹爪] 错误: 设置力矩值失败");
+        QString msg = QString("[夹爪] 错误: 设置力矩值失败，错误码: %1").arg(ret);
         qDebug() << msg;
         ui->tb_cmdWindow_2->append(msg);
         return;
@@ -3011,6 +3571,33 @@ void zmotionpage::on_btn_downclamp_open_clicked()
 
     m_isDownclamping = true;
     m_downclampTimer->start(); // 开始监控位置变化
+
+    // 在操作完成后检查机械手移动电机是否被干扰，如果是则恢复位置
+    QTimer::singleShot(1000, this, [this, moveMotorID, moveMotorPos]()
+                       {
+        float newPos = 0.0f;
+        ZAux_Direct_GetMpos(g_handle, moveMotorID, &newPos);
+        
+        QString checkMsg = QString("[夹爪] 操作后机械手移动电机位置: %1 (之前: %2)")
+                          .arg(newPos).arg(moveMotorPos);
+        qDebug() << checkMsg;
+        ui->tb_cmdWindow_2->append(checkMsg);
+        
+        // 如果位置有明显变化，尝试恢复
+        if (std::abs(newPos - moveMotorPos) > 100) {
+            QString restoreMsg = QString("[夹爪] 检测到机械手移动电机位置变化，尝试恢复到原位置");
+            qDebug() << restoreMsg;
+            ui->tb_cmdWindow_2->append(restoreMsg);
+            
+            // 设置BASE为机械手移动电机
+            char restoreBuff[2048];
+            char restoreAck[2048];
+            sprintf(restoreBuff, "BASE(%d)", moveMotorID);
+            ZAux_DirectCommand(g_handle, restoreBuff, restoreAck, 2048);
+            
+            // 恢复位置
+            ZAux_Direct_Single_MoveAbs(g_handle, moveMotorID, moveMotorPos);
+        } });
 }
 
 // 关闭夹爪
@@ -3024,35 +3611,88 @@ void zmotionpage::on_btn_downclamp_close_clicked()
         return;
     }
 
+    // 确认使用的电机ID
+    int mappedMotorID = MotorMap[3]; // 下夹紧电机
+
+    // 记录机械手移动电机当前位置
+    int moveMotorID = MotorMap[6]; // 机械手移动电机
+    float moveMotorPos = 0.0f;
+    ZAux_Direct_GetMpos(g_handle, moveMotorID, &moveMotorPos);
+
+    QString posMsg = QString("[夹爪] 操作前机械手移动电机位置: %1").arg(moveMotorPos);
+    qDebug() << posMsg;
+    ui->tb_cmdWindow_2->append(posMsg);
+
+    // 明确设置BASE仅为下夹紧电机
     char cmdbuff[2048];
     char cmdbuffAck[2048];
+    sprintf(cmdbuff, "BASE(%d)", mappedMotorID);
+    ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
 
-    // 设置力矩模式
-    sprintf(cmdbuff, "ATYPE(%d)=67", MotorMap[3]);
-    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0)
+    QString debugMsg = QString("[夹爪] 设置BASE仅为下夹紧电机: %1").arg(mappedMotorID);
+    qDebug() << debugMsg;
+    ui->tb_cmdWindow_2->append(debugMsg);
+
+    // 设置力矩控制模式
+    int ret = ZAux_Direct_SetAtype(g_handle, mappedMotorID, 67); // 设置为力矩模式
+    if (ret != 0)
     {
-        QString msg = QString("[夹爪] 错误: 设置力矩模式失败");
+        QString msg = QString("[夹爪] 错误: 设置力矩模式失败，错误码: %1").arg(ret);
         qDebug() << msg;
         ui->tb_cmdWindow_2->append(msg);
         return;
     }
 
-    // 设置固定的正向力矩值 30（关闭方向）
-    sprintf(cmdbuff, "DAC(%d)=%d", MotorMap[3], 40);
-    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) != 0)
+    // 获取用户设定力矩或使用默认值
+    float dac = ui->le_downclamp_DAC->text().toFloat();
+    if (!ret || dac <= 0)
     {
-        QString msg = QString("[夹爪] 错误: 设置力矩值失败");
+        dac = 40.0f; // 默认力矩值
+    }
+
+    // 设置力矩值
+    ret = ZAux_Direct_SetDAC(g_handle, mappedMotorID, dac);
+    if (ret != 0)
+    {
+        QString msg = QString("[夹爪] 错误: 设置力矩值失败，错误码: %1").arg(ret);
         qDebug() << msg;
         ui->tb_cmdWindow_2->append(msg);
         return;
     }
 
-    QString msg = QString("[夹爪] 开始关闭 (力矩值: 40)");
+    QString msg = QString("[夹爪] 开始关闭 (力矩值: %1)").arg(dac);
     qDebug() << msg;
     ui->tb_cmdWindow_2->append(msg);
 
     m_isDownclamping = true;
     m_downclampTimer->start(); // 开始监控位置变化
+
+    // 在操作完成后检查机械手移动电机是否被干扰，如果是则恢复位置
+    QTimer::singleShot(1000, this, [this, moveMotorID, moveMotorPos]()
+                       {
+        float newPos = 0.0f;
+        ZAux_Direct_GetMpos(g_handle, moveMotorID, &newPos);
+        
+        QString checkMsg = QString("[夹爪] 操作后机械手移动电机位置: %1 (之前: %2)")
+                          .arg(newPos).arg(moveMotorPos);
+        qDebug() << checkMsg;
+        ui->tb_cmdWindow_2->append(checkMsg);
+        
+        // 如果位置有明显变化，尝试恢复
+        if (std::abs(newPos - moveMotorPos) > 100) {
+            QString restoreMsg = QString("[夹爪] 检测到机械手移动电机位置变化，尝试恢复到原位置");
+            qDebug() << restoreMsg;
+            ui->tb_cmdWindow_2->append(restoreMsg);
+            
+            // 设置BASE为机械手移动电机
+            char restoreBuff[2048];
+            char restoreAck[2048];
+            sprintf(restoreBuff, "BASE(%d)", moveMotorID);
+            ZAux_DirectCommand(g_handle, restoreBuff, restoreAck, 2048);
+            
+            // 恢复位置
+            ZAux_Direct_Single_MoveAbs(g_handle, moveMotorID, moveMotorPos);
+        } });
 }
 
 // 设置夹爪力矩
@@ -3085,10 +3725,17 @@ void zmotionpage::updateDownclampStatus()
         return;
     }
 
-    static float lastPosition = 0.0f;
-    static float lastSpeed = 0.0f;
+    // 使用映射后的电机ID
+    int mappedMotorID = MotorMap[3]; // 下夹紧电机
+
+    // 确保BASE仅设置为当前电机
     char cmdbuff[2048];
     char cmdbuffAck[2048];
+    sprintf(cmdbuff, "BASE(%d)", mappedMotorID);
+    ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
+
+    static float lastPosition = 0.0f;
+    static float lastSpeed = 0.0f;
     static QElapsedTimer m_elapsedTimer;
     static bool timerStarted = false;
 
@@ -3096,24 +3743,17 @@ void zmotionpage::updateDownclampStatus()
     {
         m_elapsedTimer.start();
         timerStarted = true;
+        ZAux_Direct_GetMpos(g_handle, mappedMotorID, &lastPosition);
+        ZAux_Direct_GetMspeed(g_handle, mappedMotorID, &lastSpeed);
     }
 
-    // 获取当前位置
-    sprintf(cmdbuff, "?MPOS(%d)", MotorMap[3]);
+    // 获取当前位置和速度
     float currentPosition = 0.0f;
-    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0)
-    {
-        currentPosition = atof(cmdbuffAck);
-        ui->le_downclamp_status->setText(QString::number(currentPosition, 'f', 2));
-    }
-
-    // 获取当前速度
-    sprintf(cmdbuff, "?MSPEED(%d)", MotorMap[3]);
     float currentSpeed = 0.0f;
-    if (ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048) == 0)
-    {
-        currentSpeed = atof(cmdbuffAck);
-    }
+    ZAux_Direct_GetMpos(g_handle, mappedMotorID, &currentPosition);
+    ZAux_Direct_GetMspeed(g_handle, mappedMotorID, &currentSpeed);
+
+    ui->le_downclamp_status->setText(QString::number(currentPosition, 'f', 2));
 
     // 检查速度变化是否很小（堵转检测）
     if (abs(currentSpeed - lastSpeed) < 0.1 && abs(currentSpeed) < 0.2)
@@ -3121,29 +3761,22 @@ void zmotionpage::updateDownclampStatus()
         if (m_elapsedTimer.elapsed() > 500)
         { // 如果速度连续0.5秒几乎不变
             // 停止力矩输出，切换到位置模式
-            sprintf(cmdbuff, "DAC(%d)=0", MotorMap[3]);
-                ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
-                
-            // 等待力矩清零
+            ZAux_Direct_SetDAC(g_handle, mappedMotorID, 0);
             QThread::msleep(100);
 
             // 切换到位置模式并保持当前位置
-            sprintf(cmdbuff, "ATYPE(%d)=65", MotorMap[3]);
-            ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
+            ZAux_Direct_SetAtype(g_handle, mappedMotorID, 65);
+            ZAux_Direct_Single_MoveAbs(g_handle, mappedMotorID, currentPosition);
 
-            // 设置当前位置为目标位置
-            sprintf(cmdbuff, "MOVEABS(%d,%f)", MotorMap[3], currentPosition);
-        ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
-        
             QString msg = QString("[夹爪] 检测到堵转，切换到位置模式保持当前位置: %1").arg(currentPosition, 0, 'f', 2);
-        qDebug() << msg;
-        ui->tb_cmdWindow_2->append(msg);
-        
-        m_isDownclamping = false;
-        m_downclampTimer->stop();
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+
+            m_isDownclamping = false;
+            m_downclampTimer->stop();
             timerStarted = false;
-        return;
-    }
+            return;
+        }
     }
     else
     {
@@ -3158,21 +3791,14 @@ void zmotionpage::updateDownclampStatus()
     if (m_elapsedTimer.elapsed() > DOWNCLAMP_TIMEOUT)
     {
         // 超时停止
-        sprintf(cmdbuff, "DAC(%d)=0", MotorMap[3]);
-        ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
-
-        // 等待力矩清零
+        ZAux_Direct_SetDAC(g_handle, mappedMotorID, 0);
         QThread::msleep(100);
 
         // 切换到位置模式并保持当前位置
-        sprintf(cmdbuff, "ATYPE(%d)=65", MotorMap[3]);
-        ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
+        ZAux_Direct_SetAtype(g_handle, mappedMotorID, 65);
+        ZAux_Direct_Single_MoveAbs(g_handle, mappedMotorID, currentPosition);
 
-        // 设置当前位置为目标位置
-        sprintf(cmdbuff, "MOVEABS(%d,%f)", MotorMap[3], currentPosition);
-        ZAux_DirectCommand(g_handle, cmdbuff, cmdbuffAck, 2048);
-
-        QString msg = QString("[夹爪] 运动超时，切换到位置模式保持当前位置: %1").arg(currentPosition, 0, 'f', 2);
+        QString msg = QString("[夹爪] 操作超时，切换到位置模式保持当前位置: %1").arg(currentPosition, 0, 'f', 2);
         qDebug() << msg;
         ui->tb_cmdWindow_2->append(msg);
 

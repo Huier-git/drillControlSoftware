@@ -49,14 +49,14 @@ public:
 private:
     // 运动控制参数常量
     // 旋转运动参数
-    static constexpr float ROBOTARM_ROTATION_SPEED = 50.0f;    // 旋转速度
-    static constexpr float ROBOTARM_ROTATION_ACCEL = 10.0f;    // 旋转加速度
-    static constexpr float ROBOTARM_ROTATION_DECEL = 10.0f;    // 旋转减速度
+    static constexpr float ROBOTARM_ROTATION_SPEED = 100000.0f;    // 旋转速度
+    static constexpr float ROBOTARM_ROTATION_ACCEL = 100000.0f;    // 旋转加速度
+    static constexpr float ROBOTARM_ROTATION_DECEL = 100000.0f;    // 旋转减速度
     
     // 伸缩运动参数
-    static constexpr float ROBOTARM_EXTENT_SPEED = 30.0f;      // 伸缩速度
-    static constexpr float ROBOTARM_EXTENT_ACCEL = 5.0f;       // 伸缩加速度
-    static constexpr float ROBOTARM_EXTENT_DECEL = 5.0f;       // 伸缩减速度
+    static constexpr float ROBOTARM_EXTENT_SPEED = 100000.0f;      // 伸缩速度
+    static constexpr float ROBOTARM_EXTENT_ACCEL = 100000.0f;       // 伸缩加速度
+    static constexpr float ROBOTARM_EXTENT_DECEL = 100000.0f;       // 伸缩减速度
     
     // 夹爪控制参数
     static constexpr int ROBOTARM_CLAMP_TORQUE_MODE = 67;      // 夹爪力矩控制模式
@@ -200,8 +200,13 @@ private slots:
     void on_le_downclamp_DAC_editingFinished(); // 设置夹爪力矩
     void updateDownclampStatus();             // 更新夹爪状态显示
 
-signals:
-    void confirmationReceived(bool isConfirmed);
+    //
+    void monitorClampSpeed();
+    //void on_le_robotarm_clamp_DAC_editingFinished();
+    void printMotorMapping();
+    void diagnosticPrintAllMotorsState(const QString &stage);
+
+    signals : void confirmationReceived(bool isConfirmed);
 
 private:
     bool initflag;                                          // 正常初始化的标志 0-未初始化，1-已初始化
@@ -221,6 +226,10 @@ private:
     int     limitPosDown;
     /////钻管撑开//////
     mdbprocess *mdbProcessor;
+    /////机械手夹紧//////
+    QTimer *m_clampMonitorTimer; // 夹紧监控定时器
+    bool m_isClampOpening;       // 夹爪是否正在打开
+    int m_speedCheckCount;       // 速度检查计数器
 
 private:
     Ui::zmotionpage *ui;

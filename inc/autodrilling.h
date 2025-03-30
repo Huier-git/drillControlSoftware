@@ -3,7 +3,7 @@
 #define AUTODRILLING_H
 
 #include "statemachine.h"
-#include "drillingstate.h"   
+#include "drillingstate.h"
 #include "motioncontroller.h"
 #include <QObject>
 #include <memory>
