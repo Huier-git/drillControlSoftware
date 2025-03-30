@@ -23,6 +23,11 @@
 #define TOP_COUNT       1300000     //13000000 为最高点脉冲数
 #define ROTATE_COUNT    850000      //850000对应120rpm
 
+// 添加存储机构相关的常量
+#define GLOBAL_STORAGE_POSITIONS 14                    // 存储位置数量
+#define GLOBAL_STORAGE_PULSES_PER_POSITION 15214       // 每个位置的脉冲数
+#define GLOBAL_STORAGE_PULSES_PER_REVOLUTION 212992    // 一圈的脉冲数
+#define GLOBAL_STORAGE_ANGLE_PER_POSITION (360.0f / GLOBAL_STORAGE_POSITIONS)  // 每个位置的角度
 
 namespace Ui {
 class zmotionpage;
@@ -55,9 +60,9 @@ private:
     
     // 夹爪控制参数
     static constexpr int ROBOTARM_CLAMP_TORQUE_MODE = 67;      // 夹爪力矩控制模式
-    static constexpr float ROBOTARM_CLAMP_DEFAULT_DAC = 1000.0f; // 默认夹爪力矩值
-    static constexpr int DOWNCLAMP_MOTOR_ID = 4;           // 夹爪电机ID
-    static constexpr float DOWNCLAMP_DEFAULT_DAC = 1000.0f;  // 默认夹爪力矩值
+    static constexpr float ROBOTARM_CLAMP_DEFAULT_DAC = 100.0f; // 默认夹爪力矩值
+    static constexpr int DOWNCLAMP_MOTOR_ID = 3;           // 下夹紧电机ID
+    static constexpr float DOWNCLAMP_DEFAULT_DAC = 100.0f;  // 默认下夹紧力矩值
     static constexpr float DOWNCLAMP_POSITION_THRESHOLD = 0.1f; // 位置变化阈值
     static constexpr int DOWNCLAMP_TIMEOUT = 3000;         // 超时时间(ms)
     static constexpr int DOWNCLAMP_CHECK_INTERVAL = 100;   // 位置检查间隔(ms)
@@ -69,12 +74,24 @@ private:
     static constexpr float ROBOTARM_RETRACT_POSITION = 0.0f;        // 回收位置
     
     // 进给机构深度控制参数
-    static constexpr float PENETRATION_DEFAULT_SPEED = 20.0f;     // 默认进给速度
-    static constexpr float PENETRATION_DEFAULT_ACCEL = 5.0f;      // 默认进给加速度
-    static constexpr float PENETRATION_DEFAULT_DECEL = 5.0f;      // 默认进给减速度
     static constexpr double PENETRATION_MAX_HEIGHT = 1315.0;      // 最大高度(mm)
     static constexpr double PENETRATION_MAX_PULSE = 13100000.0;   // 最大高度对应的脉冲数
     static constexpr double PENETRATION_PULSE_PER_MM = PENETRATION_MAX_PULSE / PENETRATION_MAX_HEIGHT; // 每毫米对应的脉冲数
+
+    // 电机默认速度定义
+    static constexpr float DRILL_DEFAULT_SPEED = 360.0f;       // 旋转切割电机默认速度
+    static constexpr float PERCUSSION_DEFAULT_SPEED = 215999.0f; // 冲击电机默认速度
+    static constexpr float PENETRATION_DEFAULT_SPEED = 30857.0f; // 进给电机默认速度
+    static constexpr float DOWNCLAMP_DEFAULT_SPEED = 290.0f;   // 下夹紧电机默认速度
+    static constexpr float ROBOTCLAMP_DEFAULT_SPEED = 17750.0f; // 机械手夹紧电机默认速度
+    static constexpr float ROBOTROTATION_DEFAULT_SPEED = 4915.0f; // 机械手旋转电机默认速度
+    static constexpr float ROBOTEXTENSION_DEFAULT_SPEED = 35500.0f; // 机械手移动电机默认速度
+    static constexpr float STORAGE_DEFAULT_SPEED = 35500.0f;   // 存储电机默认速度
+
+    // 加速度、减速度和停止速度的倍率
+    static constexpr float ACCEL_RATIO = 1.0f;   // 加速度默认为速度的倍数
+    static constexpr float DECEL_RATIO = 1.0f;   // 减速度默认为速度的倍数
+    static constexpr float STOP_SPEED_RATIO = 10.0f;  // 快速停止速度为速度的倍数
 
 private slots:
     void on_btn_IP_Scan_clicked();
@@ -227,9 +244,9 @@ private:
     int parseHexOrDec(const QString &str);
 
     // 机械手控制相关变量
-    int m_rotationMotorID;       // 旋转电机ID
-    int m_extentMotorID;         // 伸出电机ID
-    int m_clampMotorID;          // 夹爪电机ID
+    int m_rotationMotorID = 5;       // 机械手旋转电机ID
+    int m_extentMotorID = 6;         // 机械手移动电机ID
+    int m_clampMotorID = 4;          // 机械手夹紧电机ID
     
     float m_rotationOffset;      // 旋转角度偏移量
     float m_extentOffset;        // 伸出长度偏移量
@@ -237,13 +254,13 @@ private:
     QTimer* m_robotArmStatusTimer;  // 机械手状态更新定时器
 
     // 进给机构深度控制相关变量
-    int m_penetrationMotorID = 3;       // 进给电机ID（假设为3，根据实际情况调整）
+    int m_penetrationMotorID = 2;       // 进给电机ID
     float m_penetrationSpeed = PENETRATION_DEFAULT_SPEED;  // 当前设定的进给速度
     double m_penetrationTargetDepth = 0.0;    // 目标钻进深度(mm)
     double m_penetrationOffset = 0.0;         // 进给深度偏移量(脉冲)
 
     // 钻管存储机构相关参数
-    static constexpr int STORAGE_MOTOR_ID = 5;              // 存储机构电机ID
+    static constexpr int STORAGE_MOTOR_ID = 7;              // 存储电机ID
     static constexpr float STORAGE_SPEED = 10.0f;           // 存储机构旋转速度
     static constexpr float STORAGE_ACCEL = 50.0f;           // 存储机构加速度
     static constexpr float STORAGE_DECEL = 50.0f;           // 存储机构减速度
@@ -255,26 +272,32 @@ private:
     float m_storageOffset;                                  // 存储机构零点偏移量
 
     // 旋转和冲击相关参数
-    static constexpr int ROTATION_MOTOR_ID = 6;     // 旋转电机ID
-    static constexpr int PERCUSSION_MOTOR_ID = 7;   // 冲击电机ID
+    static constexpr int ROTATION_MOTOR_ID = 0;     // 旋转切割电机ID
+    static constexpr int PERCUSSION_MOTOR_ID = 1;   // 冲击电机ID
     static constexpr float ROTATION_ACCEL = 50.0f;  // 旋转加速度
     static constexpr float ROTATION_DECEL = 50.0f;  // 旋转减速度
     static constexpr float PERCUSSION_ACCEL = 100.0f; // 冲击加速度
     static constexpr float PERCUSSION_DECEL = 100.0f; // 冲击减速度
-    static constexpr float DEFAULT_ROTATION_SPEED = 10.0f; // 默认旋转速度
+    static constexpr float DEFAULT_ROTATION_SPEED = 60.0f; // 默认旋转速度
     static constexpr float DEFAULT_PERCUSSION_FREQ = 5.0f; // 默认冲击频率
-    
+
+    // 下夹紧相关参数
     float m_rotationSpeed;                    // 当前旋转速度
     float m_percussionFrequency;              // 当前冲击频率
     bool m_isRotating;                        // 是否正在旋转
     bool m_isPercussing;                      // 是否正在冲击
 
-    float m_downclampDAC;        // 当前夹爪力矩值
+    float m_downclampDAC = 0;        // 当前夹爪力矩值
     bool m_isDownclamping;       // 是否正在夹紧
     QTimer* m_downclampTimer;    // 夹爪状态监控定时器
 
     void initializeUI();  // 初始化UI组件
     void connectSignalsAndSlots();  // 连接信号和槽
+    
+    // 初始化电机速度的函数
+    void initializeMotorSpeeds();
+
+    bool setStorageMotionParameters(int motorID);
 
 };
 

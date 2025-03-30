@@ -1,6 +1,12 @@
 #include "inc/motorpage.h"
 #include "ui_motorpage.h"
+#include "zmcaux.h"
+#include <QDebug>
+#include <QThread>
+#include <vector>  // 为 std::vector 添加头文件
 
+// 定义全局变量
+ZMC_HANDLE g_handle = nullptr;
 
 motorpage::motorpage(QWidget *parent)
     : QMainWindow(parent)
@@ -136,6 +142,9 @@ motorpage::motorpage(QWidget *parent)
     {
         qDebug() << "Failed to retrieve RoundID:" << query.lastError().text();
     }
+
+    // 初始化电机参数数组
+    m_motorParams.resize(m_axisNum, std::vector<float>(3, 0.0f));  // 3种参数类型
 }
 
 motorpage::~motorpage()
@@ -190,28 +199,26 @@ void motorpage::InitDB(const QString &fileName)
  * @brief motorpage::SetAutoUp 上报参数的设置（读取命令式）
  * @param handle
  */
-void motorpage::ReadMotorParam(ZMC_HANDLE handle, int motorID, int type)
+void motorpage::ReadMotorParam(void* handle, int axis, int type)
 {
-    int ret, torque;
-    float mspeed, mpos;
-    if(type == 1)   //读取扭矩
-    {
-        ret = ZAux_BusCmd_GetDriveTorque(handle, MotorMap[motorID], &torque);
-        qDebug() << "torque:" << torque;
+    if (!handle) return;
+    
+    float value = 0;
+    switch(type) {
+        case 0:
+            ZAux_Direct_GetDpos(handle, axis, &value);
+            break;
+        case 1:
+            ZAux_Direct_GetMpos(handle, axis, &value);
+            break;
+        case 2:
+            ZAux_Direct_GetSpeed(handle, axis, &value);
+            break;
     }
-    else if(type == 2)  //读取速度
-    {
-        ret = ZAux_Direct_GetMspeed(handle, MotorMap[motorID], &mspeed);
-        qDebug() << "mspeed:" << mspeed;
+    // 确保索引在有效范围内
+    if (axis < m_axisNum && type < 3) {
+        m_motorParams[axis][type] = value;
     }
-    else if(type == 3)  //读取位置
-    {
-        ret = ZAux_Direct_GetMpos(handle, MotorMap[motorID], &mpos);
-        qDebug() << "mpos:" << mpos;
-    }
-    else
-    {return;}
-    qDebug() << "read type:" << type << "ret:" << ret;
 }
 
 void motorpage::ReadMotorParam2(ZMC_HANDLE handle, int motorID, int type)
@@ -330,64 +337,28 @@ void motorpage::DrawMotorParam(int motorID, int paramType)
 
 void motorpage::debugShowParaAll()
 {
-    // 打印完整数组内容
-    qDebug() << "torqueAll array:";
-    for (int i = 0; i < sizeof(torqueAll) / sizeof(torqueAll[0]); ++i) {
+    size_t torqueSize = sizeof(torqueAll) / sizeof(torqueAll[0]);
+    for (size_t i = 0; i < torqueSize; ++i) {
         qDebug() << "torqueAll[" << i << "]:" << torqueAll[i];
     }
 
-    // 打印完整数组内容
-    qDebug() << "speedAll array:";
-    for (int i = 0; i < sizeof(speedAll) / sizeof(speedAll[0]); ++i) {
+    size_t speedSize = sizeof(speedAll) / sizeof(speedAll[0]);
+    for (size_t i = 0; i < speedSize; ++i) {
         qDebug() << "speedAll[" << i << "]:" << speedAll[i];
     }
 
-    // 打印完整数组内容
-    qDebug() << "positionAll array:";
-    for (int i = 0; i < sizeof(positionAll) / sizeof(positionAll[0]); ++i) {
+    size_t positionSize = sizeof(positionAll) / sizeof(positionAll[0]);
+    for (size_t i = 0; i < positionSize; ++i) {
         qDebug() << "positionAll[" << i << "]:" << positionAll[i];
     }
 }
 
-void motorpage::onParamsRead(QVector<float> torqueAllData, QVector<float> speedAllData, QVector<float> positionAllData)
+void motorpage::onParamsRead(QVector<float> dpos, QVector<float> mpos, QVector<float> speed)
 {
-    // 将读取到的参数数据复制到成员变量中
-    for (int i = 0; i < 10; i++) {
-        torqueAll[i] = torqueAllData[i];
-        positionAll[i] = positionAllData[i];
-        speedAll[i] = speedAllData[i];
+    // 使用实际的轴数量
+    for(int i = 0; i < m_axisNum && i < dpos.size(); i++) {
+        updateMotorDisplay(i, dpos[i], mpos[i], speed[i]);
     }
-    //qDebug() << "copied";
-
-    if(AllRecordStart != true)
-    {
-        return;
-    }
-    
-    // 开始事务以提高数据库插入效率
-    dbMotor.transaction();
-    
-    // 循环将数据写入数据库
-    for (int i = 0; i < fAxisNum; ++i) {
-        // 准备插入语句
-        QSqlQuery query(dbMotor);
-        query.prepare("INSERT INTO Motordata" + QString::number(i) + " (RoundID, Current, Velocity, Position) "
-                      "VALUES (:RoundID, :Current, :Velocity, :Position)");
-        query.bindValue(":RoundID", currentRoundID);
-        query.bindValue(":Current", torqueAllData[MotorMap[i]]); // 使用映射后的索引获取数据
-        query.bindValue(":Velocity", speedAllData[MotorMap[i]]); // 使用映射后的索引获取数据
-        query.bindValue(":Position", positionAllData[MotorMap[i]]); // 使用映射后的索引获取数据
-
-        // 执行插入语句
-        if (!query.exec()) {
-            qDebug() << "Error: unable to execute insert query" << query.lastError().text();
-            dbMotor.rollback(); // 出错时回滚事务
-            return;
-        }
-    }
-    
-    // 提交事务
-    dbMotor.commit();
 }
 
 void motorpage::on_btn_nuke_clicked()
@@ -484,4 +455,24 @@ void motorpage::on_btn_showDB_clicked()
         qDebug() << "Query failed:" << query.lastError().text();
     }
 
+}
+
+void motorpage::updateMotorDisplay(int axis, float dpos, float mpos, float speed)
+{
+    // 实现更新显示的逻辑
+    // 例如：更新UI上对应的显示元素
+    if (axis >= 0 && axis < m_axisNum) {
+        // 这里添加更新UI的代码
+        // 例如：
+        /*
+        QString axisPrefix = QString("le_axis%1_").arg(axis);
+        QLineEdit* dposEdit = findChild<QLineEdit*>(axisPrefix + "dpos");
+        QLineEdit* mposEdit = findChild<QLineEdit*>(axisPrefix + "mpos");
+        QLineEdit* speedEdit = findChild<QLineEdit*>(axisPrefix + "speed");
+        
+        if (dposEdit) dposEdit->setText(QString::number(dpos));
+        if (mposEdit) mposEdit->setText(QString::number(mpos));
+        if (speedEdit) speedEdit->setText(QString::number(speed));
+        */
+    }
 }

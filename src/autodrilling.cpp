@@ -18,15 +18,15 @@ const QString AutoDrillingStateMachine::STATE_SYSTEM_RESET = "SYSTEM_RESET";
 const QString AutoDrillingStateMachine::STATE_OPERATION_COMPLETE = "OPERATION_COMPLETE";
 
 // 定义电机ID常量
-const int StorageUnitStateMachine::STORAGE_MOTOR_ID = 0;
-const int RobotArmStateMachine::ROTATION_MOTOR_ID = 1;
-const int RobotArmStateMachine::EXTENSION_MOTOR_ID = 2;
-const int RobotArmStateMachine::CLAMP_MOTOR_ID = 3;
-const int DrillingMechanismStateMachine::DRILL_MOTOR_ID = 4;
-const int DrillingMechanismStateMachine::PERCUSSION_MOTOR_ID = 5;
-const int PenetrationMechanismStateMachine::PENETRATION_MOTOR_ID = 6;
-const int ClampMechanismStateMachine::CLAMP_MOTOR_ID = 7;
-const int ConnectionMechanismStateMachine::CONNECTION_MOTOR_ID = 8;
+const int DrillingMechanismStateMachine::DRILL_MOTOR_ID = 0;         // 旋转切割电机
+const int DrillingMechanismStateMachine::PERCUSSION_MOTOR_ID = 1;    // 冲击电机
+const int PenetrationMechanismStateMachine::PENETRATION_MOTOR_ID = 2; // 进给电机
+const int ClampMechanismStateMachine::CLAMP_MOTOR_ID = 3;            // 下夹紧电机
+const int RobotArmStateMachine::CLAMP_MOTOR_ID = 4;                  // 机械手夹紧电机
+const int RobotArmStateMachine::ROTATION_MOTOR_ID = 5;               // 机械手旋转电机
+const int RobotArmStateMachine::EXTENSION_MOTOR_ID = 6;              // 机械手移动电机
+const int StorageUnitStateMachine::STORAGE_MOTOR_ID = 7;             // 存储电机
+const int ConnectionMechanismStateMachine::CONNECTION_MOTOR_ID = 8;   // 对接电机（特殊，暂不修改）
 
 
 /**

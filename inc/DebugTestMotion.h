@@ -3,7 +3,7 @@
 
 // 使用条件编译确保Debug模式下启用
 //#ifdef _DEBUG
-#define ENABLE_DEBUG_TEST_MOTION
+//#define ENABLE_DEBUG_TEST_MOTION
 //#endif
 
 #ifdef ENABLE_DEBUG_TEST_MOTION
@@ -19,15 +19,15 @@ class DrillingController;
 
 // 电机ID常量定义
 namespace MotorID {
-    constexpr int STORAGE = 0;
-    constexpr int ROBOT_ROTATION = 1;
-    constexpr int ROBOT_EXTENSION = 2;
-    constexpr int ROBOT_CLAMP = 3;
-    constexpr int DRILL = 4;
-    constexpr int PERCUSSION = 5;
-    constexpr int PENETRATION = 6;
-    constexpr int CLAMP = 7;
-    constexpr int CONNECTION = 8;
+    constexpr int DRILL = 0;             // 旋转切割电机
+    constexpr int PERCUSSION = 1;        // 冲击电机
+    constexpr int PENETRATION = 2;       // 进给电机
+    constexpr int CLAMP = 3;             // 下夹紧电机
+    constexpr int ROBOT_CLAMP = 4;       // 机械手夹紧电机
+    constexpr int ROBOT_ROTATION = 5;    // 机械手旋转电机
+    constexpr int ROBOT_EXTENSION = 6;   // 机械手移动电机
+    constexpr int STORAGE = 7;           // 存储电机
+    constexpr int CONNECTION = 8;        // 对接电机（特殊，暂不修改）
 }
 
 /**

@@ -14,6 +14,7 @@
 #include <QSqlRecord>
 #include <QSqlError>
 #include <QtSql>
+#include <vector>
 
 extern ZMC_HANDLE g_handle;
 
@@ -68,6 +69,12 @@ private:
     QDateTime startTime;            // 开始时间
     QDateTime stopTime;             // 结束时间
 
+    // 添加成员变量
+    std::vector<std::vector<float>> m_motorParams;  // 存储电机参数的二维数组
+    int m_axisNum = 10;  // 电机轴数量
+
+    // 添加成员函数声明
+    void updateMotorDisplay(int axis, float dpos, float mpos, float speed);
 
 };
 

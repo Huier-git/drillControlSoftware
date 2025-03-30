@@ -22,15 +22,15 @@ public:
 
     // 电机ID定义
     struct MotorID {
-        static const int STORAGE = 1;         // 存储装置电机
-        static const int ROBOT_ROTATION = 2;  // 机械手旋转电机
-        static const int ROBOT_EXTENSION = 3; // 机械手伸缩电机
-        static const int ROBOT_CLAMP = 4;     // 机械手夹持电机
-        static const int DRILL = 5;           // 钻进电机
-        static const int PERCUSSION = 6;      // 冲击电机
-        static const int PENETRATION = 7;     // 贯入机构电机
-        static const int CLAMP = 8;           // 夹紧机构电机
-        static const int CONNECTION = 9;      // 对接机构电机
+        static const int DRILL = 0;             // 旋转切割电机
+        static const int PERCUSSION = 1;        // 冲击电机
+        static const int PENETRATION = 2;       // 进给电机
+        static const int CLAMP = 3;             // 下夹紧电机
+        static const int ROBOT_CLAMP = 4;       // 机械手夹紧电机
+        static const int ROBOT_ROTATION = 5;    // 机械手旋转电机
+        static const int ROBOT_EXTENSION = 6;   // 机械手移动电机
+        static const int STORAGE = 7;           // 存储电机
+        static const int CONNECTION = 9;        // 对接电机
     };
 
     // 电机模式定义
