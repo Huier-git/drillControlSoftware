@@ -103,9 +103,9 @@ private:
     static constexpr float DRILL_DEFAULT_SPEED = 360.0f;       // 旋转切割电机默认速度
     static constexpr float PERCUSSION_DEFAULT_SPEED = 215999.0f; // 冲击电机默认速度
     static constexpr float PENETRATION_DEFAULT_SPEED = 30857.0f; // 进给电机默认速度
-    static constexpr float DOWNCLAMP_DEFAULT_SPEED = 290.0f;   // 下夹紧电机默认速度
+    static constexpr float DOWNCLAMP_DEFAULT_SPEED = 1500.0f;   // 下夹紧电机默认速度
     static constexpr float ROBOTCLAMP_DEFAULT_SPEED = 17750.0f; // 机械手夹紧电机默认速度
-    static constexpr float ROBOTROTATION_DEFAULT_SPEED = 4915.0f; // 机械手旋转电机默认速度
+    static constexpr float ROBOTROTATION_DEFAULT_SPEED = 49150.0f; // 机械手旋转电机默认速度
     static constexpr float ROBOTEXTENSION_DEFAULT_SPEED = 35500.0f; // 机械手移动电机默认速度
     static constexpr float STORAGE_DEFAULT_SPEED = 35500.0f;   // 存储电机默认速度
 
@@ -128,9 +128,9 @@ private:
     static constexpr int ROBOTEXTENSION_STABLE_COUNT = 5;          // 移动位置稳定计数阈值
     
     // 下夹紧初始化参数
-    static constexpr float DOWNCLAMP_INIT_START_DAC = -10.0f;      // 下夹紧初始化起始DAC值
-    static constexpr float DOWNCLAMP_INIT_DAC_STEP = -10.0f;       // 下夹紧初始化DAC增量（负数）
-    static constexpr float DOWNCLAMP_INIT_MIN_DAC = -50.0f;        // 下夹紧初始化最小DAC值
+    static constexpr float DOWNCLAMP_INIT_START_DAC = -50.0f;      // 下夹紧初始化起始DAC值
+    static constexpr float DOWNCLAMP_INIT_DAC_STEP = -15.0f;       // 下夹紧初始化DAC增量（负数）
+    static constexpr float DOWNCLAMP_INIT_MIN_DAC = -80.0f;        // 下夹紧初始化最小DAC值
     static constexpr float DOWNCLAMP_POSITION_TOLERANCE = 1.0f;    // 下夹紧位置变化阈值
     static constexpr int DOWNCLAMP_STABLE_COUNT = 5;              // 下夹紧位置稳定计数阈值
     
@@ -396,6 +396,8 @@ private:
     QTimer* m_robotExtensionInitTimer = nullptr;  // 机械手移动初始化定时器
     QTimer* m_robotClampInitTimer = nullptr;      // 机械手夹爪初始化定时器
     QTimer* m_downclampInitTimer = nullptr;       // 下夹紧初始化定时器
+    QTimer* m_downclampOpenTimer = nullptr;        // 夹爪打开定时器
+    QTimer* m_rotationUpdateTimer = nullptr;       // 机械手旋转角度更新定时器
     bool m_connectFastRunning = false;            // 一键对接是否正在运行
 
     /////推杆控制//////
