@@ -4,12 +4,11 @@
 QT += core gui printsupport sql serialbus concurrent
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets 
 
-CONFIG += c++17 debug
+CONFIG += c++17
 
 # 禁用 Qt 过时 API（如需要，取消注释）
 # DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
-QMAKE_LFLAGS += -no-pie
 # ----------------------------
 # 编译选项
 # ----------------------------

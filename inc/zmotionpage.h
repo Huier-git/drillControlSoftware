@@ -19,8 +19,11 @@
 #include "inc/Global.h"
 #include "inc/motioncontroller.h"
 
-#define MAX_AXIS        20  //最大轴数
+// 最大轴数
+#define MAX_AXIS        20
+// 最高点脉冲数
 #define TOP_COUNT       1300000     //13000000 为最高点脉冲数
+// 旋转计数
 #define ROTATE_COUNT    850000      //850000对应120rpm
 
 // 添加存储机构相关的常量
@@ -28,6 +31,24 @@
 #define GLOBAL_STORAGE_PULSES_PER_POSITION 15214       // 每个位置的脉冲数
 #define GLOBAL_STORAGE_PULSES_PER_REVOLUTION 212992    // 一圈的脉冲数
 #define GLOBAL_STORAGE_ANGLE_PER_POSITION (360.0f / GLOBAL_STORAGE_POSITIONS)  // 每个位置的角度
+
+// 定时器时间间隔常量(毫秒)
+#define TIMER_BASIC_INFO_INTERVAL           1000    // 基础信息刷新间隔
+#define TIMER_ADVANCE_INFO_INTERVAL         1000    // 高级信息刷新间隔
+#define TIMER_REALTIME_PARAM_INTERVAL       100     // 实时参数刷新间隔
+#define TIMER_CLAMP_MONITOR_INTERVAL        100     // 夹紧监控间隔
+#define TIMER_ROBOTARM_STATUS_INTERVAL      300     // 机械手状态更新间隔
+#define TIMER_DOWNCLAMP_STATUS_INTERVAL     200     // 夹爪状态监控间隔
+
+// 电机索引常量定义
+#define MOTOR_IDX_ROTATION         0    // 旋转切割电机索引
+#define MOTOR_IDX_PERCUSSION       1    // 冲击电机索引
+#define MOTOR_IDX_PENETRATION      2    // 进给电机索引
+#define MOTOR_IDX_DOWNCLAMP        3    // 下夹紧电机索引
+#define MOTOR_IDX_ROBOTCLAMP       4    // 机械手夹紧电机索引
+#define MOTOR_IDX_ROBOTROTATION    5    // 机械手旋转电机索引
+#define MOTOR_IDX_ROBOTEXTENSION   6    // 机械手移动电机索引
+#define MOTOR_IDX_STORAGE          7    // 存储电机索引
 
 namespace Ui {
 class zmotionpage;
@@ -92,6 +113,57 @@ private:
     static constexpr float ACCEL_RATIO = 1.0f;   // 加速度默认为速度的倍数
     static constexpr float DECEL_RATIO = 1.0f;   // 减速度默认为速度的倍数
     static constexpr float STOP_SPEED_RATIO = 10.0f;  // 快速停止速度为速度的倍数
+    
+    // 电机初始化相关常量
+    // 机械手夹爪初始化参数
+    static constexpr float ROBOTCLAMP_INIT_START_DAC = 10.0f;       // 夹爪初始化起始DAC值
+    static constexpr float ROBOTCLAMP_INIT_DAC_STEP = 10.0f;        // 夹爪初始化DAC增量
+    static constexpr float ROBOTCLAMP_INIT_MAX_DAC = 80.0f;         // 夹爪初始化最大DAC值
+    static constexpr float ROBOTCLAMP_POSITION_TOLERANCE = 1.0f;    // 夹爪位置变化阈值
+    static constexpr int ROBOTCLAMP_STABLE_COUNT = 5;              // 夹爪位置稳定计数阈值
+    
+    // 机械手移动初始化参数
+    static constexpr float ROBOTEXTENSION_INIT_DAC = -50.0f;        // 移动初始化DAC值
+    static constexpr float ROBOTEXTENSION_POSITION_TOLERANCE = 1.0f; // 移动位置变化阈值
+    static constexpr int ROBOTEXTENSION_STABLE_COUNT = 5;          // 移动位置稳定计数阈值
+    
+    // 下夹紧初始化参数
+    static constexpr float DOWNCLAMP_INIT_START_DAC = -10.0f;      // 下夹紧初始化起始DAC值
+    static constexpr float DOWNCLAMP_INIT_DAC_STEP = -10.0f;       // 下夹紧初始化DAC增量（负数）
+    static constexpr float DOWNCLAMP_INIT_MIN_DAC = -50.0f;        // 下夹紧初始化最小DAC值
+    static constexpr float DOWNCLAMP_POSITION_TOLERANCE = 1.0f;    // 下夹紧位置变化阈值
+    static constexpr int DOWNCLAMP_STABLE_COUNT = 5;              // 下夹紧位置稳定计数阈值
+    
+    // 一键对接相关参数
+    static constexpr float CONNECT_FAST_MIN_POSITION = 7500000.0f;  // 一键对接最小起始位置
+    static constexpr float CONNECT_FAST_PENETRATION_SPEED = 13596.0f; // 一键对接进给速度
+    static constexpr float CONNECT_FAST_ROTATION_DAC = 90.0f;       // 一键对接旋转DAC值
+    static constexpr float CONNECT_FAST_PENETRATION_DISTANCE = 600000.0f; // 一键对接进给距离
+    static constexpr float CONNECT_FAST_POSITION_TOLERANCE = 100.0f; // 一键对接位置公差
+    
+    // 初始化和监控定时器间隔
+    static constexpr int INIT_TIMER_INTERVAL = 500;                // 初始化监控定时器间隔(ms)
+    static constexpr int CONNECT_FAST_MONITOR_INTERVAL = 100;      // 一键对接监控定时器间隔(ms)
+    static constexpr int POSITION_REPORT_THRESHOLD = 1000;         // 位置报告阈值
+
+    // 推杆控制相关常量
+    // 位置定义
+    static constexpr int CONNECTION_MOTOR_FULLY_RETRACTED = 0;           // 完全收回位置
+    static constexpr int CONNECTION_MOTOR_FULLY_EXTENDED = -35000;       // 完全推出位置
+    static constexpr int CONNECTION_MOTOR_INIT_POSITION = 35000;         // 初始化位置
+
+    // 速度定义
+    static constexpr int CONNECTION_MOTOR_INIT_SPEED = 250;              // 初始化速度(rpm)
+    static constexpr int CONNECTION_MOTOR_NORMAL_SPEED = 500;            // 正常操作速度(rpm)
+    
+    // Modbus参数
+    static constexpr int CONNECTION_MODBUS_DEVICE_INDEX = 3;             // 第四个modbus设备索引
+    static constexpr int CONNECTION_MODBUS_SLAVE_ID = 1;                 // 从站ID
+    static constexpr int CONNECTION_MOTOR_ACCEL_TIME = 250;              // 加速时间(ms)
+    static constexpr int CONNECTION_MOTOR_ERROR_TOLERANCE = 100;         // 误差容忍(步)
+
+    // 状态检查
+    static constexpr int CONNECTION_STATUS_CHECK_INTERVAL = 500;         // 状态检查间隔(ms)
 
 private slots:
     void on_btn_IP_Scan_clicked();
@@ -167,9 +239,13 @@ private slots:
     void updateExtentLength();                  // 更新伸出长度显示
     void on_le_set_extent_length_editingFinished(); // 设置自定义伸出长度
     
+    // 新增机械手移动初始化函数
+    void on_btn_ROBOTEXTENSION_init_clicked();  // 机械手移动初始化
+    
     // 夹爪控制
     void on_btn_robotarm_clamp_open_clicked();  // 夹爪张开
     void on_btn_robotarm_clamp_close_clicked(); // 夹爪闭合
+    void on_btn_ROBOTCLAMP_init_clicked();      // 机械手夹爪初始化
     void updateClampStatus();                   // 更新夹爪状态显示
 
     // 进给机构深度控制
@@ -193,11 +269,15 @@ private slots:
     void on_le_percussion_editingFinished();  // 设置冲击频率
     void updateRotationStatus();              // 更新旋转状态
     void updatePercussionStatus();            // 更新冲击状态
-
+    
+    // 一键对接功能
+    void on_btn_connect_fast_clicked();       // 一键对接功能
+    
     // 夹爪控制函数
     void on_btn_downclamp_open_clicked();     // 打开夹爪
     void on_btn_downclamp_close_clicked();    // 关闭夹爪
     void on_le_downclamp_DAC_editingFinished(); // 设置夹爪力矩
+    void on_btn_DOWNCLAMP_init_clicked();     // 下夹紧初始化
     void updateDownclampStatus();             // 更新夹爪状态显示
 
     //
@@ -205,6 +285,18 @@ private slots:
     //void on_le_robotarm_clamp_DAC_editingFinished();
     void printMotorMapping();
     void diagnosticPrintAllMotorsState(const QString &stage);
+
+    // 推杆控制相关函数
+    void on_btn_connection_init_clicked();      // 推杆初始化
+    void on_btn_connection_extent_clicked();    // 推杆推出
+    void on_btn_connection_retract_clicked();   // 推杆收回
+    void updateConnectionStatus();              // 更新推杆状态
+    void handleConnectionData(const QVector<quint16>& data, int startReg); // 处理推杆数据
+
+    // 旧推杆按钮绑定的函数
+    void on_btn_pipePush_clicked();             // 推杆推出（旧按钮）
+    void on_btn_pipeRecover_clicked();          // 推杆收回（旧按钮）
+    void on_btn_pipeReset_clicked();            // 推杆复位（旧按钮）
 
     signals : void confirmationReceived(bool isConfirmed);
 
@@ -233,9 +325,9 @@ private:
 
 private:
     Ui::zmotionpage *ui;
-    QTimer *basicInfoTimer;                                 // 用于定时刷新基础的信息的定时器
-    QTimer *advanceInfoTimer;                               // 用于定时刷新高级的信息的定时器
-    QTimer *realtimeParmTimer;
+    QTimer *m_basicInfoTimer;                                 // 用于定时刷新基础的信息的定时器
+    QTimer *m_advanceInfoTimer;                               // 用于定时刷新高级的信息的定时器
+    QTimer *m_realtimeParmTimer;
     QList<QTableWidgetItem*> tableItems;                    // 用于存储对象
     MotionController* m_motionController;                   // 添加运动控制器成员变量
 
@@ -300,6 +392,16 @@ private:
     bool m_isDownclamping;       // 是否正在夹紧
     QTimer* m_downclampTimer;    // 夹爪状态监控定时器
 
+    // 初始化和对接相关定时器
+    QTimer* m_robotExtensionInitTimer = nullptr;  // 机械手移动初始化定时器
+    QTimer* m_robotClampInitTimer = nullptr;      // 机械手夹爪初始化定时器
+    QTimer* m_downclampInitTimer = nullptr;       // 下夹紧初始化定时器
+    bool m_connectFastRunning = false;            // 一键对接是否正在运行
+
+    /////推杆控制//////
+    QTimer *m_connectionStatusTimer;           // 推杆状态检查定时器
+    bool m_connectionInitialized;              // 推杆初始化状态
+
     void initializeUI();  // 初始化UI组件
     void connectSignalsAndSlots();  // 连接信号和槽
     
@@ -307,6 +409,11 @@ private:
     void initializeMotorSpeeds();
 
     bool setStorageMotionParameters(int motorID);
+
+    // 初始化定时器相关函数
+    void initializeTimers();             // 初始化所有定时器
+    void startMonitoringTimers();        // 启动监控类定时器
+    void stopMonitoringTimers();         // 停止监控类定时器
 
 };
 

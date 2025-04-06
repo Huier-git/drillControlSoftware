@@ -1,0 +1,33 @@
+<widget class="QPushButton" name="btn_connect_fast">
+ <property name="geometry">
+  <rect>
+   <x>250</x>
+   <y>350</y>
+   <width>120</width>
+   <height>40</height>
+  </rect>
+ </property>
+ <property name="text">
+  <string>一键对接</string>
+ </property>
+ <property name="toolTip">
+  <string>一键执行钻杆对接操作</string>
+ </property>
+</widget>
+
+<widget class="QPushButton" name="btn_DOWNCLAMP_init">
+ <property name="geometry">
+  <rect>
+   <x>250</x>
+   <y>400</y>
+   <width>120</width>
+   <height>40</height>
+  </rect>
+ </property>
+ <property name="text">
+  <string>下夹紧初始化</string>
+ </property>
+ <property name="toolTip">
+  <string>执行下夹紧初始化操作</string>
+ </property>
+</widget> 

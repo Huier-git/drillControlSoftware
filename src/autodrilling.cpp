@@ -1,6 +1,5 @@
 // autodrilling.cpp
 #include "inc/autodrilling.h"
-#include "drillingstate.h"
 #include "inc/DrillingParameters.h"
 #include "motioncontroller.h"
 #include <QDebug>
