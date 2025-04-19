@@ -41,12 +41,12 @@ const float ROBOTARM_CLAMP_INIT_DAC_INCREMENT = 10.0f;  // 初始化DAC增量
 // 机械手夹爪夹紧参数
 const float ROBOTARM_CLAMP_CLOSE_POSITION = -1310000.0f; // 夹紧位置
 const float ROBOTARM_CLAMP_CLOSE_DAC = -480.0f;        // 夹紧力矩值
-const float ROBOTARM_CLAMP_SPEED = 20000.0f;           // 夹爪速度
+const float ROBOTARM_CLAMP_SPEED = 50000.0f;           // 夹爪速度
 const float ROBOTARM_CLAMP_ACCEL_FACTOR = 5.0f;        // 加速度因子
 const float ROBOTARM_CLAMP_DECEL_FACTOR = 5.0f;        // 减速度因子
 
 // 机械手旋转参数
-const float ROBOTARM_ROTATION_DRILL_POSITION = -51500.0f; // 面对钻机位置
+const float ROBOTARM_ROTATION_DRILL_POSITION = -52000.0f; // 面对钻机位置
 const float ROBOTARM_ROTATION_STORAGE_POSITION = 0.0f;    // 面对存储位置
 const int ROBOTARM_ROTATION_POSITION_MODE = POSITION_MODE; // 位置模式
 
@@ -73,7 +73,6 @@ const float DOWNCLAMP_CLOSE_STABLE_THRESHOLD = 1.0f;  // 下夹紧关闭稳定�
 
 // 一键对接相关常量
 const float CONNECT_FAST_MIN_POSITION = 7500000.0f;    // 最小进给位置
-const float CONNECT_FAST_PENETRATION_SPEED = 13596.0f; // 进给速度
 const int CONNECT_FAST_ROTATION_TORQUE_MODE = VELOCITY_MODE; // 旋转电机力矩模式
 const float CONNECT_FAST_ROTATION_DAC = 90.0f;         // 旋转电机DAC值
 const float CONNECT_FAST_PENETRATION_DISTANCE = 600000.0f; // 进给距离
@@ -110,6 +109,8 @@ zmotionpage::zmotionpage(QWidget *parent)
 {
     // 首先设置UI
     ui->setupUi(this);
+    // 设置冲击解锁按钮初始文本
+    ui->btn_percussion_lock->setText("解锁冲击");
 
     // 创建运动控制器实例
     m_motionController = new MotionController(this);
@@ -206,6 +207,9 @@ void zmotionpage::connectSignalsAndSlots()
     
     // 一键对接按钮连接
     connect(ui->btn_connect_fast, &QPushButton::clicked, this, &zmotionpage::on_btn_connect_fast_clicked);
+    
+    // 一键断开按钮连接
+    connect(ui->btn_disconnect_fast, &QPushButton::clicked, this, &zmotionpage::on_btn_disconnect_fast_clicked);
 }
 
 zmotionpage::~zmotionpage()
@@ -3586,14 +3590,14 @@ void zmotionpage::on_le_rotation_editingFinished()
     bool ok;
     float speed_rpm = ui->le_rotation->text().toFloat(&ok);
     
-    // 验证速度范围 (10rpm-190rpm)
-    if (!ok || speed_rpm < 10 || speed_rpm > 190) {
-        QString msg = QString("[旋转] 错误: 无效的速度值，应在10-190rpm范围内");
+    // 验证速度范围 (-190rpm～190rpm)
+    if (!ok || speed_rpm < -190 || speed_rpm > 190) {
+        QString msg = QString("[旋转] 错误: 无效的速度值，应在-190～190rpm范围内");
         qDebug() << msg;
         ui->tb_cmdWindow_2->append(msg);
         
         // 修正速度到有效范围
-        if (!ok || speed_rpm < 10) speed_rpm = 10;
+        if (!ok || speed_rpm < -190) speed_rpm = -190;
         if (speed_rpm > 190) speed_rpm = 190;
         
         // 更新显示
@@ -3611,7 +3615,7 @@ void zmotionpage::on_le_rotation_editingFinished()
     // 如果正在旋转，则更新当前速度
     if (m_isRotating && g_handle) {
         // 计算DAC值 (0-1000，对应0-100%)
-        float dac_value = (speed_rpm * 15.5  / 3000.0f) * 1000.0f;
+        float dac_value = (speed_rpm * 192) / 60.0f;
         
         // 更新DAC值
         char cmdbuff[2048];
@@ -3692,18 +3696,18 @@ void zmotionpage::on_btn_rotation_clicked()
     qDebug() << mappingInfo;
     ui->tb_cmdWindow_2->append(mappingInfo);
 
-    // 读取旋转速度并确保在有效范围内(10-190rpm)
+    // 读取旋转速度并确保在有效范围内(-190~190rpm)
     bool ok;
     float speed_rpm = ui->le_rotation->text().toFloat(&ok);
     
     // 验证速度范围
-    if (!ok || speed_rpm < 10 || speed_rpm > 190) {
-        QString msg = QString("[旋转] 错误: 无效的速度值，应在10-190rpm范围内");
+    if (!ok || speed_rpm < -190 || speed_rpm > 190) {
+        QString msg = QString("[旋转] 错误: 无效的速度值，应在-190~190rpm范围内");
         qDebug() << msg;
         ui->tb_cmdWindow_2->append(msg);
         
         // 修正速度到有效范围
-        if (!ok || speed_rpm < 10) speed_rpm = 10;
+        if (!ok || speed_rpm < -190) speed_rpm = -190;
         if (speed_rpm > 190) speed_rpm = 190;
         
         // 更新显示
@@ -3711,7 +3715,7 @@ void zmotionpage::on_btn_rotation_clicked()
     }
     
     // 计算旋转DAC值 
-    float dac_value = (speed_rpm / 192.0f) * 600.0f;
+    float dac_value = (int)((speed_rpm / 192.0f) * 600.0f);
     
     // 设置Atype确保电机处于速度模式
     char cmdbuff[2048];
@@ -4613,6 +4617,9 @@ void zmotionpage::on_btn_ROBOTEXTENSION_init_clicked()
                 qDebug() << completedMsg;
                 ui->tb_cmdWindow_2->append(completedMsg);
                 
+                // 初始化完成后立即更新显示的长度，确保即使没有开启自动刷新也能显示正确的换算值
+                updateExtentLength();
+                
                 // 清理定时器
                 m_robotExtensionInitTimer->deleteLater();
                 m_robotExtensionInitTimer = nullptr;
@@ -4820,10 +4827,13 @@ void zmotionpage::on_btn_connect_fast_clicked()
         return;
     }
     
-    // 检查进给电机位置是否满足条件（大于7500000）
-    if (penetrationPos <= CONNECT_FAST_MIN_POSITION) {
-        QMessageBox::warning(this, "操作失败", QString("进给电机位置必须大于%1才能执行对接操作！").arg(CONNECT_FAST_MIN_POSITION));
-        qDebug() << "一键对接失败: 进给电机位置不满足条件，当前位置:" << penetrationPos;
+    // 弹出确认对话框，让用户确认是否执行对接操作
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "操作确认", 
+                                  "确定要执行一键对接操作吗？\n该操作将使切割头下移并旋转进行对接。",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply != QMessageBox::Yes) {
+        qDebug() << "用户取消了一键对接操作";
         return;
     }
     
@@ -4841,7 +4851,7 @@ void zmotionpage::on_btn_connect_fast_clicked()
     
     // 设置旋转切割电机为力矩模式(Atype=66)，DAC设为恒定值
     ZAux_Direct_SetParam(g_handle, "ATYPE", MotorMap[MOTOR_IDX_ROTATION], CONNECT_FAST_ROTATION_TORQUE_MODE);
-    ZAux_Direct_SetParam(g_handle, "DAC", MotorMap[MOTOR_IDX_ROTATION], CONNECT_FAST_ROTATION_DAC);
+    ZAux_Direct_SetParam(g_handle, "DAC", MotorMap[MOTOR_IDX_ROTATION], -90); // 使用-90作为对接DAC值
     qDebug() << QString("旋转切割电机设置为力矩模式(Atype=%1)，DAC=%2").arg(CONNECT_FAST_ROTATION_TORQUE_MODE).arg(CONNECT_FAST_ROTATION_DAC);
     ui->tb_cmdWindow_2->append(QString("旋转切割电机设置为力矩模式(Atype=%1)，DAC=%2").arg(CONNECT_FAST_ROTATION_TORQUE_MODE).arg(CONNECT_FAST_ROTATION_DAC));
     
@@ -5367,4 +5377,405 @@ void zmotionpage::on_btn_connection_retract_clicked()
     if (!m_connectionStatusTimer->isActive()) {
         m_connectionStatusTimer->start();
     }
+}
+
+/**
+/**
+ * @brief 冲击解锁按钮 - 用于解锁冲击锤以便旋转更顺畅
+ * 
+ * 解锁逻辑：
+ * 1. 设置为力矩模式(Atype=67)，DAC=-30进行旋转
+ * 2. 监测位置稳定在同一位置3秒后，重置为新的0点
+ * 3. 切换为位置模式(Atype=65)，移动到-100位置
+ *
+ * 锁定逻辑：
+ * 1. 让电机ENABLE失能3秒，电机自然滑落
+ * 2. 恢复为速度模式(Atype=66)
+ */
+void zmotionpage::on_btn_percussion_lock_clicked()
+{
+    if (!g_handle)
+    {
+        QString msg = QString("[冲击电机] 错误: 控制器未连接");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        return;
+    }
+
+    // 确认使用的电机ID
+    int mappedMotorID = MotorMap[MOTOR_IDX_PERCUSSION]; // 冲击电机
+    
+    if (m_isPercussionLocked) {
+        // 当前为锁定状态，开始解锁流程
+        if (m_isUnlocking) {
+            // 已经在解锁过程中，忽略
+            return;
+        }
+        
+        // 初始化变量
+        m_isUnlocking = true;
+        m_lastPercussionPos = 0.0f;
+        
+        // 1. 设置力矩模式
+        int ret = ZAux_Direct_SetAtype(g_handle, mappedMotorID, PERCUSSION_TORQUE_MODE);
+        if (ret != 0) {
+            QString errorMsg = QString("[冲击电机] 错误: 设置力矩模式失败，错误码: %1").arg(ret);
+            qDebug() << errorMsg;
+            ui->tb_cmdWindow_2->append(errorMsg);
+            m_isUnlocking = false;
+            return;
+        }
+        
+        // 2. 设置DAC=-30进行旋转
+        ret = ZAux_Direct_SetDAC(g_handle, mappedMotorID, PERCUSSION_UNLOCK_DAC);
+        if (ret != 0) {
+            QString errorMsg = QString("[冲击电机] 错误: 设置DAC值失败，错误码: %1").arg(ret);
+            qDebug() << errorMsg;
+            ui->tb_cmdWindow_2->append(errorMsg);
+            
+            // 恢复到速度模式
+            ZAux_Direct_SetAtype(g_handle, mappedMotorID, PERCUSSION_VELOCITY_MODE);
+            m_isUnlocking = false;
+            return;
+        }
+        
+        QString msg = QString("[冲击电机] 开始解锁过程: 设置为力矩模式(Atype=%1)，DAC=%2")
+                    .arg(PERCUSSION_TORQUE_MODE)
+                    .arg(PERCUSSION_UNLOCK_DAC);
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        
+        // 更新按钮文本
+        ui->btn_percussion_lock->setText("解锁中...");
+        ui->btn_percussion_lock->setEnabled(false);
+        
+        // 创建并启动监测定时器
+        if (m_percussionUnlockTimer == nullptr) {
+            m_percussionUnlockTimer = new QTimer(this);
+            connect(m_percussionUnlockTimer, &QTimer::timeout, this, &zmotionpage::monitorPercussionUnlocking);
+        }
+        m_percussionUnlockTimer->start(200); // 每100ms监测一次位置
+        
+    } else {
+        // 当前为解锁状态，开始锁定流程
+        if (m_isUnlocking) {
+            // 仍在解锁过程中，忽略
+            return;
+        }
+        
+        // 1. 让电机ENABLE失能3秒
+        int ret = ZAux_Direct_SetAxisEnable(g_handle, mappedMotorID, 0); // 设置故障状态
+        if (ret != 0) {
+            QString errorMsg = QString("[冲击电机] 错误: 设置电机失能状态失败，错误码: %1").arg(ret);
+            qDebug() << errorMsg;
+            ui->tb_cmdWindow_2->append(errorMsg);
+            return;
+        }
+        
+        QString msg = QString("[冲击电机] 开始锁定过程: 电机失能中，等待自然滑落...");
+        qDebug() << msg;
+        ui->tb_cmdWindow_2->append(msg);
+        
+        // 更新按钮文本
+        ui->btn_percussion_lock->setText("已解锁");
+        ui->btn_percussion_lock->setEnabled(false);
+        
+        // 创建并启动锁定定时器
+        if (m_percussionLockTimer == nullptr) {
+            m_percussionLockTimer = new QTimer(this);
+            connect(m_percussionLockTimer, &QTimer::timeout, this, &zmotionpage::handlePercussionLockTimeout);
+        }
+        m_percussionLockTimer->setSingleShot(true);
+        m_percussionLockTimer->start(PERCUSSION_STABLE_TIME); // 3秒后恢复
+    }
+}
+/**
+ * @brief 一键断开功能实现
+ * 
+ * 该函数实现与一键对接相反的操作：
+ * 1. 旋转DAC值为90（方向与对接相反）
+ * 2. 进给向上移动（当前位置加上CONNECT_FAST_PENETRATION_DISTANCE）
+ */
+void zmotionpage::on_btn_disconnect_fast_clicked()
+{
+    // 检查是否已经初始化
+    if (!initflag) {
+        QMessageBox::warning(this, "操作失败", "请先初始化总线！");
+        return;
+    }
+    
+    // 如果已经在运行中，不再重复执行
+    if (m_connectFastRunning) {
+        QMessageBox::warning(this, "操作无效", "一键断开操作正在执行中！");
+        return;
+    }
+    
+    // 获取进给电机当前位置
+    float penetrationPos = 0.0f;
+    int result = ZAux_Direct_GetParam(g_handle, "DPOS", MotorMap[MOTOR_IDX_PENETRATION], &penetrationPos);
+    if (result != 0) {
+        QMessageBox::warning(this, "操作失败", "获取进给电机位置失败！");
+        qDebug() << "一键断开失败: 获取进给电机位置失败, 错误码:" << result;
+        return;
+    }
+    
+    // 弹出确认对话框，让用户确认是否执行断开操作
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "操作确认", 
+                                 "确定要执行一键断开操作吗？\\n该操作将使切割头上移并旋转进行断开。",
+                                 QMessageBox::Yes|QMessageBox::No);
+    if (reply != QMessageBox::Yes) {
+        qDebug() << "用户取消了一键断开操作";
+        return;
+    }
+    
+    qDebug() << "开始执行一键断开操作，进给电机当前位置:" << penetrationPos;
+    ui->tb_cmdWindow_2->append(QString("开始执行一键断开操作，进给电机当前位置: %1").arg(penetrationPos));
+    
+    // 设置标志位，表示断开操作正在进行
+    m_connectFastRunning = true;
+    
+    // 设置进给电机速度
+    ZAux_Direct_SetParam(g_handle, "SPEED", MotorMap[MOTOR_IDX_PENETRATION], DISCONNECT_FAST_PENETRATION_SPEED);
+    qDebug() << QString("进给电机速度设置为%1").arg(DISCONNECT_FAST_PENETRATION_SPEED);
+    ui->tb_cmdWindow_2->append(QString("进给电机速度设置为%1").arg(DISCONNECT_FAST_PENETRATION_SPEED));
+    
+    // 设置旋转切割电机为力矩模式(Atype=66)，DAC设为90（与对接相反）
+    ZAux_Direct_SetParam(g_handle, "ATYPE", MotorMap[MOTOR_IDX_ROTATION], CONNECT_FAST_ROTATION_TORQUE_MODE);
+    ZAux_Direct_SetParam(g_handle, "DAC", MotorMap[MOTOR_IDX_ROTATION], DISCONNECT_FAST_ROTATION_DAC); // 使用断开DAC值
+    qDebug() << QString("旋转切割电机设置为力矩模式(Atype=%1)，DAC=%2").arg(CONNECT_FAST_ROTATION_TORQUE_MODE).arg(DISCONNECT_FAST_ROTATION_DAC);
+    ui->tb_cmdWindow_2->append(QString("旋转切割电机设置为力矩模式(Atype=%1)，DAC=%2").arg(CONNECT_FAST_ROTATION_TORQUE_MODE).arg(DISCONNECT_FAST_ROTATION_DAC));
+    
+    // 计算进给电机的目标位置（当前位置加上设定距离，与对接相反）
+    float targetPos = penetrationPos + CONNECT_FAST_PENETRATION_DISTANCE;
+    
+    // 首先启动旋转切割电机
+    ZAux_Direct_Single_Move(g_handle, MotorMap[MOTOR_IDX_ROTATION], 1.0f);
+    qDebug() << "启动旋转切割电机";
+    ui->tb_cmdWindow_2->append("启动旋转切割电机");
+    
+    // 然后启动进给电机，向上移动到目标位置
+    ZAux_Direct_Single_MoveAbs(g_handle, MotorMap[MOTOR_IDX_PENETRATION], targetPos);
+    qDebug() << "启动进给电机，向上移动到目标位置:" << targetPos;
+    ui->tb_cmdWindow_2->append(QString("启动进给电机，向上移动到目标位置: %1").arg(targetPos));
+    
+    // 创建一个定时器来监控进度，这样不会阻塞UI线程
+    QTimer* monitorTimer = new QTimer(this);
+    connect(monitorTimer, &QTimer::timeout, this, [this, monitorTimer, targetPos]() {
+        // 如果不再运行（可能被紧急停止），就不继续
+        if (!m_connectFastRunning) {
+            monitorTimer->stop();
+            monitorTimer->deleteLater();
+            return;
+        }
+        
+        // 获取当前位置
+        float currentPos = 0.0f;
+        int result = ZAux_Direct_GetParam(g_handle, "DPOS", MotorMap[MOTOR_IDX_PENETRATION], &currentPos);
+        if (result != 0) {
+            qDebug() << "获取进给电机位置失败，错误码:" << result;
+            ui->tb_cmdWindow_2->append(QString("获取进给电机位置失败，错误码: %1").arg(result));
+            m_connectFastRunning = false;
+            monitorTimer->stop();
+            monitorTimer->deleteLater();
+            return;
+        }
+        
+        // 输出当前位置信息（每设定阈值个单位）
+        static float lastReportedPos = 0;
+        if (std::abs(currentPos - lastReportedPos) > POSITION_REPORT_THRESHOLD) {
+            qDebug() << "当前进给位置:" << currentPos << "，目标位置:" << targetPos;
+            ui->tb_cmdWindow_2->append(QString("当前进给位置: %1，目标位置: %2").arg(currentPos).arg(targetPos));
+            lastReportedPos = currentPos;
+        }
+        
+        // 检查是否接近目标位置
+        if (std::abs(currentPos - targetPos) <= CONNECT_FAST_POSITION_TOLERANCE) {
+            // 进给完成后，停止旋转切割电机
+            ZAux_Direct_Single_Cancel(g_handle, MotorMap[MOTOR_IDX_ROTATION], 0);
+            ZAux_Direct_SetParam(g_handle, "DAC", MotorMap[MOTOR_IDX_ROTATION], 0.0f);  // 停止力矩输出
+            qDebug() << "进给完成，停止旋转切割电机";
+            ui->tb_cmdWindow_2->append("进给完成，停止旋转切割电机");
+            
+            // 清理资源
+            m_connectFastRunning = false;
+            monitorTimer->stop();
+            monitorTimer->deleteLater();
+            
+            // 显示操作完成消息
+            QMessageBox::information(this, "操作完成", "一键断开操作已完成！");
+        }
+    });
+    
+    // 启动监控定时器
+    monitorTimer->start(CONNECT_FAST_MONITOR_INTERVAL);
+}
+void zmotionpage::monitorPercussionUnlocking() 
+{
+    qDebug() << "[冲击电机] 监测函数被调用";
+    
+    if (!g_handle || !m_isUnlocking) {
+        qDebug() << "[冲击电机] 监测结束，g_handle=" << (g_handle != nullptr) << ", m_isUnlocking=" << m_isUnlocking;
+        if (m_percussionUnlockTimer) {
+            m_percussionUnlockTimer->stop();
+        }
+        return;
+    }
+    
+    int mappedMotorID = MotorMap[MOTOR_IDX_PERCUSSION];
+    float currentPos = 0.0f;
+    
+    // 获取当前位置
+    int ret = ZAux_Direct_GetDpos(g_handle, mappedMotorID, &currentPos);
+    if (ret != 0) {
+        QString errorMsg = QString("[冲击电机] 错误: 获取位置失败，错误码: %1").arg(ret);
+        qDebug() << errorMsg;
+        ui->tb_cmdWindow_2->append(errorMsg);
+        return;
+    }
+    
+    qDebug() << "[冲击电机] 当前位置:" << currentPos << "上次位置:" << m_lastPercussionPos;
+    
+    // 检查位置是否稳定
+    if (qAbs(currentPos - m_lastPercussionPos) <= PERCUSSION_POS_TOLERANCE) {
+        // 位置稳定
+        if (!m_stableStartTime.isValid()) {
+            // 开始计时
+            m_stableStartTime.start();
+            
+            QString msg = QString("[冲击电机] 位置稳定在 %1，开始计时...").arg(currentPos);
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+        } else if (m_stableStartTime.elapsed() >= PERCUSSION_STABLE_TIME) {
+            // 位置已稳定3秒，重置为新的0点
+            m_percussionUnlockTimer->stop();
+            
+            // 将当前位置设为零点 - 先设置DPOS再设置MPOS
+            ret = ZAux_Direct_SetDpos(g_handle, mappedMotorID, 0);
+            ret += ZAux_Direct_SetMpos(g_handle, mappedMotorID, 0);
+            if (ret != 0) {
+                QString errorMsg = QString("[冲击电机] 错误: 重置零点失败，错误码: %1").arg(ret);
+                qDebug() << errorMsg;
+                ui->tb_cmdWindow_2->append(errorMsg);
+                
+                // 恢复到速度模式
+                
+                ZAux_Direct_SetDAC(g_handle, mappedMotorID, 0);
+                ZAux_Direct_SetAtype(g_handle, mappedMotorID, PERCUSSION_VELOCITY_MODE);
+                m_isUnlocking = false;
+                ui->btn_percussion_lock->setText("解锁冲击");
+                ui->btn_percussion_lock->setEnabled(true);
+                return;
+            }
+            
+            QString msg = QString("[冲击电机] 位置已稳定3秒，已重置为新的零点");
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+            
+            // 切换到位置模式
+            ret = ZAux_Direct_SetAtype(g_handle, mappedMotorID, PERCUSSION_POSITION_MODE);
+            ret += ZAux_Direct_SetDAC(g_handle, mappedMotorID, 0);
+            if (ret != 0) {
+                QString errorMsg = QString("[冲击电机] 错误: 设置位置模式失败，错误码: %1").arg(ret);
+                qDebug() << errorMsg;
+                ui->tb_cmdWindow_2->append(errorMsg);
+                
+                // 恢复到速度模式
+                ZAux_Direct_SetAtype(g_handle, mappedMotorID, PERCUSSION_VELOCITY_MODE);
+                ZAux_Direct_SetDAC(g_handle, mappedMotorID, 0);
+                m_isUnlocking = false;
+                ui->btn_percussion_lock->setText("解锁冲击");
+                ui->btn_percussion_lock->setEnabled(true);
+                return;
+            }
+            
+            // 移动到-100位置
+            ret = ZAux_Direct_Single_Move(g_handle, mappedMotorID, PERCUSSION_UNLOCK_POS);
+            if (ret != 0) {
+                QString errorMsg = QString("[冲击电机] 错误: 移动到解锁位置失败，错误码: %1").arg(ret);
+                qDebug() << errorMsg;
+                ui->tb_cmdWindow_2->append(errorMsg);
+                
+                // 恢复到速度模式
+                ZAux_Direct_SetAtype(g_handle, mappedMotorID, PERCUSSION_VELOCITY_MODE);
+                ZAux_Direct_SetDAC(g_handle, mappedMotorID, 0);
+                m_isUnlocking = false;
+                ui->btn_percussion_lock->setText("解锁冲击");
+                ui->btn_percussion_lock->setEnabled(true);
+                return;
+            }
+            
+            msg = QString("[冲击电机] 已切换到位置模式(Atype=%1)，并移动到位置 %2")
+                        .arg(PERCUSSION_POSITION_MODE)
+                        .arg(PERCUSSION_UNLOCK_POS);
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+            
+            // 解锁完成
+            m_isPercussionLocked = false;
+            m_isUnlocking = false;
+            ui->btn_percussion_lock->setText("锁定冲击");
+            ui->btn_percussion_lock->setEnabled(true);
+            
+            msg = QString("[冲击电机] 解锁成功！");
+            qDebug() << msg;
+            ui->tb_cmdWindow_2->append(msg);
+        } else {
+            // 正在计时中
+            qDebug() << "[冲击电机] 位置稳定中，已经稳定" << m_stableStartTime.elapsed() << "毫秒";
+        }
+    } else {
+        // 位置不稳定，重置计时
+        if (m_stableStartTime.isValid()) {
+            qDebug() << "[冲击电机] 位置不稳定，重置计时";
+        }
+        m_stableStartTime = QTime();
+    }
+    
+    // 更新上次位置
+    m_lastPercussionPos = currentPos;
+}
+/**
+ * @brief 处理冲击锁定超时
+ * 
+ * 电机失能3秒后恢复为速度模式
+ */
+void zmotionpage::handlePercussionLockTimeout()
+ { 
+    qDebug() << "[冲击电机] 锁定超时函数被调用";
+    
+    if (!g_handle) {
+        ui->btn_percussion_lock->setText("解锁冲击");
+        ui->btn_percussion_lock->setEnabled(true);
+        return;
+    }
+    
+    int mappedMotorID = MotorMap[MOTOR_IDX_PERCUSSION];
+    
+    // 恢复电机使能
+    int ret = ZAux_Direct_SetAxisEnable(g_handle, mappedMotorID, 1);
+    if (ret != 0) {
+        QString errorMsg = QString("[冲击电机] 错误: 恢复电机使能失败，错误码: %1").arg(ret);
+        qDebug() << errorMsg;
+        ui->tb_cmdWindow_2->append(errorMsg);
+    }
+    
+    // 设置为速度模式
+    ret = ZAux_Direct_SetAtype(g_handle, mappedMotorID, PERCUSSION_VELOCITY_MODE);
+    if (ret != 0) {
+        QString errorMsg = QString("[冲击电机] 错误: 设置速度模式失败，错误码: %1").arg(ret);
+        qDebug() << errorMsg;
+        ui->tb_cmdWindow_2->append(errorMsg);
+        return;
+    }
+    
+    // 更新状态
+    m_isPercussionLocked = true;
+    ui->btn_percussion_lock->setText("解锁冲击");
+    ui->btn_percussion_lock->setEnabled(true);
+    
+    QString msg = QString("[冲击电机] 锁定成功，已恢复为速度模式(Atype=%1)")
+                .arg(PERCUSSION_VELOCITY_MODE);
+    qDebug() << msg;
+    ui->tb_cmdWindow_2->append(msg);
 }

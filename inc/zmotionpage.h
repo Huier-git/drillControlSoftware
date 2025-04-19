@@ -104,7 +104,7 @@ private:
     static constexpr float PERCUSSION_DEFAULT_SPEED = 215999.0f; // 冲击电机默认速度
     static constexpr float PENETRATION_DEFAULT_SPEED = 30857.0f; // 进给电机默认速度
     static constexpr float DOWNCLAMP_DEFAULT_SPEED = 1500.0f;   // 下夹紧电机默认速度
-    static constexpr float ROBOTCLAMP_DEFAULT_SPEED = 17750.0f; // 机械手夹紧电机默认速度
+    static constexpr float ROBOTCLAMP_DEFAULT_SPEED = 47750.0f; // 机械手夹紧电机默认速度
     static constexpr float ROBOTROTATION_DEFAULT_SPEED = 49150.0f; // 机械手旋转电机默认速度
     static constexpr float ROBOTEXTENSION_DEFAULT_SPEED = 35500.0f; // 机械手移动电机默认速度
     static constexpr float STORAGE_DEFAULT_SPEED = 35500.0f;   // 存储电机默认速度
@@ -135,10 +135,14 @@ private:
     static constexpr int DOWNCLAMP_STABLE_COUNT = 5;              // 下夹紧位置稳定计数阈值
     
     // 一键对接相关参数
+    static constexpr int CONNECT_FAST_ROTATION_TORQUE_MODE = 66;   // 旋转电机力矩模式(VELOCITY_MODE)
     static constexpr float CONNECT_FAST_MIN_POSITION = 7500000.0f;  // 一键对接最小起始位置
-    static constexpr float CONNECT_FAST_PENETRATION_SPEED = 13596.0f; // 一键对接进给速度
-    static constexpr float CONNECT_FAST_ROTATION_DAC = 90.0f;       // 一键对接旋转DAC值
-    static constexpr float CONNECT_FAST_PENETRATION_DISTANCE = 600000.0f; // 一键对接进给距离
+    static constexpr float CONNECT_FAST_PENETRATION_SPEED = 13456.0f; // 一键对接进给速度
+    static constexpr float CONNECT_FAST_ROTATION_DAC = -90.0f;       // 一键对接旋转DAC值
+    static constexpr float CONNECT_FAST_PENETRATION_DISTANCE = 450000.0f; // 一键对接进给距离
+    static constexpr float DISCONNECT_FAST_PENETRATION_DISTANCE = 480000.0f; // 一键断开进给距离
+    static constexpr float DISCONNECT_FAST_ROTATION_DAC = 90.0f;     // 一键断开旋转DAC值
+    static constexpr float DISCONNECT_FAST_PENETRATION_SPEED = 13596.0f; // 一键断开进给速度
     static constexpr float CONNECT_FAST_POSITION_TOLERANCE = 100.0f; // 一键对接位置公差
     
     // 初始化和监控定时器间隔
@@ -272,6 +276,7 @@ private slots:
     
     // 一键对接功能
     void on_btn_connect_fast_clicked();       // 一键对接功能
+    void on_btn_disconnect_fast_clicked();    // 一键断开功能
     
     // 夹爪控制函数
     void on_btn_downclamp_open_clicked();     // 打开夹爪
@@ -297,6 +302,12 @@ private slots:
     void on_btn_pipePush_clicked();             // 推杆推出（旧按钮）
     void on_btn_pipeRecover_clicked();          // 推杆收回（旧按钮）
     void on_btn_pipeReset_clicked();            // 推杆复位（旧按钮）
+
+    void on_btn_percussion_lock_clicked();      // 冲击解锁按钮
+
+    // 冲击解锁相关槽函数
+    void monitorPercussionUnlocking();      // 监测冲击解锁过程
+    void handlePercussionLockTimeout();     // 处理冲击锁定超时
 
     signals : void confirmationReceived(bool isConfirmed);
 
@@ -403,6 +414,23 @@ private:
     /////推杆控制//////
     QTimer *m_connectionStatusTimer;           // 推杆状态检查定时器
     bool m_connectionInitialized;              // 推杆初始化状态
+
+    bool m_isPercussionLocked = true;            // 冲击电机锁定状态，默认锁定
+    
+    // 冲击解锁相关常量和变量
+    static constexpr int PERCUSSION_TORQUE_MODE = 67;       // 冲击电机力矩模式
+    static constexpr int PERCUSSION_POSITION_MODE = 65;     // 冲击电机位置模式
+    static constexpr int PERCUSSION_VELOCITY_MODE = 66;     // 冲击电机速度模式
+    static constexpr float PERCUSSION_UNLOCK_DAC = -30.0f;  // 冲击解锁力矩值
+    static constexpr float PERCUSSION_UNLOCK_POS = -100.0f; // 冲击解锁位置值
+    static constexpr int PERCUSSION_STABLE_TIME = 3000;     // 位置稳定时间(ms)
+    static constexpr float PERCUSSION_POS_TOLERANCE = 1.0f; // 位置容差值
+    
+    QTimer* m_percussionUnlockTimer = nullptr;   // 冲击解锁监测定时器
+    QTimer* m_percussionLockTimer = nullptr;     // 冲击锁定定时器
+    float m_lastPercussionPos = 0.0f;            // 上次冲击位置
+    QTime m_stableStartTime;                     // 位置稳定开始时间
+    bool m_isUnlocking = false;                  // 是否正在解锁过程中
 
     void initializeUI();  // 初始化UI组件
     void connectSignalsAndSlots();  // 连接信号和槽

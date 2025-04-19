@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1080</width>
-    <height>833</height>
+    <height>841</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1366,20 +1366,6 @@
               <string>对接机构开合控制</string>
              </property>
              <layout class="QGridLayout" name="gridLayout_12">
-              <item row="2" column="0" colspan="2">
-               <widget class="QPushButton" name="btn_connect_fast">
-                <property name="text">
-                 <string>一键对接</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QPushButton" name="btn_connection_extent">
-                <property name="text">
-                 <string>推出推杆</string>
-                </property>
-               </widget>
-              </item>
               <item row="0" column="0" colspan="2">
                <layout class="QHBoxLayout" name="horizontalLayout_2">
                 <item>
@@ -1394,10 +1380,31 @@
                 </item>
                </layout>
               </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="btn_connection_extent">
+                <property name="text">
+                 <string>推出推杆</string>
+                </property>
+               </widget>
+              </item>
               <item row="1" column="1">
                <widget class="QPushButton" name="btn_connection_retract">
                 <property name="text">
                  <string>收回推杆</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QPushButton" name="btn_disconnect_fast">
+                <property name="text">
+                 <string>一键断开</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QPushButton" name="btn_connect_fast">
+                <property name="text">
+                 <string>一键对接</string>
                 </property>
                </widget>
               </item>
@@ -1523,6 +1530,13 @@
                 </item>
                 <item>
                  <widget class="QLineEdit" name="le_percussion"/>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_percussion_lock">
+                  <property name="text">
+                   <string>锁定</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
