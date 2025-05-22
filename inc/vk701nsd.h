@@ -38,10 +38,10 @@ public:
     int cardId = 0;                         // 数据采集卡序列号 [0-7]
     double refVol = 1;                      // 选择数据采集卡模式 VK701N: [4 或 1]
     int bitMode = 2;                        // 采样分辨率 [0-8/1-16/2,3-24]
-    int samplingFrequency = 5000;           // 采样频率 [1-100K]
+    int samplingFrequency = 10000;          // 采样频率 [1-100K], default changed to 10000 for consistency with tests
     int volRange = 0;                       // 电压输入范围 [见手册]
     //////////////////////////////////////////////////////////////////////////////////////////////
-    bool initStatus;                        // 初始化成功标志
+    bool initStatus = false;                // 初始化成功标志, explicitly initialized
     bool fDAQSampleClr;                     // 0-开始采样 1-停止采样
     int reconnectCounter = 2000;            // 初始化过程中的连接尝试次数
     int loopTimes = 0;                      // 循环次数计数
@@ -90,6 +90,8 @@ private:
     // 使用原子变量控制工作线程的运行和状态
     QAtomicInt shouldStop;
     DAQState currentState;
+
+    Q_DISABLE_COPY_MOVE(vk701nsd)
 };
 
 #endif // VK701NSD_H

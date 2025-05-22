@@ -95,6 +95,33 @@ vk701page::vk701page(QWidget *parent)
 
     // 在vk701page构造函数中添加这行代码
     connect(ui->btn_exit, &QPushButton::clicked, this, &vk701page::on_btn_exit_clicked);
+
+    // Initialize pagination variables
+    db_currentPage = 0; 
+    db_totalPages = 0;
+    db_filter_minRoundID = -1; 
+    db_filter_maxRoundID = -1;
+
+    // Assuming the UI elements for pagination (btn_nextPage, btn_prevPage, lbl_pageInfo)
+    // have been added to vk701page.ui as per the subtask description.
+    // These checks are for robustness. The UI file needs to be updated manually.
+    if (ui->btn_nextPage) {
+        connect(ui->btn_nextPage, &QPushButton::clicked, this, &vk701page::on_btn_nextPage_clicked);
+    } else {
+        qWarning() << "UI element btn_nextPage not found. Pagination controls will not work.";
+    }
+    if (ui->btn_prevPage) {
+        connect(ui->btn_prevPage, &QPushButton::clicked, this, &vk701page::on_btn_prevPage_clicked);
+    } else {
+        qWarning() << "UI element btn_prevPage not found. Pagination controls will not work.";
+    }
+    if (!ui->lbl_pageInfo) {
+         qWarning() << "UI element lbl_pageInfo not found. Page information will not be displayed.";
+    }
+    // Initial state for pagination buttons and label
+    if(ui->btn_prevPage) ui->btn_prevPage->setEnabled(false);
+    if(ui->btn_nextPage) ui->btn_nextPage->setEnabled(false);
+    if(ui->lbl_pageInfo) ui->lbl_pageInfo->setText("Page 0 of 0");
 }
 
 vk701page::~vk701page()
@@ -200,7 +227,11 @@ void vk701page::handleStateChanged(DAQState newState)
 void vk701page::handleResultMsg(QString msg)
 {
     // 显示消息
-    QMessageBox::information(this, "数据采集", msg);
+    if (msg.contains("失败") || msg.contains("错误")) {
+        QMessageBox::critical(this, "数据采集错误", msg);
+    } else {
+        QMessageBox::warning(this, "数据采集警告", msg);
+    }
 }
 
 // 安全关闭工作线程
@@ -225,6 +256,7 @@ void vk701page::saveDataToDatabase(const QVector<double> &data, int channels, in
 {
     // 检查数据有效性
     if (data.isEmpty() || channels <= 0 || pointsPerChannel <= 0) {
+        qCritical() << "SaveDataToDatabase: 无效的输入参数. Channels:" << channels << "PointsPerChannel:" << pointsPerChannel;
         return;
     }
     
@@ -273,19 +305,33 @@ void vk701page::updatePlots()
     }
     
     int pointsPerChannel = size / 4;
+    const int maxPointsToPlot = 2000; // Max points to plot per channel without downsampling
     
     // 更新四个通道的图表
     for (int i = 0; i < 4; i++) {
-        QVector<double> x(pointsPerChannel), y(pointsPerChannel);
+        QVector<double> x, y;
+        int downsampleFactor = 1;
+
+        if (pointsPerChannel > maxPointsToPlot) {
+            downsampleFactor = qCeil(static_cast<double>(pointsPerChannel) / maxPointsToPlot);
+        }
+
+        x.reserve(pointsPerChannel / downsampleFactor);
+        y.reserve(pointsPerChannel / downsampleFactor);
         
-        for (int j = 0; j < pointsPerChannel; j++) {
-            x[j] = j;
-            y[j] = dataCopy[j * 4 + i] * 1000; // 转换为毫伏
+        for (int j = 0; j < pointsPerChannel; j += downsampleFactor) {
+            x.append(j); // X-axis still represents original index for time reference
+            y.append(dataCopy[j * 4 + i] * 1000); // 转换为毫伏
         }
         
+        if (pointsPerChannel > 0 && x.isEmpty()) { // Ensure at least one point is added if original data exists
+             x.append(0);
+             y.append(dataCopy[i * 4] * 1000);
+        }
+
         // 更新数据而不是清除和重建图表
         qcustomplot[i]->graph(0)->setData(x, y);
-        qcustomplot[i]->xAxis->setRange(0, pointsPerChannel);
+        qcustomplot[i]->xAxis->setRange(0, pointsPerChannel); // Keep X axis range based on original points
         
         // 判断是否需要自动调整Y轴范围
         double minY = *std::min_element(y.begin(), y.end());
@@ -308,11 +354,15 @@ void vk701page::on_btn_start_2_clicked()
     // 开启工作线程
     if (!workerThread->isRunning()) {
         // 判断采样频率
-        int sa = ui->le_samplingFrequency->text().toInt();
-        if (sa <= 100000 && sa >= 1000) {  // 采样频率在1-100K
-            worker->samplingFrequency = sa;
-            worker->setBufferSize(4 * sa); // 更新缓冲区大小
+        bool ok;
+        int sa = ui->le_samplingFrequency->text().toInt(&ok);
+        if (!ok || sa < 1000 || sa > 100000) {  // 采样频率在1-100K
+            QMessageBox::warning(this, "无效的采样频率", "请输入1000到100000之间的整数作为采样频率。");
+            ui->btn_start_2->setEnabled(true); // Re-enable button
+            return;
         }
+        worker->samplingFrequency = sa;
+        worker->setBufferSize(4 * sa); // 更新缓冲区大小
         ui->le_samplingFrequency->setEnabled(false);
         workerThread->start();
     }
@@ -429,7 +479,8 @@ void vk701page::InitDB(const QString &fileName)
         db.setDatabaseName(fileName);
 
         if (!db.open()) {
-            qDebug() << "错误: 连接数据库失败." << db.lastError();
+            qCritical() << "错误: 连接数据库失败." << db.lastError().text();
+            QMessageBox::critical(this, "数据库错误", "连接数据库失败: " + db.lastError().text());
             return;
         }
 
@@ -476,7 +527,8 @@ void vk701page::InitDB(const QString &fileName)
     db = QSqlDatabase::addDatabase("QSQLITE", "vk701");
     db.setDatabaseName(fileName);
     if (!db.open()) {
-        qDebug() << "错误: 连接数据库失败." << db.lastError();
+        qCritical() << "错误: 连接数据库失败." << db.lastError().text();
+        QMessageBox::critical(this, "数据库错误", "连接数据库失败: " + db.lastError().text());
         return;
     }
     qDebug() << "连接到vk701数据库成功.";
@@ -541,11 +593,11 @@ void vk701page::cleanupOldData(int keepLastNRounds)
 void vk701page::on_btn_showDB_clicked()
 {
     // 判断范围条件，如果不符合则返回
-    bool ok;
-    int start = ui->le_rage_start->text().toInt(&ok);
-    int end = ui->le_rage_end->text().toInt(&ok);
-    if (!ok || start > end || start < 0 || end < 0) {
-        qDebug() << "范围错误";
+    bool ok1, ok2;
+    int start = ui->le_rage_start->text().toInt(&ok1);
+    int end = ui->le_rage_end->text().toInt(&ok2);
+    if (!ok1 || !ok2 || start > end || start < 0 || end < 0) {
+        QMessageBox::warning(this, "无效的范围", "请输入有效的、非负的整数范围，并确保开始不大于结束。");
         return;
     }
 
@@ -553,62 +605,41 @@ void vk701page::on_btn_showDB_clicked()
 
     // 清空表格已有数据
     ui->table_vibDB->setRowCount(0);
+    
+    db_filter_minRoundID = start;
+    db_filter_maxRoundID = end;
 
-    // 使用分页查询提高性能，避免一次加载全部数据
-    const int pageSize = 1000; // 每页记录数
-    int currentPage = 0;
-    int row = 0;
+    QSqlQuery countQuery(db);
+    countQuery.prepare("SELECT COUNT(*) FROM IEPEdata WHERE RoundID >= ? AND RoundID <= ?");
+    countQuery.addBindValue(db_filter_minRoundID);
+    countQuery.addBindValue(db_filter_maxRoundID);
     
-    QSqlQuery query(db);
-    // 设置查询超时
-    query.setForwardOnly(true); // 只向前滚动结果集，节省内存
-    
-    // 设置表头
-    ui->table_vibDB->setColumnCount(3);
-    ui->table_vibDB->setHorizontalHeaderLabels({"轮次ID", "通道ID", "振动数据"});
-    
-    // 使用分页查询
-    while (true) {
-        int offset = currentPage * pageSize;
-        QString queryStr = QString("SELECT * FROM IEPEdata WHERE rowid BETWEEN %1 AND %2 LIMIT %3 OFFSET %4")
-                           .arg(start).arg(end).arg(pageSize).arg(offset);
-                           
-        if (!query.exec(queryStr)) {
-            qDebug() << "查询失败." << query.lastError().text();
-            break;
-        }
-        
-        // 如果没有更多记录，退出循环
-        if (!query.next()) {
-            break;
-        }
-        
-        // 处理本页数据
-        do {
-            ui->table_vibDB->insertRow(row);
-            for (int var = 0; var < 3; ++var) {
-                ui->table_vibDB->setItem(row, var, new QTableWidgetItem(query.value(var).toString()));
-            }
-            row++;
-            
-            // 当加载足够多的行时，更新UI以保持响应性
-            if (row % 100 == 0) {
-                QApplication::processEvents();
-            }
-        } while (query.next());
-        
-        currentPage++;
-    }
-
-    // 查询所有记录数量并显示
-    query.prepare("SELECT COUNT(*) FROM IEPEdata");
-    if (query.exec() && query.next()) {
-        int rowCount = query.value(0).toInt();
-        qDebug() << "表中的行数:" << rowCount;
-        ui->le_totalDataNum->setText(QString::number(rowCount));
+    int totalRecords = 0;
+    if (countQuery.exec() && countQuery.next()) {
+        totalRecords = countQuery.value(0).toInt();
     } else {
-        qDebug() << "查询失败:" << query.lastError().text();
+        qDebug() << "查询总记录数失败:" << countQuery.lastError().text();
+        ui->le_totalDataNum->setText("0");
+        if(ui->lbl_pageInfo) ui->lbl_pageInfo->setText("Page 0 of 0");
+        if(ui->btn_prevPage) ui->btn_prevPage->setEnabled(false);
+        if(ui->btn_nextPage) ui->btn_nextPage->setEnabled(false);
+        return;
     }
+    ui->le_totalDataNum->setText(QString::number(totalRecords));
+
+    if (totalRecords == 0) {
+        db_currentPage = 0;
+        db_totalPages = 0;
+        if(ui->lbl_pageInfo) ui->lbl_pageInfo->setText("Page 0 of 0");
+        if(ui->btn_prevPage) ui->btn_prevPage->setEnabled(false);
+        if(ui->btn_nextPage) ui->btn_nextPage->setEnabled(false);
+        return;
+    }
+
+    db_totalPages = qCeil(static_cast<double>(totalRecords) / db_pageSize);
+    db_currentPage = 1; 
+
+    loadDbPageData();
 }
 
 // 根据轮次删除数据
@@ -694,3 +725,69 @@ void vk701page::on_btn_nuke_clicked()
     ui->le_totalDataNum->setText("0");
 }
 
+void vk701page::on_btn_nextPage_clicked()
+{
+    if (db_currentPage < db_totalPages) {
+        db_currentPage++;
+        loadDbPageData();
+    }
+}
+
+void vk701page::on_btn_prevPage_clicked()
+{
+    if (db_currentPage > 1) {
+        db_currentPage--;
+        loadDbPageData();
+    }
+}
+
+void vk701page::loadDbPageData()
+{
+    if (db_filter_minRoundID < 0 || db_filter_maxRoundID < 0 || db_currentPage <= 0 || db_totalPages == 0 ) {
+        ui->table_vibDB->setRowCount(0);
+        if(ui->lbl_pageInfo) ui->lbl_pageInfo->setText("Page 0 of 0");
+        if(ui->btn_prevPage) ui->btn_prevPage->setEnabled(false);
+        if(ui->btn_nextPage) ui->btn_nextPage->setEnabled(false);
+        return;
+    }
+
+    ui->table_vibDB->setRowCount(0); // Clear existing data
+
+    // Set table headers if not already set (ideally done once)
+    if (ui->table_vibDB->columnCount() != 3) {
+        ui->table_vibDB->setColumnCount(3);
+        ui->table_vibDB->setHorizontalHeaderLabels({"轮次ID", "通道ID", "振动数据"});
+    }
+    
+    QSqlQuery query(db);
+    query.prepare("SELECT RoundID, ChID, VibrationData FROM IEPEdata WHERE RoundID >= ? AND RoundID <= ? ORDER BY rowid LIMIT ? OFFSET ?");
+    query.addBindValue(db_filter_minRoundID);
+    query.addBindValue(db_filter_maxRoundID);
+    query.addBindValue(db_pageSize);
+    query.addBindValue((db_currentPage - 1) * db_pageSize);
+
+    if (!query.exec()) {
+        qDebug() << "Failed to execute query for page" << db_currentPage << ":" << query.lastError().text();
+        if(ui->lbl_pageInfo) ui->lbl_pageInfo->setText(QString("Error loading page %1").arg(db_currentPage));
+        if(ui->btn_prevPage) ui->btn_prevPage->setEnabled(db_currentPage > 1);
+        if(ui->btn_nextPage) ui->btn_nextPage->setEnabled(db_currentPage < db_totalPages); // Still allow navigation if one page fails
+        return;
+    }
+
+    int row = 0;
+    while (query.next()) {
+        ui->table_vibDB->insertRow(row);
+        ui->table_vibDB->setItem(row, 0, new QTableWidgetItem(query.value(0).toString())); // RoundID
+        ui->table_vibDB->setItem(row, 1, new QTableWidgetItem(query.value(1).toString())); // ChID
+        ui->table_vibDB->setItem(row, 2, new QTableWidgetItem(query.value(2).toString())); // VibrationData
+        row++;
+         // Process events to keep UI responsive during large data loads for a page
+        if (row % 100 == 0) { // Adjust this number as needed
+            QApplication::processEvents();
+        }
+    }
+
+    if(ui->lbl_pageInfo) ui->lbl_pageInfo->setText(QString("Page %1 of %2").arg(db_currentPage).arg(db_totalPages));
+    if(ui->btn_prevPage) ui->btn_prevPage->setEnabled(db_currentPage > 1);
+    if(ui->btn_nextPage) ui->btn_nextPage->setEnabled(db_currentPage < db_totalPages);
+}

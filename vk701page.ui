@@ -315,6 +315,27 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="btn_prevPage">
+           <property name="text">
+            <string>Previous</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_nextPage">
+           <property name="text">
+            <string>Next</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lbl_pageInfo">
+           <property name="text">
+            <string>Page 0 of 0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="label_5">
            <property name="text">
             <string>Round:</string>

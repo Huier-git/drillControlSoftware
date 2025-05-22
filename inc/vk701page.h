@@ -42,8 +42,8 @@ public:
     ~vk701page();
 
     int currentRoundID = 0;                 // 当前采样轮次
-    bool startTimeflag = false;             // 开始时间标志
-    bool AllRecordStart = false;            // 全局数据记录标志
+    bool startTimeflag = false;             // 开始时间标志, initialized here
+    bool AllRecordStart = false;            // 全局数据记录标志, initialized here
 
 public slots:
     // 数据库初始化与操作
@@ -64,6 +64,8 @@ private slots:
     void on_btn_showDB_clicked();           // 显示数据库内容
     void on_btn_deleteData_clicked();       // 按轮次删除数据
     void on_btn_nuke_clicked();             // 删除所有数据
+    void on_btn_nextPage_clicked();         // 数据库下一页
+    void on_btn_prevPage_clicked();         // 数据库上一页
     
     // 新增: 退出按钮处理 (示例方法，您需要添加相应的按钮)
     void on_btn_exit_clicked();
@@ -81,12 +83,19 @@ private slots:
 private:
     // 数据库相关
     QSqlDatabase db;                        // 数据库连接
+    int db_currentPage;                     // 当前数据库显示页码
+    int db_totalPages;                      // 总数据库页码
+    const int db_pageSize = 100;            // 每页显示条目数
+    int db_filter_minRoundID;               // 当前数据库查询的最小RoundID
+    int db_filter_maxRoundID;               // 当前数据库查询的最大RoundID
+
+    void loadDbPageData();                  // 加载数据库指定页的数据
     QDateTime startTime;                    // 开始时间
     QDateTime stopTime;                     // 结束时间
     
     // 批量插入相关
     QList<QVariantList> batchData;          // 批量插入缓冲
-    int batchSize = 1000;                   // 批量插入大小
+    // int batchSize = 1000;                // Unused variable, removed
     QTimer *dbCommitTimer;                  // 定时提交数据库
     
     // UI相关
@@ -108,6 +117,8 @@ private:
     
     // 新增: 安全关闭工作线程
     void safelyShutdownWorker();
+
+    Q_DISABLE_COPY_MOVE(vk701page)
 };
 
 #endif // VK701PAGE_H

@@ -74,7 +74,7 @@ bool vk701nsd::initializeDAQ()
         result = Server_TCPOpen(port);
         QThread::msleep(20);
         if (result < 0) {
-            qDebug() << "等待连接中...";
+            qDebug() << "等待连接中... Error code:" << result;
         } else {
             qDebug() << "端口" << port << "已打开!";
         }
@@ -91,13 +91,20 @@ bool vk701nsd::initializeDAQ()
         
         result = Server_Get_ConnectedClientNumbers(&curDeviceNum);
         QThread::msleep(20);
+        if (result < 0) {
+            qDebug() << "获取已连接设备数量失败. Error code:" << result;
+        }
     } while (result < 0);
     qDebug() << "数据采集设备数量: " << curDeviceNum;
     QThread::msleep(100);
 
     // 3.初始化
     qDebug() << "初始化设备...";
-    int temp = 0;
+    int retries = 0;
+    long long sleepTime = 100; // Initial sleep time in ms
+    const long long maxSleepTime = 1000; // Maximum sleep time in ms
+    const int maxRetries = 5; // Total retry limit
+
     do {
         // 检查是否应该停止
         if (!shouldContinue()) {
@@ -106,24 +113,22 @@ bool vk701nsd::initializeDAQ()
         
         result = VK70xNMC_Initialize(cardId, refVol, bitMode, samplingFrequency, 
                                     volRange, volRange, volRange, volRange);
-        QThread::msleep(20);
-        if (temp < reconnectCounter) {
-            if (result == -11) {
-                qDebug() << "服务器未打开.";
-            } else if (result == -12 || result == -13) {
-                qDebug() << "数据采集设备未连接或不存在. " << "尝试 " << temp;
-            } else {
-                qDebug() << "数据采集设备未连接或不存在. " << "尝试 " << temp;
+        if (result < 0) {
+            qDebug() << "VK70xNMC_Initialize 失败. Error code:" << result << ". 尝试次数:" << retries + 1;
+            if (retries < maxRetries) {
+                QThread::msleep(sleepTime);
+                sleepTime = qMin(sleepTime * 2, maxSleepTime);
             }
         }
-        temp++;
-    } while (result < 0 && temp < reconnectCounter);
+        retries++;
+    } while (result < 0 && retries < maxRetries);
     
     // 判断初始化结果
     if (result < 0) {
+        qCritical() << "数据采集设备初始化失败. Error code:" << result;
         currentState = DAQState::Error;
         emit stateChanged(currentState);
-        emit resultMsg("数据采集设备初始化失败");
+        emit resultMsg(QString("数据采集设备初始化失败. Error code: %1").arg(result));
         return false;
     }
     
@@ -136,9 +141,10 @@ bool vk701nsd::startSampling()
 {
     int result = VK70xNMC_StartSampling(cardId);
     if (result < 0) {
-        qDebug() << "数据采集设备错误";
+        qCritical() << "启动数据采集设备采样失败. Error code:" << result;
         currentState = DAQState::Error;
         emit stateChanged(currentState);
+        emit resultMsg(QString("启动数据采集设备采样失败. Error code: %1").arg(result));
         initStatus = false;
         return false;
     } else {
@@ -155,13 +161,15 @@ void vk701nsd::processSampling()
 {
     std::unique_ptr<double[]> pucRecBuf(new double[bufferSize]);
     
-    // 开始采样
-    int result = VK70xNMC_StartSampling(cardId);
-    if (result < 0) {
-        currentState = DAQState::Error;
-        emit stateChanged(currentState);
-        return;
-    }
+    // 注释掉此处的重复启动采样，因为startSampling已在doWork中调用
+    // int result = VK70xNMC_StartSampling(cardId);
+    // if (result < 0) {
+    //     currentState = DAQState::Error;
+    //     emit stateChanged(currentState);
+    //     qCritical() << "处理数据采集时启动采样失败. Error code:" << result;
+    //     emit resultMsg(QString("处理数据采集时启动采样失败. Error code: %1").arg(result));
+    //     return;
+    // }
     
     // 读取数据
     int recv = VK70xNMC_GetFourChannel(cardId, pucRecBuf.get(), samplingFrequency);
@@ -174,7 +182,7 @@ void vk701nsd::processSampling()
         dataBuffer->reserve(4 * recv);
         
         // 复制数据
-        for (int i = 0; i < 4 * recv; i++) {
+        for (int i = 0; i < 4 * recv; ++i) { // Use ++i as a common convention
             dataBuffer->append(pucRecBuf[i]);
         }
         
@@ -208,8 +216,8 @@ void vk701nsd::doWork()
     }
     
     // 开始采样
-    if (!startSampling()) {
-        emit resultMsg("启动采样失败");
+    if (!startSampling()) { // This call is necessary for the initial start.
+        // emit resultMsg("启动采样失败"); // This is already handled inside startSampling()
         return;
     }
     
@@ -228,6 +236,8 @@ void vk701nsd::doWork()
             // 如果退出暂停状态且应继续运行，则重新开始采样
             if (shouldContinue() && !fDAQSampleClr) {
                 if (!startSampling()) {
+                    qCritical() << "从暂停状态恢复采样失败";
+                    emit resultMsg("从暂停状态恢复采样失败");
                     break; // 重新开始采样失败，退出循环
                 }
             }
